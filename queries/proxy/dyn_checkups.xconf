@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dyn_checkups templ="%fix_date%;%account_id%;%placement_id%;%prod_id%;%exist%;%fix_dt%;%user_id%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from dyn_checkups 
+    where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and placement_id = '%placement_id%' and prod_id = '%prod_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update dyn_checkups set exist=0%exist%, user_id='%user_id%', fix_dt='%fix_dt%'
+    where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and placement_id = '%placement_id%' and prod_id = '%prod_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into dyn_checkups (db_id, fix_date, account_id, placement_id, prod_id, exist, fix_dt, user_id)
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%placement_id%', '%prod_id%', 0%exist%, '%fix_dt%', '%user_id%')
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</dyn_checkups>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dyn_audits templ="%fix_date%;%account_id%;%audit_type_id%;%audit_criteria_id%;%score%;%note%;%photo0%;%photo1%;%photo2%;%photo3%;%fix_dt%;%user_id%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from dyn_audits 
+    where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and audit_type_id = '%audit_type_id%' and audit_criteria_id = '%audit_criteria_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update dyn_audits set score=%score%, note='%note%', user_id='%user_id%', fix_dt='%fix_dt%', photos=resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%')
+    where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and audit_type_id = '%audit_type_id%' and audit_criteria_id = '%audit_criteria_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into dyn_audits (db_id, fix_date, account_id, audit_type_id, audit_criteria_id, score, note, photos, fix_dt, user_id)
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%audit_type_id%', '%audit_criteria_id%', %score%, '%note%', resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%'), '%fix_dt%', '%user_id%')
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</dyn_audits>

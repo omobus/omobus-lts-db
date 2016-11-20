@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<products templ="%prod_id%;%pid%;%ftype%;%code%;%descr%;%manuf_id%;%brand_id%;%categ_id%;%art%;%shelf_life%;%obsolete%;%novelty%;%promo%;%note%;%country_ids%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update products set hidden=1
+    where db_id = '%ErpCode%'
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from products 
+    where db_id = '%ErpCode%' and prod_id = '%prod_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update products set pid='%pid%', ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life='%shelf_life%', 
+    manuf_id='%manuf_id%', brand_id='%brand_id%', categ_id='%categ_id%', obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, note='%note%', 
+    country_ids=string_to_array('%country_ids%',','), hidden=0
+where db_id = '%ErpCode%' and prod_id = '%prod_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[ 
+insert into products (db_id, pid, prod_id, ftype, code, art, descr, manuf_id, shelf_life,brand_id, categ_id, obsolete, novelty, promo, note, country_ids, hidden)
+    values ('%ErpCode%', '%pid%', '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', '%manuf_id%', '%shelf_life%', '%brand_id%', '%categ_id%', 0%obsolete%, 0%novelty%, 0%promo%, '%note%', string_to_array('%country_ids%',','), 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+update products set pid=null where pid='';
+update products set manuf_id=null where manuf_id='';
+update products set brand_id=null where brand_id='';
+update products set categ_id=null where categ_id='';
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</products>

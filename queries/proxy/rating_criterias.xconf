@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rating_criterias templ="%rating_criteria_id%;%pid%;%ftype%;%descr%;%wf%;%row_no%;%mandatory%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update rating_criterias set hidden=1
+    where db_id = '%ErpCode%'
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from rating_criterias 
+    where db_id = '%ErpCode%' and rating_criteria_id = '%rating_criteria_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update rating_criterias set pid=case when '%pid%'='' then null else '%pid%' end, ftype=%ftype%, descr='%descr%', wf=%wf%, row_no=case when '%row_no%'='' then null else 0%row_no% end, mandatory=0%mandatory%, hidden=0
+    where db_id = '%ErpCode%' and rating_criteria_id = '%rating_criteria_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into rating_criterias (db_id, rating_criteria_id, pid, ftype, descr, wf, row_no, mandatory, hidden) 
+    values ('%ErpCode%', '%rating_criteria_id%', case when '%pid%'='' then null else '%pid%' end, %ftype%, '%descr%', %wf%, case when '%row_no%'='' then null else 0%row_no% end, 0%mandatory%, 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</rating_criterias>

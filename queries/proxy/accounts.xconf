@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<accounts templ="%account_id%;%pid%;%code%;%ftype%;%descr%;%address%;%region_id%;%city_id%;%rc_id%;%chan_id%;%poten_id%;%matrix_id%;%outlet_size%;%cash_register%;%latitude%;%longitude%;%working_hours_id%;%service_type_id%;%attr_ids%;%locked%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update accounts set hidden=1
+    where db_id = '%ErpCode%'
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from accounts 
+    where db_id = '%ErpCode%' and account_id = '%account_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update accounts set pid='%pid%', code='%code%', ftype=0%ftype%, descr='%descr%', address='%address%', rc_id='%rc_id%', chan_id='%chan_id%', poten_id='%poten_id%', 
+    matrix_id='%matrix_id%', outlet_size=0%outlet_size%, cash_register=0%cash_register%, latitude=0%latitude%, longitude=0%longitude%, working_hours_id='%working_hours_id%', 
+    service_type_id='%service_type_id%', attr_ids=string_to_array('%attr_ids%',','), locked=0%locked%, hidden=0
+where db_id = '%ErpCode%' and account_id = '%account_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into accounts(db_id, pid, account_id, code, ftype, descr, address, rc_id, chan_id, poten_id, matrix_id, outlet_size, cash_register, latitude, longitude, working_hours_id, service_type_id, attr_ids, locked, hidden)
+    values('%ErpCode%', '%pid%', '%account_id%', '%code%', 0%ftype%, '%descr%', '%address%', '%rc_id%', '%chan_id%', '%poten_id%', '%matrix_id%', 0%outlet_size%, 0%cash_register%, 0%latitude%, 0%longitude%, '%working_hours_id%', '%service_type_id%', string_to_array('%attr_ids%',','), 0%locked%, 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+update accounts set pid=null where pid='';
+update accounts set rc_id=null where rc_id='';
+update accounts set chan_id=null where chan_id='';
+update accounts set poten_id=null where poten_id='';
+update accounts set working_hours_id=null where working_hours_id='';
+update accounts set service_type_id=null where service_type_id='';
+update accounts set latitude=null, longitude=null where latitude=0 and longitude=0;
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</accounts>

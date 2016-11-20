@@ -1,0 +1,44 @@
+version: 1
+
+dn: dc=omobus,dc=local
+objectClass: organization
+objectClass: top
+objectClass: dcObject
+dc: omobus
+o: local
+
+dn: ou=services,dc=omobus,dc=local
+objectClass: top
+objectClass: organizationalUnit
+ou: services
+description: Service accounts
+
+dn: uid=omobusd,ou=services,dc=omobus,dc=local
+objectClass: account
+objectClass: top
+objectClass: posixAccount
+cn: OMOBUS daemon
+gidNumber: 905
+homeDirectory: /var/lib/omobus.d
+uid: omobusd
+uidNumber: 902
+userPassword:: e1NTSEF9dkhOUmxBbkdYZEs2U1lZNjlWY2kwWlpDaUgwMEw3MVpKYlduQkE9P
+ Q==
+
+dn: ou=proxy-db,dc=omobus,dc=local
+objectClass: top
+objectClass: organizationalUnit
+ou: proxy-db
+description: Attached storages
+
+dn: cn=p0,ou=proxy-db,dc=omobus,dc=local
+objectClass: omobusMaintainPoint
+objectClass: top
+objectClass: omobusAccount
+cn: p0
+uid: point0
+userPassword: 0
+description: Attached storage #1
+exchangeStatus: enabled
+ErpCode: PROXY0
+

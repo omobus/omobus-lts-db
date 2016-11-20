@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<deletions templ="%account_id%;%user_id%;%fix_dt%;%note%;%photo%;%hidden%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from deletions 
+    where db_id = '%ErpCode%' and account_id = '%account_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update deletions set user_id='%user_id%', fix_dt='%fix_dt%', note='%note%', photo=resolve_blob_stream('//proxy/%uid%/%photo%'), hidden=0%hidden%
+    where db_id = '%ErpCode%' and account_id = '%account_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into deletions (db_id, account_id, user_id, fix_dt, note, photo, hidden) 
+    values ('%ErpCode%', '%account_id%', '%user_id%', '%fix_dt%', '%note%', resolve_blob_stream('//proxy/%uid%/%photo%'), 0%hidden%)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</deletions>

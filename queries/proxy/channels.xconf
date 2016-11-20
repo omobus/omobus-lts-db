@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<channels templ="%chan_id%;%descr%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update channels set hidden=1
+    where db_id = '%ErpCode%'
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from channels 
+    where db_id = '%ErpCode%' and chan_id = '%chan_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update channels set descr='%descr%', hidden=0
+    where db_id = '%ErpCode%' and chan_id = '%chan_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into channels (db_id, chan_id, descr, hidden)
+    values ('%ErpCode%', '%chan_id%', '%descr%', 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</channels>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<products templ="%prod_id%;%pid%;%ftype%;%code%;%descr%;%manuf_id%;%brand_id%;%categ_id%;%art%;%shelf_life%;%obsolete%;%novelty%;%promo%;%note%;%country_ids%;">
+<products templ="%prod_id%;%pid%;%ftype%;%code%;%descr%;%manuf_id%;%brand_id%;%categ_id%;%art%;%shelf_life%;%obsolete%;%novelty%;%promo%;%country_ids%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,16 +20,14 @@ select count(*) exist from products
 </check_exist>
 <update>
   <![CDATA[
-update products set pid='%pid%', ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life='%shelf_life%', 
-    manuf_id='%manuf_id%', brand_id='%brand_id%', categ_id='%categ_id%', obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, note='%note%', 
-    country_ids=string_to_array('%country_ids%',','), hidden=0
-where db_id = '%ErpCode%' and prod_id = '%prod_id%'
+update products set pid='%pid%', ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life='%shelf_life%', manuf_id='%manuf_id%', brand_id='%brand_id%', categ_id='%categ_id%', obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, country_ids=string_to_array('%country_ids%',','), hidden=0
+    where db_id = '%ErpCode%' and prod_id = '%prod_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[ 
-insert into products (db_id, pid, prod_id, ftype, code, art, descr, manuf_id, shelf_life,brand_id, categ_id, obsolete, novelty, promo, note, country_ids, hidden)
-    values ('%ErpCode%', '%pid%', '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', '%manuf_id%', '%shelf_life%', '%brand_id%', '%categ_id%', 0%obsolete%, 0%novelty%, 0%promo%, '%note%', string_to_array('%country_ids%',','), 0)
+insert into products (db_id, pid, prod_id, ftype, code, art, descr, manuf_id, shelf_life,brand_id, categ_id, obsolete, novelty, promo, country_ids, hidden)
+    values ('%ErpCode%', '%pid%', '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', '%manuf_id%', '%shelf_life%', '%brand_id%', '%categ_id%', 0%obsolete%, 0%novelty%, 0%promo%, string_to_array('%country_ids%',','), 0)
   ]]>
 </insert>
 <end>

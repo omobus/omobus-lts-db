@@ -21,7 +21,7 @@ update user_activities set e_dt=case when '%e_dt%'='' then null else '%e_dt%' en
 <insert>
   <![CDATA[
 insert into user_activities (db_id, user_id, account_id, w_cookie, a_cookie, activity_type_id, fix_date, route_date, b_dt, b_la, b_lo, b_sat_dt, e_dt, e_la, e_lo, e_sat_dt, employee_id) 
-    values ('%ErpCode%', '%user_id%', '%account_id%', '%w_cookie%', '%a_cookie%', '%activity_type_id%', '%fix_date%', '%route_date%', '%b_dt%', %b_la%, %b_lo%, '%b_sat_dt%', case when '%e_dt%'='' then null else '%e_dt%' end, case when '%e_la%'='' then null else 0%e_la% end, case when '%e_lo%'='' then null else 0%e_lo% end, case when '%e_sat_dt%'='' then null else '%e_sat_dt%' end, case when '%employee_id%'='' then null else '%employee_id%' end)
+    values ('%ErpCode%', '%user_id%', '%account_id%', '%w_cookie%', '%a_cookie%', '%activity_type_id%', '%fix_date%', '%route_date%', '%b_dt%', 0%b_la%, 0%b_lo%, '%b_sat_dt%', case when '%e_dt%'='' then null else '%e_dt%' end, case when '%e_la%'='' then null else 0%e_la% end, case when '%e_lo%'='' then null else 0%e_lo% end, case when '%e_sat_dt%'='' then null else '%e_sat_dt%' end, case when '%employee_id%'='' then null else '%employee_id%' end)
   ]]>
 </insert>
 <end>

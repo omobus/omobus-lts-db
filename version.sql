@@ -1,5 +1,5 @@
 /* This file is a part of the omobus-lts-db project.
- * Copyright (c) 2006 - 2016 ak-obs, Ltd. <info@omobus.net>.
+ * Copyright (c) 2006 - 2017 ak-obs, Ltd. <info@omobus.net>.
  * All rights reserved.
  *
  * This program is a free software. Redistribution and use in source
@@ -32,7 +32,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-insert into sysparams(param_id, param_value, descr) values('db:vstamp', '3.3.10', 'Database version number.');
+insert into sysparams(param_id, param_value, descr) values('db:vstamp', '3.3.11', 'Database version number.');
 
 #ifdef MSSQL
 go

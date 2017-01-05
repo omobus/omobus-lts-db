@@ -15,7 +15,7 @@ select count(*) exist from user_locations
 <insert>
   <![CDATA[
 insert into user_locations (db_id, act_id, user_id, fix_date, latitude, longitude, fix_dt, satellite_dt, accuracy, altitude, bearing, speed, seconds, provider, satellites) 
-    values ('%ErpCode%', '%act_id%', '%user_id%', '%fix_date%', '%latitude%', '%longitude%', '%fix_dt%', '%satellite_dt%', '%accuracy%', '%altitude%', '%bearing%', '%speed%', '%seconds%', '%provider%', '%satellites%')
+    values ('%ErpCode%', '%act_id%', '%user_id%', '%fix_date%', %latitude%, %longitude%, '%fix_dt%', '%satellite_dt%', %accuracy%, %altitude%, %bearing%, %speed%, %seconds%, '%provider%', '%satellites%')
   ]]>
 </insert>
 <end>

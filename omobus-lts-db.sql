@@ -69,7 +69,7 @@ create domain currency_t as numeric(18,4);
 create domain date_t as varchar(10);
 create domain datetime_t as varchar(19);
 create domain datetimetz_t as varchar(32);
-create domain descr_t as varchar(192);
+create domain descr_t as varchar(256);
 create domain doctype_t as varchar(24) check (value is null or (value = lower(value)));
 create domain double_t as float8;
 create domain discount_t as numeric(5,2) check (value is null or (value between -100 and 100));
@@ -109,7 +109,7 @@ execute sp_addtype currency_t, 'numeric(18,4)'
 execute sp_addtype date_t, 'varchar(10)'
 execute sp_addtype datetime_t, 'varchar(19)'
 execute sp_addtype datetimetz_t, 'varchar(32)'
-execute sp_addtype descr_t, 'varchar(192)'
+execute sp_addtype descr_t, 'varchar(256)'
 execute sp_addtype doctype_t, 'varchar(24)'
 execute sp_addtype double_t, 'float'
 execute sp_addtype discount_t, 'numeric(5,2)'

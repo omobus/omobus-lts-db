@@ -942,7 +942,7 @@ create table confirmations (
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
-    target_type_id 	uid_t 		not null,
+    target_id 		uid_t 		not null,
     confirm_id 		uid_t 		not null,
     doc_note 		note_t 		null,
     photo		blob_t		null,

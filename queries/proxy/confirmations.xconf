@@ -1,33 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<confirmations templ="%confirm_id%;%descr%;%target_type_id%;">
+<confirmations templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%target_type_id%;%confirm_id%;%doc_note%;%photo%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update confirmations set hidden=1
-    where db_id = '%ErpCode%'
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from confirmations 
-    where db_id = '%ErpCode%' and confirm_id = '%confirm_id%'
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
   ]]>
 </check_exist>
-<update>
-  <![CDATA[
-update confirmations set descr='%descr%', target_type_id='%target_type_id%', hidden=0
-    where db_id = '%ErpCode%' and confirm_id = '%confirm_id%'
-  ]]>
-</update>
 <insert>
   <![CDATA[
-insert into confirmations (db_id, confirm_id, descr, target_type_id, hidden) 
-    values ('%ErpCode%', '%confirm_id%', '%descr%', '%target_type_id%', 0)
+insert into confirmations (db_id, doc_id, fix_dt, user_id, account_id, target_type_id, confirm_id, doc_note, photo) 
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%target_type_id%', '%confirm_id%', '%doc_note%', resolve_blob_stream('//proxy/%uid%/%photo%'))
   ]]>
 </insert>
 <end>

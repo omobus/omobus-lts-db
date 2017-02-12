@@ -338,7 +338,7 @@ create table conference_themes (
     primary key(db_id, ctheme_id)
 );
 
-create table confirmations (
+create table confirmation_types (
     db_id 		uid_t 		not null,
     confirm_id 		uid_t 		not null,
     target_type_id 	uid_t 		not null,
@@ -823,7 +823,7 @@ create trigger trig_updated_ts before update on channels for each row execute pr
 create trigger trig_updated_ts before update on cities for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on comment_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on conference_themes for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on confirmations for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on confirmation_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on contacts for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on countries for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on departments for each row execute procedure tf_updated_ts();
@@ -931,6 +931,21 @@ create table conferences (
     expenses 		currency_t 	not null,
     speakers 		descr_t 	null,
     venue 		descr_t 	null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+create table confirmations (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    fix_dt 		datetime_t 	not null,
+    user_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
+    target_type_id 	uid_t 		not null,
+    confirm_id 		uid_t 		not null,
+    doc_note 		note_t 		null,
+    photo		blob_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1340,6 +1355,7 @@ create trigger trig_updated_ts before update on additions for each row execute p
 create trigger trig_updated_ts before update on cancellations for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on comments for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on conferences for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on confirmations for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on deletions for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on discards for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_advt for each row execute procedure tf_updated_ts();

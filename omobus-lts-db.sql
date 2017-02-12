@@ -424,7 +424,7 @@ create table job_titles (
 create table manufacturers (
     db_id 		uid_t 		not null,
     manuf_id 		uid_t 		not null,
-    descr 		descr_t 	null,
+    descr 		descr_t 	not null,
     competitor		bool_t 		null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -432,10 +432,21 @@ create table manufacturers (
     primary key(db_id, manuf_id)
 );
 
+create table matrix_types (
+    db_id 		uid_t 		not null,
+    matrix_type_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, matrix_type_id)
+);
+
 create table matrix (
     db_id 		uid_t 		not null,
     matrix_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
+    matrix_type_id 	uid_t 		null,
     row_no 		int32_t 	null, -- ordering
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -573,14 +584,17 @@ create table placements (
     primary key(db_id, placement_id)
 );
 
-create table potentials (
+create table pos_materials (
     db_id 		uid_t 		not null,
-    poten_id 		uid_t 		not null,
+    posm_id 		uid_t 		not null,
     descr 		descr_t 	not null,
+    country_id		country_t 	null,
+    brand_id 		uid_t 		null,
+    placement_ids 	uids_t 		null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, poten_id)
+    primary key(db_id, posm_id)
 );
 
 create table products (
@@ -692,6 +706,7 @@ create table targets (
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
     image 		blob_t 		null, /* image attached to the target */
+    country_id 		uid_t 		null,
     dep_id		uid_t		null, /* task sets for the specific departmen or any department if null */
     author_id 		uid_t 		not null,
     myself 		bool_t 		not null default 0,
@@ -829,6 +844,7 @@ create trigger trig_updated_ts before update on packs for each row execute proce
 create trigger trig_updated_ts before update on pending_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on photo_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on placements for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on pos_materials for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on potentials for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on products for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on payment_methods for each row execute procedure tf_updated_ts();
@@ -945,7 +961,7 @@ create table discards (
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
-    primary key(db_id, account_id)
+    primary key(db_id, account_id, activity_type_id, route_date)
 );
 
 create table dyn_advt (
@@ -1115,8 +1131,8 @@ create table photos (
     user_id		uid_t		not null,
     account_id		uid_t		not null,
     placement_id	uid_t		not null,
-    brand_id		uid_t		not null,
-    photo_type_id	uid_t		not null,
+    brand_id		uid_t		null,
+    photo_type_id	uid_t		null,
     photo		blob_t		not null,
     doc_note		note_t		null,
     inserted_ts 	ts_auto_t 	not null,

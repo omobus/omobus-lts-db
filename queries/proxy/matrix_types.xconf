@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<matrix_types templ="%matrix_type_id%;%descr%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update matrix_types set hidden=1
+    where db_id = '%ErpCode%'
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from matrix_types 
+    where db_id = '%ErpCode%' and matrix_type_id = '%matrix_type_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update matrix_types set descr='%descr%', hidden=0 
+    where db_id = '%ErpCode%' and matrix_type_id = '%matrix_type_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into matrix_types (db_id, matrix_type_id, descr, hidden) 
+    values ('%ErpCode%', '%matrix_type_id%', '%descr%', 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</matrix_types>

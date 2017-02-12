@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<matrix templ="%matrix_id%;%prod_id%;%row_no%;">
+<matrix templ="%matrix_id%;%prod_id%;%matrix_type_id%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,8 +14,8 @@ delete from matrix
 </begin>
 <insert>
   <![CDATA[
-insert into matrix (db_id, matrix_id, prod_id, row_no) 
-    values ('%ErpCode%', '%matrix_id%', '%prod_id%', case when '%row_no%'='' then null else 0%row_no% end)
+insert into matrix (db_id, matrix_id, prod_id, matrix_type_id, row_no) 
+    values ('%ErpCode%', '%matrix_id%', '%prod_id%', '%matrix_type_id%', case when '%row_no%'='' then null else 0%row_no% end)
   ]]>
 </insert>
 <end>

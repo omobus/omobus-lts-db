@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<targets templ="%target_id%;%target_type_id%;%subject%;%body%;%b_date%;%e_date%;%image%;%country_id%;%dep_id%;%author_id%;%myself%;%account_ids%;%region_ids%;%city_ids%;%rc_ids%;%chan_ids%;%poten_ids%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update targets set hidden=1
+    where db_id = '%ErpCode%'
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from targets 
+    where db_id = '%ErpCode%' and target_id = '%target_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update targets set descr='%descr%', target_type_id='%target_type_id%', subject='%subject%', body='%body%', b_date='%b_date%', e_date='%e_date%', image=resolve_blob_stream('//proxy/%uid%/%image%'), country_id='%country_id%', dep_id='%dep_id%', author_id='%author_id%', myself='%myself%', account_ids=string_to_array('%account_ids%',','), region_ids=string_to_array('%region_ids%',','), city_ids=string_to_array('%city_ids%',','), rc_ids=string_to_array('%rc_ids%',','), chan_ids=string_to_array('%chan_ids%',','), poten_ids=string_to_array('%poten_ids%',','), hidden=0 
+    where db_id = '%ErpCode%' and target_id = '%target_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into targets (db_id, target_id, target_type_id, subject, body, b_date, e_date, image, country_id, dep_id, author_id, myself, account_ids, region_ids, city_ids, rc_ids, chan_ids, poten_ids, hidden) 
+    values ('%ErpCode%', '%target_id%', '%target_type_id%', '%subject%', '%body%', '%b_date%', '%e_date%', resolve_blob_stream('//proxy/%uid%/%image%'), '%country_id%', '%dep_id%', '%author_id%', '%myself%', string_to_array('%account_ids%',','), string_to_array('%region_ids%',','), string_to_array('%city_ids%',','), string_to_array('%rc_ids%',','), string_to_array('%chan_ids%',','), string_to_array('%poten_ids%',','), 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</targets>

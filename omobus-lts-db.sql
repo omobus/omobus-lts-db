@@ -1257,6 +1257,7 @@ create table user_documents (
     doc_id 		uid_t 		null,
     doc_no 		uid_t 		not null,
     duration 		int32_t 	not null,
+    rows 		int32_t 	null,
     fix_dt 		datetime_t 	not null,
     latitude 		gps_t 		null,
     longitude 		gps_t 		null,

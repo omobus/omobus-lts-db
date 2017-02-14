@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<user_documents templ="%act_id%;%user_id%;%w_cookie%;%fix_date%;%doc_type%;%doc_id%;%doc_no%;%duration%;%fix_dt%;%latitude%;%longitude%;%satellite_dt%;%a_cookie%;%account_id%;%activity_type_id%;%employee_id%;">
+<user_documents templ="%act_id%;%user_id%;%w_cookie%;%fix_date%;%doc_type%;%doc_id%;%doc_no%;%duration%;%rows%;%fix_dt%;%latitude%;%longitude%;%satellite_dt%;%a_cookie%;%account_id%;%activity_type_id%;%employee_id%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,8 +14,8 @@ select count(*) exist from user_documents
 </check_exist>
 <insert>
   <![CDATA[
-insert into user_documents (db_id, act_id, user_id, w_cookie, fix_date, doc_type, doc_id, doc_no, duration, fix_dt, latitude, longitude, satellite_dt, a_cookie, account_id, activity_type_id, employee_id) 
-    values ('%ErpCode%', '%act_id%', '%user_id%', '%w_cookie%', '%fix_date%', '%doc_type%', '%doc_id%', '%doc_no%', '%duration%', '%fix_dt%', '%latitude%', '%longitude%', '%satellite_dt%', '%a_cookie%', '%account_id%', '%activity_type_id%', case when '%employee_id%'='' then null else '%employee_id%' end)
+insert into user_documents (db_id, act_id, user_id, w_cookie, fix_date, doc_type, doc_id, doc_no, duration, rows, fix_dt, latitude, longitude, satellite_dt, a_cookie, account_id, activity_type_id, employee_id) 
+    values ('%ErpCode%', '%act_id%', '%user_id%', '%w_cookie%', '%fix_date%', '%doc_type%', '%doc_id%', '%doc_no%', %duration%, 0%rows, '%fix_dt%', '%latitude%', '%longitude%', '%satellite_dt%', '%a_cookie%', '%account_id%', '%activity_type_id%', case when '%employee_id%'='' then null else '%employee_id%' end)
   ]]>
 </insert>
 <end>

@@ -1,2 +1,18 @@
-omobus-lts-db.3:
-    This is a long term OMOBUS data storage. Data never deleted from this storage.
+INTRODUCTION
+------------
+
+omobus-lts-db contains the SQL scripts for creating special analitic 
+storage for the Decision Support Systems. 
+
+
+
+USAGE
+----
+
+To build the code, symply type:
+
+$ sudo apt-get install unifdef
+$ make
+
+After the code has been build, the pgsql and mssql SQL scripts should 
+be available in the project directory.

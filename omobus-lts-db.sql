@@ -254,18 +254,6 @@ create table audit_criterias ( /* Service-Level-Agreement criterias for the audi
     primary key(db_id, audit_criteria_id)
 );
 
-create table audit_types ( /* Service-Level-Agreement types for the audit document */
-    db_id 		uid_t 		not null,
-    audit_type_id 	uid_t 		not null,
-    descr 		descr_t 	not null,
-    wf 			wf_t 		not null check(wf between 0.01 and 1.00),
-    row_no 		int32_t 	null, -- ordering
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, audit_type_id)
-);
-
 create table brands (
     db_id 		uid_t 		not null,
     brand_id 		uid_t 		not null,
@@ -291,6 +279,8 @@ create table categories (
     db_id 		uid_t 		not null,
     categ_id 		uid_t 		not null,
     descr 		descr_t 	not null,
+    wf 			wf_t 		null check(wf between 0.01 and 1.00), /* Service-Level-Agreement weight for the audit document */
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -815,7 +805,6 @@ create trigger trig_updated_ts before update on agencies for each row execute pr
 create trigger trig_updated_ts before update on assortments for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on attributes for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on audit_criterias for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on audit_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on brands for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on canceling_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on categories for each row execute procedure tf_updated_ts();
@@ -1012,7 +1001,7 @@ create table dyn_audits (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
     account_id 		uid_t 		not null,
-    audit_type_id 	uid_t 		not null,
+    categ_id 		uid_t 		not null,
     audit_criteria_id 	uid_t 		not null,
     score 		int32_t 	not null check (score between 0 and 2),
     note 		note_t 		null,
@@ -1021,7 +1010,7 @@ create table dyn_audits (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, fix_date, account_id, audit_type_id, audit_criteria_id)
+    primary key(db_id, fix_date, account_id, categ_id, audit_criteria_id)
 );
 
 create table dyn_checkups (

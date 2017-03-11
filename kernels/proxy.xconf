@@ -28,7 +28,6 @@
 <xi:include href="../queries/proxy/assortments.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/attributes.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/audit_criterias.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
-<xi:include href="../queries/proxy/audit_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/brands.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/canceling_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/cancellations.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />

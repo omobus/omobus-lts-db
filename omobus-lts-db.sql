@@ -154,6 +154,8 @@ end;
 $body$
 language 'plpgsql';
 #endif //PGSQL
+#ifdef MSSQL
+#endif //MSSQL
 
 
 -- **** general streams ****
@@ -172,6 +174,7 @@ create table accounts (
     chan_id 		uid_t 		null,
     poten_id 		uid_t 		null,
     matrix_id 		uid_t 		null,
+    shelf_id 		uid_t 		null,
     outlet_size 	int32_t 	null,
     cash_register 	int32_t 	null,
     latitude 		gps_t 		null,
@@ -220,17 +223,6 @@ create table agencies (
     primary key(db_id, agency_id)
 );
 
-create table assortments (
-    db_id 		uid_t 		not null,
-    assortment_id 	uid_t 		not null,
-    descr 		descr_t 	not null,
-    row_no 		int32_t 	null, -- ordering
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, assortment_id)
-);
-
 create table attributes (
     db_id 		uid_t 		not null,
     attr_id 		uid_t 		not null,
@@ -259,6 +251,9 @@ create table brands (
     brand_id 		uid_t 		not null,
     descr 		descr_t 	not null,
     dep_id		uid_t		null,
+    multi 		uids_t 		null, /* for compound brands: [multi] should contains [brand_id] array */
+    competitor		bool_t 		null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -676,15 +671,17 @@ create table service_types (
     primary key(db_id, service_type_id)
 );
 
-create table sos ( /* Share-of-Shelf recomendations */
+
+create table shelfs ( /* distribution of brands on the shelf in the category */
     db_id 		uid_t 		not null,
-    year 		int32_t 	not null,
-    chan_id 		uid_t 		not null,
-    assortment_id 	uid_t 		not null,
-    recommended 	int32_t 	not null check (recommended > 0 and recommended <= 100), /* recommendation in the percentages */
+    shelf_id 		uid_t 		not null,
+    categ_id 		uid_t 		not null,
+    brand_ids 		uids_t 		not null,
+    target 		wf_t 		null check(target between 0.01 and 1.00), /* Share-of-Shelf recomendations */
+    hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, year, chan_id, assortment_id)
+    primary key(db_id, shelf_id, categ_id)
 );
 
 create table targets (
@@ -802,7 +799,6 @@ create trigger trig_updated_ts before update on accounts for each row execute pr
 create trigger trig_updated_ts before update on account_params for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on activity_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on agencies for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on assortments for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on attributes for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on audit_criterias for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on brands for each row execute procedure tf_updated_ts();
@@ -842,7 +838,7 @@ create trigger trig_updated_ts before update on receipt_types for each row execu
 create trigger trig_updated_ts before update on reclamation_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on retail_chains for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on service_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on sos for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on shelfs for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on targets for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on target_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on training_materials for each row execute procedure tf_updated_ts();
@@ -983,20 +979,6 @@ create table dyn_advt (
     primary key(db_id, fix_date, account_id, placement_id, posm_id)
 );
 
-create table dyn_assortments (
-    db_id 		uid_t 		not null,
-    fix_date		date_t 		not null,
-    account_id 		uid_t 		not null,
-    assortment_id 	uid_t 		not null,
-    own 		int32_t 	not null check (own >= 0),
-    other 		int32_t 	not null check (other >= 0),
-    fix_dt		datetime_t 	not null,
-    user_id 		uid_t 		not null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts		ts_auto_t 	not null,
-    primary key(db_id, fix_date, account_id, assortment_id)
-);
-
 create table dyn_audits (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
@@ -1072,14 +1054,16 @@ create table dyn_shelfs (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
     account_id 		uid_t 		not null,
-    assortment_id 	uid_t 		not null,
-    own 		int32_t 	not null check (own >= 0),
-    other 		int32_t 	not null check (other >= 0),
-    fix_dt		datetime_t 	not null,
+    categ_id 		uid_t 		not null,
+    brand_id 		uid_t 		not null,
+    facing 		int32_t 	null check (facing >= 0),
+    assortment 		int32_t 	null check (assortment >= 0),
+    photos		blobs_t		null,
+    fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
-    updated_ts		ts_auto_t 	not null,
-    primary key(db_id, fix_date, account_id, assortment_id)
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, fix_date, account_id, categ_id, audit_criteria_id)
 );
 
 create table dyn_stocks (
@@ -1349,7 +1333,6 @@ create trigger trig_updated_ts before update on confirmations for each row execu
 create trigger trig_updated_ts before update on deletions for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on discards for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_advt for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_assortments for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_audits for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_checkups for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_oos for each row execute procedure tf_updated_ts();

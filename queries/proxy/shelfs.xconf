@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shelfs templ="%shelf_id%;%categ_id%;%brand_ids%;%target%;" empty="no">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update shelfs set hidden=1
+    where db_id = '%ErpCode%'
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from shelfs 
+    where db_id = '%ErpCode%' and shelf_id = '%shelf_id%' and categ_id = '%categ_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update shelfs set brand_ids=string_to_array('%brand_ids%',','), target=case when 0%target%=0 then null else 0%target% end, hidden=0
+    where db_id = '%ErpCode%' and shelf_id = '%shelf_id%' and categ_id = '%categ_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into shelfs (db_id, shelf_id, categ_id, brand_ids, target)
+    values ('%ErpCode%', '%shelf_id%', '%categ_id%', string_to_array('%brand_ids%',','), case when 0%target%=0 then null else 0%target% end, 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</shelfs>

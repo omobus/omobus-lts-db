@@ -604,6 +604,29 @@ create table products (
     primary key(db_id, prod_id)
 );
 
+create table quest_names (
+    db_id 		uid_t 		not null,
+    qname_id 		uid_t 		not null,
+    descr 		descr_t 	not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, qname_id)
+);
+
+create table quest_names (
+    db_id 		uid_t 		not null,
+    qrow_id 		uid_t 		not null,
+    pid			uid_t		null,
+    ftype		ftype_t		not null,
+    descr 		descr_t 	not null,
+    qname_id 		uid_t 		not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, qrow_id)
+);
+
 create table rating_criterias (
     db_id 		uid_t 		not null,
     rating_criteria_id 	uid_t 		not null,
@@ -1125,6 +1148,17 @@ create table photos (
     doc_note		note_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+create table quests (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    user_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
+    fix_dt 		datetime_t 	not null,
+    qrow_id 		uid_t		not null,
+    "value" 		varchar(64) 	not null,
     primary key(db_id, doc_id)
 );
 

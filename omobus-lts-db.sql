@@ -614,7 +614,7 @@ create table quest_names (
     primary key(db_id, qname_id)
 );
 
-create table quest_names (
+create table quest_rows (
     db_id 		uid_t 		not null,
     qrow_id 		uid_t 		not null,
     pid			uid_t		null,
@@ -1086,7 +1086,7 @@ create table dyn_shelfs (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, fix_date, account_id, categ_id, audit_criteria_id)
+    primary key(db_id, fix_date, account_id, categ_id, brand_id)
 );
 
 create table dyn_stocks (

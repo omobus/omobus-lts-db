@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<confirmations templ="%confirm_id%;%descr%;%target_type_id%;">
+<confirmation_types templ="%confirm_id%;%descr%;%target_type_id%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -8,25 +8,25 @@ select count(*) from data_stream
 </verification>
 <begin>
   <![CDATA[
-update confirmations set hidden=1
+update confirmation_types set hidden=1
     where db_id = '%ErpCode%'
   ]]>
 </begin>
 <check_exist>
   <![CDATA[
-select count(*) exist from confirmations 
+select count(*) exist from confirmation_types 
     where db_id = '%ErpCode%' and confirm_id = '%confirm_id%'
   ]]>
 </check_exist>
 <update>
   <![CDATA[
-update confirmations set descr='%descr%', target_type_id='%target_type_id%', hidden=0
+update confirmation_types set descr='%descr%', target_type_id='%target_type_id%', hidden=0
     where db_id = '%ErpCode%' and confirm_id = '%confirm_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into confirmations (db_id, confirm_id, descr, target_type_id, hidden) 
+insert into confirmation_types (db_id, confirm_id, descr, target_type_id, hidden) 
     values ('%ErpCode%', '%confirm_id%', '%descr%', '%target_type_id%', 0)
   ]]>
 </insert>
@@ -36,4 +36,4 @@ select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_h
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
-</confirmations>
+</confirmation_types>

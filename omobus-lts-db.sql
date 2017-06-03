@@ -41,6 +41,16 @@
 #ifdef MSSQL
 set QUOTED_IDENTIFIER on
 go
+create login omobus with password = '0'
+go
+create user omobus for login omobus
+go
+create database "omobus-lts-db"
+go
+use "omobus-lts-db"
+go
+sp_changedbowner 'omobus'
+go
 alter database "omobus-lts-db" set ANSI_NULL_DEFAULT on
 alter database "omobus-lts-db" set ANSI_NULLS on
 alter database "omobus-lts-db" set ANSI_PADDING on
@@ -563,6 +573,7 @@ create table placements (
     db_id 		uid_t 		not null,
     placement_id 	uid_t 		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -899,6 +910,26 @@ create table additions (
     primary key(db_id, doc_id)
 );
 
+create table adjustments (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    fix_dt 		datetime_t 	not null,
+    distr_id		uid_t 		not null,
+    user_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
+    erp_id 		uid_t 		not null,
+    delivery_date 	date_t 		not null,
+    rows 		int32_t 	not null,
+    prod_id 		uid_t 		not null,
+    row_no 		int32_t 	not null check (row_no >= 0),
+    pack_id 		uid_t 		not null,
+    pack 		numeric_t 	not null,
+    qty 		numeric_t 	not null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key (db_id, doc_id, distr_id, erp_id, prod_id)
+);
+
 create table cancellations (
     db_id 		uid_t 		not null,
     user_id		uid_t 		not null,
@@ -953,7 +984,7 @@ create table confirmations (
     target_id 		uid_t 		not null,
     confirm_id 		uid_t 		not null,
     doc_note 		note_t 		null,
-    photo		blob_t		null,
+    photos		blobs_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)

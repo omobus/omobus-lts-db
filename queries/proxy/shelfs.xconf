@@ -26,7 +26,7 @@ update shelfs set brand_ids=string_to_array('%brand_ids%',','), target=case when
 </update>
 <insert>
   <![CDATA[
-insert into shelfs (db_id, shelf_id, categ_id, brand_ids, target)
+insert into shelfs (db_id, shelf_id, categ_id, brand_ids, target, hidden)
     values ('%ErpCode%', '%shelf_id%', '%categ_id%', string_to_array('%brand_ids%',','), case when 0%target%=0 then null else 0%target% end, 0)
   ]]>
 </insert>

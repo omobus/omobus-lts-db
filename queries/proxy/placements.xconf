@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<placements templ="%placement_id%;%descr%;">
+<placements templ="%placement_id%;%descr%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from placements
 </check_exist>
 <update>
   <![CDATA[
-update placements set descr='%descr%', hidden=0 
+update placements set descr='%descr%', row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0 
     where db_id = '%ErpCode%' and placement_id = '%placement_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into placements (db_id, placement_id, descr, hidden) 
-    values ('%ErpCode%', '%placement_id%', '%descr%', 0)
+insert into placements (db_id, placement_id, descr, row_no, hidden) 
+    values ('%ErpCode%', '%placement_id%', '%descr%', case when '%row_no%'='' then null else 0%row_no% end, 0)
   ]]>
 </insert>
 <end>

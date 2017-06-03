@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<confirmations templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%target_id%;%confirm_id%;%doc_note%;%photo%;">
+<confirmations templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%target_id%;%confirm_id%;%doc_note%;%photo0%;%photo1%;%photo2%;%photo3%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -15,7 +15,7 @@ select count(*) exist from confirmations
 <insert>
   <![CDATA[
 insert into confirmations (db_id, doc_id, fix_dt, user_id, account_id, target_id, confirm_id, doc_note, photo) 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%target_id%', '%confirm_id%', '%doc_note%', resolve_blob_stream('//proxy/%uid%/%photo%'))
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%target_id%', '%confirm_id%', '%doc_note%', resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%'))
   ]]>
 </insert>
 <end>

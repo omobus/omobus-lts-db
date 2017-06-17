@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<users templ="%user_id%;%pids%;%ftype%;%descr%;%code%;%country_id%;%dep_id%;%role%;%distr_ids%;%agency_id%;%shared%;%email%;">
+<users templ="%user_id%;%pids%;%ftype%;%descr%;%role%;%country_id%;%dep_id%;%distr_ids%;%agency_id%;%shared%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,15 +20,15 @@ select count(*) exist from users
 </check_exist>
 <update>
   <![CDATA[
-update users set pids=string_to_array('%pids%',','), ftype=0%ftype%, descr='%descr%', code='%code%', role='%role%', dep_id='%dep_id%', 
-    country_id='%country_id%', distr_ids=string_to_array('%distr_ids%',','), agency_id='%agency_id%', shared=0%shared%, email=string_to_array('%email%',','), hidden=0
+update users set pids=string_to_array('%pids%',','), ftype=0%ftype%, descr='%descr%', role='%role%', dep_id='%dep_id%', country_id='%country_id%', 
+    distr_ids=string_to_array('%distr_ids%',','), agency_id='%agency_id%', shared=0%shared%, hidden=0
 where db_id = '%ErpCode%' and user_id = '%user_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[ 
-insert into users (db_id, user_id, pids, ftype, descr, code, role, dep_id, country_id, distr_ids, agency_id, shared, email, hidden)
-    values ('%ErpCode%', '%user_id%', string_to_array('%pids%',','), 0%ftype%, '%descr%', '%code%', '%role%', '%dep_id%', '%country_id%', string_to_array('%distr_ids%',','), '%agency_id%', 0%shared%, string_to_array('%email%',','), 0)
+insert into users (db_id, user_id, pids, ftype, descr, role, dep_id, country_id, distr_ids, agency_id, shared, hidden)
+    values ('%ErpCode%', '%user_id%', string_to_array('%pids%',','), 0%ftype%, '%descr%', '%role%', '%dep_id%', '%country_id%', string_to_array('%distr_ids%',','), '%agency_id%', 0%shared%, 0)
   ]]>
 </insert>
 <end>
@@ -37,7 +37,6 @@ update users set pids=null where array_length(pids, 1) is null or array_length(p
 update users set dep_id=null where dep_id='';
 update users set distr_ids=null where array_length(distr_ids, 1) is null or array_length(distr_ids, 1) = 0;
 update users set agency_id=null where agency_id='';
-update users set email=null where array_length(email, 1) is null or array_length(email, 1) = 0;
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

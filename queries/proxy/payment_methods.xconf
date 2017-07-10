@@ -20,14 +20,14 @@ select count(*) exist from payment_methods
 </check_exist>
 <update>
   <![CDATA[
-update payment_methods set descr='%descr%', hidden=0 
+update payment_methods set descr='%descr%', encashment=case when '%encashment%'='' then null else 0%encashment% end, hidden=0 
     where db_id = '%ErpCode%' and payment_method_id = '%payment_method_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into payment_methods (db_id, payment_method_id, descr, hidden) 
-    values ('%ErpCode%', '%payment_method_id%', '%descr%', 0)
+insert into payment_methods (db_id, payment_method_id, descr, encashment, hidden) 
+    values ('%ErpCode%', '%payment_method_id%', '%descr%', case when '%encashment%'='' then null else 0%encashment% end, 0)
   ]]>
 </insert>
 <end>

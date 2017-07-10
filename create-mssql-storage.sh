@@ -46,8 +46,8 @@ fisql -I freetds.conf -S $srv -U $uname -P $passwd -D $dbname -i version.mssql.s
 #sed -i -e 's/resolve_blob_stream/dbo.resolve_blob_stream/g' queries/proxy/*.xconf
 #sed -i -e 's/^select stor_data_stream/--select stor_data_stream/g' queries/proxy/*.xconf
 #sed -i -e 's/^--exec stor_data_stream/exec stor_data_stream/g' queries/proxy/*.xconf
-#sed -i -e 's/^select stor_blob_stream/--select stor_data_stream/g' queries/proxy/*.xconf
-#sed -i -e 's/^--exec stor_blob_stream/exec stor_data_stream/g' queries/proxy/*.xconf
+#sed -i -e 's/^select stor_blob_stream/--select stor_blob_stream/g' queries/proxy/*.xconf
+#sed -i -e 's/^--exec stor_blob_stream/exec stor_blob_stream/g' queries/proxy/*.xconf
 
 exit 0
 # The end of the script.

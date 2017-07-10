@@ -207,6 +207,7 @@ create table account_params (
     locked 		bool_t 		null default 0,
     payment_delay 	int32_t 	null,
     payment_method_id 	uid_t 		null,
+    wareh_ids 		uids_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key (db_id, distr_id, account_id)
@@ -372,6 +373,16 @@ create table countries (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, country_id)
+);
+
+create table delivery_types (
+    db_id 		uid_t 		not null,
+    delivery_type_id	uid_t		not null,
+    descr 		descr_t 	not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, delivery_type_id)
 );
 
 create table departments (
@@ -542,6 +553,7 @@ create table payment_methods (
     db_id 		uid_t 		not null,
     payment_method_id 	uid_t 		not null,
     descr 		descr_t 	not null,
+    encashment 		bool_t 		null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -843,6 +855,7 @@ create trigger trig_updated_ts before update on conference_themes for each row e
 create trigger trig_updated_ts before update on confirmation_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on contacts for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on countries for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on delivery_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on departments for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on discard_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on distributors for each row execute procedure tf_updated_ts();
@@ -1142,12 +1155,14 @@ create table orders (
     group_price_id 	uid_t 		null,
     wareh_id 		uid_t 		null,
     delivery_date 	date_t 		not null,
+    delivery_type_id 	uid_t 		null,
     delivery_note 	note_t 		null,
     doc_note 		note_t 		null,
     payment_method_id 	uid_t 		null,
     payment_delay 	int32_t 	null check (payment_delay is null or (payment_delay >= 0)),
-    bonus 		int32_t 	null check (bonus is null or (bonus >= 0)),
-    attr_ids 		uids_t		null, /* attributes array; delimiter ',' */
+    bonus 		currency_t 	null check (bonus is null or (bonus >= 0)),
+    encashment 		currency_t 	null check (encashment is null or (encashment >= 0)),
+    order_param_ids 	uids_t		null, /* attributes array; delimiter ',' */
     rows 		int32_t 	not null,
     prod_id 		uid_t 		not null,
     row_no 		int32_t 	not null check (row_no >= 0),

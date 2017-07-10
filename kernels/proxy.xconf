@@ -43,6 +43,7 @@
 <xi:include href="../queries/proxy/contacts.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/countries.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/deletions.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
+<xi:include href="../queries/proxy/delivery_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/departments.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/discard_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/discards.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />

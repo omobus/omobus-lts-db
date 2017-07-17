@@ -14,7 +14,7 @@ select count(*) exist from confirmations
 </check_exist>
 <insert>
   <![CDATA[
-insert into confirmations (db_id, doc_id, fix_dt, user_id, account_id, target_id, confirm_id, doc_note, photo0, photo1, photo2, photo3) 
+insert into confirmations (db_id, doc_id, fix_dt, user_id, account_id, target_id, confirm_id, doc_note, photos) 
     values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%target_id%', '%confirm_id%', '%doc_note%', resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%'))
   ]]>
 </insert>

@@ -32,7 +32,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PACKAGE_NAME 	= omobus-lts-db
-PACKAGE_VERSION = 3.3.20
+PACKAGE_VERSION = 3.3.21
 COPYRIGHT 	= Copyright (c) 2006 - 2017 ak obs, ltd. <info@omobus.net>
 SUPPORT 	= Support and bug reports: <support@omobus.net>
 AUTHOR		= Author: Igor Artemov <i_artemov@ak-obs.ru>

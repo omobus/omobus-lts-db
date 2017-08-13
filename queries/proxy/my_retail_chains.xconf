@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<my_retail_chains templ="%user_id%;%rc_id%;">
+<my_retail_chains templ="%user_id%;%rc_id%;%region_id%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,8 +14,8 @@ delete from my_retail_chains
 </begin>
 <insert>
   <![CDATA[
-insert into my_retail_chains (db_id, user_id, rc_id) 
-    values ('%ErpCode%', '%user_id%', '%rc_id%')
+insert into my_retail_chains (db_id, user_id, rc_id, region_id) 
+    values ('%ErpCode%', '%user_id%', '%rc_id%', '%region_id%')
   ]]>
 </insert>
 <end>

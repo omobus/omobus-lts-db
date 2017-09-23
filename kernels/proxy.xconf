@@ -81,6 +81,7 @@
 <xi:include href="../queries/proxy/quest_rows.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/quests.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/rating_criterias.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
+<xi:include href="../queries/proxy/rating_scores.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/receipts.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/receipt_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/reclamations.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />

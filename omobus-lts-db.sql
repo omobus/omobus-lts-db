@@ -676,6 +676,19 @@ create table rating_criterias (
     primary key(db_id, rating_criteria_id)
 );
 
+create table rating_scores (
+    db_id 		uid_t 		not null,
+    rating_score_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    score 		int32_t 	not null /*check(score >= 0)*/,
+    wf 			wf_t 		not null /*check(wf between 0.00 and 1.00)*/,
+    row_no 		int32_t 	null, -- ordering,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, rating_score_id)
+);
+
 create table receipt_types (
     db_id 		uid_t 		not null,
     receipt_type_id 	uid_t 		not null,
@@ -891,6 +904,7 @@ create trigger trig_updated_ts before update on potentials for each row execute 
 create trigger trig_updated_ts before update on products for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on payment_methods for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on rating_criterias for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on rating_scores for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on receipt_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on reclamation_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on retail_chains for each row execute procedure tf_updated_ts();

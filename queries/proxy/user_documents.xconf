@@ -18,6 +18,12 @@ insert into user_documents (db_id, act_id, user_id, w_cookie, fix_date, doc_type
     values ('%ErpCode%', '%act_id%', '%user_id%', '%w_cookie%', '%fix_date%', '%doc_type%', '%doc_id%', '%doc_no%', %duration%, 0%rows%, '%fix_dt%', '%latitude%', '%longitude%', '%satellite_dt%', '%a_cookie%', '%account_id%', '%activity_type_id%', case when '%employee_id%'='' then null else '%employee_id%' end)
   ]]>
 </insert>
+<update>
+  <![CDATA[
+update user_documents set doc_id='%doc_id%'
+    where db_id = '%ErpCode%' and act_id = '%act_id%'
+  ]]>
+</update>
 <end>
   <![CDATA[
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')

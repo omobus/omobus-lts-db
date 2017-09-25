@@ -225,6 +225,16 @@ create table activity_types (
     primary key(db_id, activity_type_id)
 );
 
+create table addition_types (
+    db_id 		uid_t 		not null,
+    addition_type_id 	uid_t 		not null,
+    descr 		descr_t 	null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, addition_type_id)
+);
+
 create table agencies (
     db_id 		uid_t 		not null,
     agency_id 		uid_t 		not null,
@@ -502,16 +512,6 @@ create table my_routes (
 );
 
 create index i_user_id_p_date_my_routes on my_routes(user_id, p_date);
-
-create table new_account_types (
-    db_id 		uid_t 		not null,
-    new_account_type_id uid_t 		not null,
-    descr 		descr_t 	null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, new_account_type_id)
-);
 
 create table oos_types (
     db_id 		uid_t 		not null,
@@ -867,6 +867,7 @@ create table working_hours (
 create trigger trig_updated_ts before update on accounts for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on account_params for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on activity_types for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on addition_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on agencies for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on attributes for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on audit_criterias for each row execute procedure tf_updated_ts();
@@ -890,7 +891,6 @@ create trigger trig_updated_ts before update on matrix for each row execute proc
 create trigger trig_updated_ts before update on my_accounts for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on my_retail_chains for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on my_routes for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on new_account_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on regions for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on oos_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on order_params for each row execute procedure tf_updated_ts();
@@ -936,7 +936,7 @@ create table additions (
     address 		address_t 	null,
     legal_address 	address_t 	null,
     number 		code_t 		null,
-    new_account_type_id uid_t 		null,
+    addition_type_id 	uid_t 		null,
     note 		note_t 		null,
     chan_id 		uid_t 		null,
     photos 		blobs_t 	null,

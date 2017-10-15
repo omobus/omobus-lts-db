@@ -193,7 +193,7 @@ create table accounts (
     service_type_id 	uid_t 		null,
     attr_ids 		uids_t 		null,
     locked 		bool_t 		null default 0,
-    class 		varchar(8) 	null default 'outlet',
+    class 		varchar(10) 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1004,9 +1004,10 @@ create table conferences (
     e_date 		date_t 		not null,
     ctheme_ids 		uids_t 		null,
     participants 	int32_t 	null,
-    expenses 		currency_t 	not null,
+    expenses 		currency_t 	null,
     speakers 		descr_t 	null,
-    venue 		descr_t 	null,
+    venue 		descr_t 	not null,
+    address 		address_t 	not null
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1216,6 +1217,23 @@ create table photos (
     photo_type_id	uid_t		null,
     photo		blob_t		not null,
     doc_note		note_t		null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+create table presentations (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    fix_dt 		datetime_t 	not null,
+    user_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
+    participants 	int32_t 	not null,
+    lactating_mothers 	int32_t 	null,
+    pregnant_women 	int32_t 	null,
+    tm_ids 		uids_t 		null,
+    doc_note 		note_t 		null,
+    photo		blob_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1446,6 +1464,7 @@ create trigger trig_updated_ts before update on dyn_shelfs for each row execute 
 create trigger trig_updated_ts before update on dyn_stocks for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on orders for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on photos for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on presentations for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on receipts for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on reclamations for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on unsched for each row execute procedure tf_updated_ts();

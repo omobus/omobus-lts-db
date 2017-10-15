@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<conferences templ="%doc_id%;%fix_dt%;%user_id%;%doc_note%;%title%;%b_date%;%e_date%;%ctheme_ids%;%participants%;%expenses%;%speakers%;%venue%;">
+<conferences templ="%doc_id%;%fix_dt%;%user_id%;%doc_note%;%title%;%b_date%;%e_date%;%ctheme_ids%;%participants%;%expenses%;%speakers%;%venue%;%address%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,8 +14,8 @@ select count(*) exist from conferences
 </check_exist>
 <insert>
   <![CDATA[
-insert into conferences (db_id, doc_id, fix_dt, user_id, doc_note, title, b_date, e_date, ctheme_ids, participants, expenses, speakers, venue)
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%doc_note%', '%title%', '%b_date%', '%e_date%', '%ctheme_ids%', '%participants%', '%expenses%', '%speakers%', '%venue%')
+insert into conferences (db_id, doc_id, fix_dt, user_id, doc_note, title, b_date, e_date, ctheme_ids, participants, expenses, speakers, venue, address)
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%doc_note%', '%title%', '%b_date%', '%e_date%', '%ctheme_ids%', case when '%participants%'='' then null else 0%participants% end, case when '%expenses%'='' then null else 0%expenses% end, case when '%speakers%'='' then null else '%speakers%' end, '%venue%', '%address%')
   ]]>
 </insert>
 <end>

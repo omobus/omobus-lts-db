@@ -32,15 +32,16 @@ insert into accounts(db_id, pid, account_id, code, ftype, descr, address, rc_id,
 </insert>
 <end>
   <![CDATA[
-update accounts set pid=null where pid='';
-update accounts set rc_id=null where rc_id='';
-update accounts set chan_id=null where chan_id='';
-update accounts set poten_id=null where poten_id='';
-update accounts set matrix_id=null where matrix_id='';
-update accounts set shelf_id=null where shelf_id='';
-update accounts set working_hours_id=null where working_hours_id='';
-update accounts set service_type_id=null where service_type_id='';
-update accounts set latitude=null, longitude=null where latitude=0 and longitude=0;
+update accounts set pid=null where pid='' and hidden=0;
+update accounts set class=null where class='' and hidden=0;
+update accounts set rc_id=null where rc_id='' and hidden=0;
+update accounts set chan_id=null where chan_id='' and hidden=0;
+update accounts set poten_id=null where poten_id='' and hidden=0;
+update accounts set matrix_id=null where matrix_id='' and hidden=0;
+update accounts set shelf_id=null where shelf_id='' and hidden=0;
+update accounts set working_hours_id=null where working_hours_id='' and hidden=0;
+update accounts set service_type_id=null where service_type_id='' and hidden=0;
+update accounts set latitude=null, longitude=null where latitude=0 and longitude=0 and hidden=0;
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<unsched templ="%doc_id%;%fix_dt%;%user_id%;%doc_note%;">
+<unsched templ="%doc_id%;%fix_dt%;%user_id%;%unsched_type_id%;%doc_note%;" empty="no">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,8 +14,8 @@ select count(*) exist from unsched
 </check_exist>
 <insert>
   <![CDATA[
-insert into unsched (db_id, doc_id, fix_dt, user_id, doc_note) 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%doc_note%')
+insert into unsched (db_id, doc_id, fix_dt, user_id, unsched_type_id, doc_note) 
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%unsched_type_id%', '%doc_note%')
   ]]>
 </insert>
 <end>

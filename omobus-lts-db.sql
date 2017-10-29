@@ -812,6 +812,17 @@ create table training_types (
     primary key(db_id, training_type_id)
 );
 
+create table unsched_types (
+    db_id 		uid_t 		not null,
+    unsched_type_id	uid_t		not null,
+    descr		descr_t		not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden		bool_t		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, unsched_type_id)
+);
+
 create table users (
     db_id 		uid_t 		not null,
     user_id		uid_t		not null,
@@ -914,6 +925,7 @@ create trigger trig_updated_ts before update on targets for each row execute pro
 create trigger trig_updated_ts before update on target_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on training_materials for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on training_types for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on unsched_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on users for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on warehouses for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on wareh_stocks for each row execute procedure tf_updated_ts();
@@ -1107,6 +1119,7 @@ create table dyn_oos (
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
     oos_type_id 	uid_t 		not null,
+    note 		note_t 		null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
@@ -1308,7 +1321,8 @@ create table unsched (
     doc_id 		uid_t 		not null,
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
-    doc_note 		note_t 		not null,
+    unsched_type_id 	uid_t 		null,
+    doc_note 		note_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)

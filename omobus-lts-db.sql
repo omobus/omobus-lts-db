@@ -183,8 +183,6 @@ create table accounts (
     rc_id 		uid_t		null, 		/* -> retail_chains */
     chan_id 		uid_t 		null,
     poten_id 		uid_t 		null,
-    matrix_id 		uid_t 		null,
-    shelf_id 		uid_t 		null,
     outlet_size 	int32_t 	null,
     cash_register 	int32_t 	null,
     latitude 		gps_t 		null,
@@ -461,13 +459,13 @@ create table matrix_types (
 
 create table matrix (
     db_id 		uid_t 		not null,
-    matrix_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
     matrix_type_id 	uid_t 		null,
     row_no 		int32_t 	null, -- ordering
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, matrix_id, prod_id)
+    primary key (db_id, account_id, prod_id)
 );
 
 create table my_accounts (
@@ -616,6 +614,16 @@ create table pos_materials (
     primary key(db_id, posm_id)
 );
 
+create table potentials (
+    db_id 		uid_t 		not null,
+    poten_id 		uid_t 		not null,
+    descr 		descr_t 	not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, poten_id)
+);
+
 create table products (
     db_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
@@ -744,14 +752,14 @@ create table service_types (
 
 create table shelfs ( /* distribution of brands on the shelf in the category */
     db_id 		uid_t 		not null,
-    shelf_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
     categ_id 		uid_t 		not null,
     brand_ids 		uids_t 		not null,
     target 		wf_t 		null check(target between 0.01 and 1.00), /* Share-of-Shelf recomendations */
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, shelf_id, categ_id)
+    primary key(db_id, account_id, categ_id)
 );
 
 create table targets (
@@ -1021,7 +1029,7 @@ create table conferences (
     expenses 		currency_t 	null,
     speakers 		descr_t 	null,
     venue 		descr_t 	not null,
-    address 		address_t 	not null
+    address 		address_t 	not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)

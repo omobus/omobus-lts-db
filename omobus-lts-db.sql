@@ -457,7 +457,7 @@ create table matrix_types (
     primary key(db_id, matrix_type_id)
 );
 
-create table matrix (
+create table matrices (
     db_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,

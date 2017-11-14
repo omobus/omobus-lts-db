@@ -465,7 +465,7 @@ create table matrices (
     row_no 		int32_t 	null, -- ordering
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, prod_id)
+    primary key (db_id, account_id, prod_id, matrix_type_id)
 );
 
 create table my_accounts (

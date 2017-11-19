@@ -315,8 +315,10 @@ create table channels (
 create table cities (
     db_id 		uid_t 		not null,
     city_id 		uid_t 		not null,
+    pid 		uid_t 		null,
+    ftype 		ftype_t 	not null,
     descr 		descr_t 	not null,
-    region_id 		uid_t 		null,
+    country_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -346,8 +348,8 @@ create table conference_themes (
 create table confirmation_types (
     db_id 		uid_t 		not null,
     confirm_id 		uid_t 		not null,
-    target_type_id 	uid_t 		not null,
     descr 		descr_t 	not null,
+    target_type_ids 	uids_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

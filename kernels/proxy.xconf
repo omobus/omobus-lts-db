@@ -19,6 +19,7 @@
     >
 <!--<xi:include href="../queries/proxy/trig_before.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />-->
 <xi:include href="../queries/proxy/trig_blob.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
+<xi:include href="../queries/proxy/_timestamp.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 
 <xi:include href="../queries/proxy/account_params.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/accounts.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />

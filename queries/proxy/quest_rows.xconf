@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<quest_rows templ="%qrow_id%;%pid%;%ftype%;%descr%;%qname_id%;">
+<quest_rows templ="%qname_id%;%qrow_id%;%pid%;%ftype%;%descr%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -15,19 +15,19 @@ update quest_rows set hidden=1
 <check_exist>
   <![CDATA[
 select count(*) exist from quest_rows 
-    where db_id = '%ErpCode%' and qrow_id = '%qrow_id%'
+    where db_id = '%ErpCode%' and qname_id='%qname_id%' and qrow_id = '%qrow_id%'
   ]]>
 </check_exist>
 <update>
   <![CDATA[
-update quest_rows set pid='%pid%', ftype=0%ftype%, descr='%descr%', qname_id='%qname_id%', hidden=0
-    where db_id = '%ErpCode%' and qrow_id = '%qrow_id%'
+update quest_rows set pid='%pid%', ftype=0%ftype%, descr='%descr%', hidden=0
+    where db_id = '%ErpCode%' and qname_id='%qname_id%' and qrow_id = '%qrow_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into quest_rows (db_id, qrow_id, pid, ftype, descr, qname_id, hidden) 
-    values ('%ErpCode%', '%qrow_id%', '%pid%', 0%ftype%, '%descr%', '%qname_id%', 0)
+insert into quest_rows (db_id, qname_id, qrow_id, pid, ftype, descr, hidden) 
+    values ('%ErpCode%', '%qname_id%', '%qrow_id%', '%pid%', 0%ftype%, '%descr%', 0)
   ]]>
 </insert>
 <end>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<quests templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%qrow_id%;%value%;">
+<quests templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%qname_id%;%qrow_id%;%value%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -9,13 +9,13 @@ select count(*) from data_stream
 <check_exist>
   <![CDATA[
 select count(*) exist from quests 
-    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%' and qname_id='%qname_id%' and qrow_id = '%qrow_id%'
   ]]>
 </check_exist>
 <insert>
   <![CDATA[
-insert into quests (db_id, doc_id, fix_dt, user_id, account_id, qrow_id, "value") 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%qrow_id%', '%value%')
+insert into quests (db_id, doc_id, fix_dt, user_id, account_id, qname_id, qrow_id, "value") 
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%qname_id%', '%qrow_id%', '%value%')
   ]]>
 </insert>
 <end>

@@ -660,15 +660,15 @@ create table quest_names (
 
 create table quest_rows (
     db_id 		uid_t 		not null,
+    qname_id 		uid_t 		not null,
     qrow_id 		uid_t 		not null,
     pid			uid_t		null,
     ftype		ftype_t		not null,
     descr 		descr_t 	not null,
-    qname_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, qrow_id)
+    primary key(db_id, qname_id, qrow_id)
 );
 
 create table rating_criterias (
@@ -926,6 +926,8 @@ create trigger trig_updated_ts before update on pos_materials for each row execu
 create trigger trig_updated_ts before update on potentials for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on products for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on payment_methods for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on quest_names for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on quest_rows for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on rating_criterias for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on rating_scores for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on receipt_types for each row execute procedure tf_updated_ts();
@@ -1270,9 +1272,10 @@ create table quests (
     user_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
     fix_dt 		datetime_t 	not null,
+    qname_id 		uid_t 		not null,
     qrow_id 		uid_t		not null,
     "value" 		varchar(64) 	not null,
-    primary key(db_id, doc_id)
+    primary key(db_id, doc_id, qname_id, qrow_id)
 );
 
 create table receipts (
@@ -1491,6 +1494,7 @@ create trigger trig_updated_ts before update on dyn_stocks for each row execute 
 create trigger trig_updated_ts before update on orders for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on photos for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on presentations for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on quests for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on receipts for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on reclamations for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on unsched for each row execute procedure tf_updated_ts();

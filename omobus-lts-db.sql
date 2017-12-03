@@ -91,6 +91,7 @@ create domain hostname_t as varchar(255);
 create domain int32_t as int4;
 create domain int64_t as int8;
 create domain message_t as varchar(4096);
+create domain month_t as varchar(7);
 create domain note_t as varchar(1024);
 create domain numeric_t as numeric(16,4);
 create domain percent_t as int2 check (value is null or (value between 0 and 100));
@@ -131,6 +132,7 @@ execute sp_addtype hostname_t, 'varchar(255)'
 execute sp_addtype int32_t, 'int'
 execute sp_addtype int64_t, 'bigint'
 execute sp_addtype message_t, 'varchar(4096)'
+execute sp_addtype month_t, 'varchar(7)'
 execute sp_addtype note_t, 'varchar(1024)'
 execute sp_addtype numeric_t, 'numeric(16,4)'
 execute sp_addtype percent_t, 'smallint'
@@ -356,6 +358,28 @@ create table confirmation_types (
     primary key(db_id, confirm_id)
 );
 
+create table consumers (
+    db_id 		uid_t 		not null,
+    consumer_id 	uid_t 		not null,
+    first_name 		descr_t 	not null,
+    last_name 		descr_t 	not null,
+    middle_name 	descr_t 	null,
+    email 		email_t 	not null,
+    mobile 		phone_t 	not null,
+    birthday 		date_t 		not null,
+    city_id 		uid_t 		not null,
+    extra_info 		note_t 		null,
+    childbirth 		month_t 	null,
+    childgend_id 	uid_t 		null, 	/* child's gender */
+    seg_id 		uid_t 		null,
+    subscribed 		bool_t 		null,
+    invited_ts 		ts_t 		null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, consumer_id)
+);
+
 create table contacts (
     db_id 		uid_t 		not null,
     contact_id 		uid_t 		not null,
@@ -365,6 +389,7 @@ create table contacts (
     middle_name 	descr_t 	null,
     job_title_id 	uid_t 		not null,
     phone 		phone_t 	null,
+    mobile 		phone_t 	null,
     email 		email_t 	null,
     locked 		bool_t 		not null default 0,
     extra_info 		note_t 		null,
@@ -426,6 +451,16 @@ create table distributors (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, distr_id)
+);
+
+create table genders (
+    db_id 		uid_t 		not null,
+    gend_id 		uid_t 		not null,
+    descr 		descr_t 	not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, gend_id)
 );
 
 create table job_titles (
@@ -741,6 +776,16 @@ create table retail_chains (
     primary key(db_id, rc_id)
 );
 
+create table segmentations (
+    db_id 		uid_t 		not null,
+    seg_id 		uid_t 		not null,
+    descr 		descr_t 	not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, seg_id)
+);
+
 create table service_types (
     db_id 		uid_t 		not null,
     service_type_id 	uid_t 		not null,
@@ -902,12 +947,14 @@ create trigger trig_updated_ts before update on cities for each row execute proc
 create trigger trig_updated_ts before update on comment_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on conference_themes for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on confirmation_types for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on consumers for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on contacts for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on countries for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on delivery_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on departments for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on discard_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on distributors for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on genders for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on job_titles for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on manufacturers for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on matrix for each row execute procedure tf_updated_ts();
@@ -933,6 +980,7 @@ create trigger trig_updated_ts before update on rating_scores for each row execu
 create trigger trig_updated_ts before update on receipt_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on reclamation_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on retail_chains for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on segmentations for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on service_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on shelfs for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on targets for each row execute procedure tf_updated_ts();

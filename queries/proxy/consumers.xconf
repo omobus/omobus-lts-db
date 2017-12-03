@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<consumers templ="%consumer_id%;%first_name%;%last_name%;%middle_name%;%email%;%mobile%;%birthday%;%city_id%;%extra_info%;%childbirth%;%childgend_id%;%seg_id%;%subscribed%;%invited_ts%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update consumers set hidden=1
+    where db_id = '%ErpCode%'
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from consumers 
+    where db_id = '%ErpCode%' and consumer_id = '%consumer_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update consumers set account_id='%account_id%', first_name='%first_name%', last_name='%last_name%', middle_name='%middle_name%', email='%email%', mobile='%mobile%', birthday='%birthday%', city_id='%city_id%', extra_info='%extra_info%', childbirth='%childbirth%', childgend_id='%childgend_id%', seg_id='%seg_id%', subscribed=case when '%subscribed%' = '' then null else 0%subscribed% end, invited_ts='%invited_ts%', hidden=0
+    where db_id = '%ErpCode%' and consumer_id = '%consumer_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into consumers (db_id, consumer_id, account_id, first_name, last_name, middle_name, email, mobile, birthday, city_id, extra_info, childbirth, childgend_id, seg_id, subscribed, invited_ts, hidden)
+    values ('%ErpCode%', '%consumer_id%', '%account_id%', '%first_name%', '%last_name%', '%middle_name%', '%email%', '%mobile%', '%birthday%', '%city_id%', '%extra_info%', '%childbirth%', '%childgend_id%', '%seg_id%', case when '%subscribed%' = '' then null else 0%subscribed% end, '%invited_ts%', 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</consumers>

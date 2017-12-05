@@ -371,6 +371,7 @@ create table consumers (
     extra_info 		note_t 		null,
     childbirth 		month_t 	null,
     childgend_id 	uid_t 		null, 	/* child's gender */
+    author_id 		uid_t 		not null,
     seg_id 		uid_t 		null,
     subscribed 		bool_t 		null,
     invited_ts 		ts_t 		null,
@@ -393,6 +394,7 @@ create table contacts (
     email 		email_t 	null,
     locked 		bool_t 		not null default 0,
     extra_info 		note_t 		null,
+    author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

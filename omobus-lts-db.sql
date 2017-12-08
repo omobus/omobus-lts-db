@@ -321,6 +321,7 @@ create table cities (
     ftype 		ftype_t 	not null,
     descr 		descr_t 	not null,
     country_id 		uid_t 		not null,
+    population 		int32_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -514,6 +515,15 @@ create table my_accounts (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key (db_id, user_id, account_id)
+);
+
+create table my_cities (
+    db_id 		uid_t 		not null,
+    user_id 		uid_t 		not null,
+    city_id 		uid_t 		not null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, user_id, city_id)
 );
 
 create table my_regions (
@@ -961,6 +971,8 @@ create trigger trig_updated_ts before update on job_titles for each row execute 
 create trigger trig_updated_ts before update on manufacturers for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on matrix for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on my_accounts for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on my_cities for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on my_regions for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on my_retail_chains for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on my_routes for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on regions for each row execute procedure tf_updated_ts();

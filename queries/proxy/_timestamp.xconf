@@ -9,13 +9,13 @@ select count(*) from data_stream
 <check_exist>
   <![CDATA[
 select count(*) exist from sysparams
-    where db_id = '%ErpCode%:TS'
+    where param_id = '%ErpCode%:TS'
   ]]>
 </check_exist>
 <update>
   <![CDATA[
 update sysparams set descr='%timestamp%'
-    where db_id = '%ErpCode%:TS'
+    where param_id = '%ErpCode%:TS'
   ]]>
 </update>
 <insert>

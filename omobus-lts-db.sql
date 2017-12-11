@@ -501,7 +501,7 @@ create table matrices (
     db_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
-    matrix_type_id 	uid_t 		null,
+    matrix_type_id 	uid_t 		not null,
     row_no 		int32_t 	null, -- ordering
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

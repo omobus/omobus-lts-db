@@ -32,13 +32,13 @@ insert into users (db_id, user_id, pids, descr, role, dep_ids, country_ids, dist
 </insert>
 <end>
   <![CDATA[
-update users set pids=null where array_length(pids, 1) is null or array_length(pids, 1) = 0;
-update users set dep_ids=null where array_length(dep_ids, 1) is null or array_length(dep_ids, 1) = 0;
-update users set country_ids=null where array_length(country_ids, 1) is null or array_length(country_ids, 1) = 0;
-update users set distr_ids=null where array_length(distr_ids, 1) is null or array_length(distr_ids, 1) = 0;
-update users set agency_id=null where agency_id = '';
-update users set mobile=null where mobile = '';
-update users set email=null where email = '';
+update users set pids=null where array_length(pids, 1) is null or array_length(pids, 1) = 0 and hidden=0;
+update users set dep_ids=null where array_length(dep_ids, 1) is null or array_length(dep_ids, 1) = 0 and hidden=0;
+update users set country_ids=null where array_length(country_ids, 1) is null or array_length(country_ids, 1) = 0 and hidden=0;
+update users set distr_ids=null where array_length(distr_ids, 1) is null or array_length(distr_ids, 1) = 0 and hidden=0;
+update users set agency_id=null where agency_id = '' and hidden=0;
+update users set mobile=null where mobile = '' and hidden=0;
+update users set email=null where email = '' and hidden=0;
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

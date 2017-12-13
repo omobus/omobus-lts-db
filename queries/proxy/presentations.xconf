@@ -15,7 +15,7 @@ select count(*) exist from presentations
 <insert>
   <![CDATA[
 insert into presentations (db_id, doc_id, fix_dt, user_id, account_id, participants, lactating_mothers, pregnant_women, tm_ids, doc_note, photo) 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%presentation_type_id%', %participants%, case when '%lactating_mothers%'='' then null else 0%lactating_mothers% end, case when '%pregnant_women%'='' then null else 0%pregnant_women% end, string_to_array('%tm_ids%',','), '%doc_note%', resolve_blob_stream('//proxy/%uid%/%photo%'))
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', %participants%, case when '%lactating_mothers%'='' then null else 0%lactating_mothers% end, case when '%pregnant_women%'='' then null else 0%pregnant_women% end, string_to_array('%tm_ids%',','), '%doc_note%', resolve_blob_stream('//proxy/%uid%/%photo%'))
   ]]>
 </insert>
 <end>

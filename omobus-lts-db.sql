@@ -450,6 +450,7 @@ create table distributors (
     pid 		uid_t 		null,
     ftype		ftype_t		not null default 0,
     descr 		descr_t 	not null,
+    country_id 		uid_t 		null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -780,8 +781,10 @@ create table regions (
 create table retail_chains (
     db_id 		uid_t 		not null,
     rc_id		uid_t		not null,
+    pid 		uid_t 		null,
     descr 		descr_t 	not null,
     ka_code		code_t		null,	/* Key Account: NKA, KA, ... */
+    country_id 		uid_t 		null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

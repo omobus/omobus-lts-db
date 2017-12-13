@@ -32,10 +32,10 @@ insert into products (db_id, pid, prod_id, ftype, code, art, descr, manuf_id, sh
 </insert>
 <end>
   <![CDATA[
-update products set pid=null where pid='';
-update products set manuf_id=null where manuf_id='';
-update products set brand_id=null where brand_id='';
-update products set categ_id=null where categ_id='';
+update products set pid=null where pid='' and hidden=0;
+update products set manuf_id=null where manuf_id='' and hidden=0;
+update products set brand_id=null where brand_id='' and hidden=0;
+update products set categ_id=null where categ_id='' and hidden=0;
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

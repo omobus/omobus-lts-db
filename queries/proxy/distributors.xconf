@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<distributors templ="%distr_id%;%pid%;%descr%;">
+<distributors templ="%distr_id%;%pid%;%descr%;%country_id%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,19 +20,20 @@ select count(*) exist from distributors
 </check_exist>
 <update>
   <![CDATA[
-update distributors set descr='%descr%', pid='%pid%', hidden=0
+update distributors set descr='%descr%', pid='%pid%', country_id='%country_id%', hidden=0
     where db_id = '%ErpCode%' and distr_id = '%distr_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into distributors (db_id, distr_id, descr, pid, hidden) 
-    values ('%ErpCode%', '%distr_id%', '%descr%', '%pid%', 0)
+insert into distributors (db_id, distr_id, descr, pid, country_id, hidden) 
+    values ('%ErpCode%', '%distr_id%', '%descr%', '%pid%', '%country_id%', 0)
   ]]>
 </insert>
 <end>
   <![CDATA[
-update accounts set pid=null where pid='';
+update distributors set pid=null where pid='' and hidden=0;
+update distributors set country_id=null where country_id='' and hidden=0;
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

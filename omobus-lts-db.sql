@@ -818,7 +818,6 @@ create table shelfs ( /* distribution of brands on the shelf in the category */
     categ_id 		uid_t 		not null,
     brand_ids 		uids_t 		not null,
     target 		wf_t 		null check(target between 0.01 and 1.00), /* Share-of-Shelf recomendations */
-    hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, account_id, categ_id)

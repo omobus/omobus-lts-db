@@ -1,5 +1,5 @@
 # This file is a part of the omobus-lts-db project.
-# Copyright (c) 2006 - 2017 ak-obs, Ltd. <info@omobus.net>.
+# Copyright (c) 2006 - 2018 ak-obs, Ltd. <info@omobus.net>.
 # All rights reserved.
 #
 # This program is a free software. Redistribution and use in source
@@ -32,8 +32,8 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PACKAGE_NAME 	= omobus-lts-db
-PACKAGE_VERSION = 3.3.28
-COPYRIGHT 	= Copyright (c) 2006 - 2017 ak obs, ltd. <info@omobus.net>
+PACKAGE_VERSION = 3.4.0
+COPYRIGHT 	= Copyright (c) 2006 - 2018 ak obs, ltd. <info@omobus.net>
 SUPPORT 	= Support and bug reports: <support@omobus.net>
 AUTHOR		= Author: Igor Artemov <i_artemov@ak-obs.ru>
 BUGREPORT	= support@omobus.net

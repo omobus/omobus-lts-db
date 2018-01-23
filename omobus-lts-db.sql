@@ -375,7 +375,7 @@ create table consumers (
     author_id 		uid_t 		not null,
     seg_id 		uid_t 		null,
     subscribed 		bool_t 		null,
-    invited_ts 		ts_t 		null,
+    invited_ts 		datetimetz_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

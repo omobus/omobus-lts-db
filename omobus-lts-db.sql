@@ -245,6 +245,19 @@ create table agencies (
     primary key(db_id, agency_id)
 );
 
+create table agreements (
+    db_id 		uid_t 		not null,
+    account_id		uid_t		not null,
+    placement_id 	uid_t 		not null,
+    posm_id 		uid_t 		not null,
+    year 		int32_t 	not null,
+    month 		int32_t 	not null,
+    strict 		bool_t 		not null default 1,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, account_id, placement_id, posm_id, year, month)
+);
+
 create table attributes (
     db_id 		uid_t 		not null,
     attr_id 		uid_t 		not null,
@@ -791,6 +804,20 @@ create table retail_chains (
     primary key(db_id, rc_id)
 );
 
+create table sales_targets (
+    db_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
+    prod_id 		uid_t 		not null,
+    year 		int32_t 	not null,
+    month 		int32_t 	not null,
+    pack_id 		uid_t 		null,
+    qty 		int32_t 	null,
+    amount 		currency_t 	null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, account_id, prod_id, year, month)
+);
+
 create table segments (
     db_id 		uid_t 		not null,
     seg_id 		uid_t 		not null,
@@ -951,6 +978,7 @@ create trigger trig_updated_ts before update on account_params for each row exec
 create trigger trig_updated_ts before update on activity_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on addition_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on agencies for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on agreements for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on attributes for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on audit_criterias for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on brands for each row execute procedure tf_updated_ts();
@@ -996,6 +1024,7 @@ create trigger trig_updated_ts before update on rating_scores for each row execu
 create trigger trig_updated_ts before update on receipt_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on reclamation_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on retail_chains for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on sales_targets for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on segments for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on service_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on shelfs for each row execute procedure tf_updated_ts();
@@ -1155,7 +1184,6 @@ create table dyn_advt (
     qty 		int32_t 	not null check (qty >= 0),
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
-    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, fix_date, account_id, placement_id, posm_id)

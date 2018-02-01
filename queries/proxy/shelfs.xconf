@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shelfs templ="%account_id%;%categ_id%;%brand_ids%;%target%;" empty="no">
+<shelfs templ="%account_id%;%categ_id%;%brand_ids%;%target%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream

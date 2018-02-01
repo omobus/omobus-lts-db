@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sales_targets templ="%account_id%;%prod_id%;%year%;%month%;%pack_id%;%qty%;%amount%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+delete from sales_targets
+    where db_id = '%ErpCode%' and 
+extract(year from current_date)="year" and extract(month from current_date)="month"
+--year(getdate())="year" and month(getdate())="month"
+  ]]>
+</begin>
+<insert>
+  <![CDATA[
+insert into sales_targets (db_id, account_id, prod_id, "year", "month", pack_id, qty, amount)
+    values ('%ErpCode%', '%account_id%', '%prod_id%', %year%, %month%, case when '%pack_id%'='' then null else '%pack_id%' end, case when '%qty%'='' then null else 0%qty% end, case when '%amount%'='' then null else 0%amount% end)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</sales_targets>

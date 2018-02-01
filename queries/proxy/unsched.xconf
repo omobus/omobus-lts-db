@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<unsched templ="%doc_id%;%fix_dt%;%user_id%;%unsched_type_id%;%doc_note%;" empty="no">
+<unsched templ="%doc_id%;%fix_dt%;%user_id%;%unsched_type_id%;%doc_note%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream

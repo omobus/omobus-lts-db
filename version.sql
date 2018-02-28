@@ -32,7 +32,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-insert into sysparams(param_id, param_value, descr) values('db:vstamp', '3.4.0', 'Database version number.');
+insert into sysparams(param_id, param_value, descr) values('db:vstamp', '3.4.1', 'Database version number.');
 
 #ifdef MSSQL
 go

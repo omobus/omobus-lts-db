@@ -34,8 +34,6 @@
 
 /* ** omobus-lts-db database schema.
  * ** 
- * ** ATTENTION. It is strongly recommended to use the PostgreSQL instead 
- * ** of the Microsoft SQL Server for the long term support database.
  */
 
 #ifdef MSSQL
@@ -228,7 +226,7 @@ create table activity_types (
 create table addition_types (
     db_id 		uid_t 		not null,
     addition_type_id 	uid_t 		not null,
-    descr 		descr_t 	null,
+    descr 		descr_t 	not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -379,7 +377,7 @@ create table consumers (
     surname 		descr_t 	not null,
     patronymic 		descr_t 	null,
     email 		email_t 	not null,
-    mobile 		phone_t 	not null,
+    mobile 		phone_t 	null,
     birthday 		date_t 		not null,
     city_id 		uid_t 		not null,
     extra_info 		note_t 		null,

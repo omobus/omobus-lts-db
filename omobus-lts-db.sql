@@ -248,12 +248,12 @@ create table agreements (
     account_id		uid_t		not null,
     placement_id 	uid_t 		not null,
     posm_id 		uid_t 		not null,
-    year 		int32_t 	not null,
-    month 		int32_t 	not null,
+    b_date 		date_t 		not null,
+    e_date 		date_t 		not null,
     strict 		bool_t 		not null default 1,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, placement_id, posm_id, year, month)
+    primary key (db_id, account_id, placement_id, posm_id, b_date)
 );
 
 create table attributes (

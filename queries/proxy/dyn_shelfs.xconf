@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dyn_shelfs templ="%fix_date%;%account_id%;%categ_id%;%brand_id%;%facing%;%assortment%;%photo0%;%photo1%;%photo2%;%photo3%;%fix_dt%;%user_id%;">
+<dyn_shelfs templ="%fix_date%;%account_id%;%categ_id%;%brand_id%;%facing%;%assortment%;%target%;%sos%;%soa%;%photo0%;%photo1%;%photo2%;%photo3%;%fix_dt%;%user_id%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from dyn_shelfs
 </check_exist>
 <update>
   <![CDATA[
-update dyn_shelfs set facing=case when '%facing%'='' then null else 0%facing% end, assortment=case when '%assortment%'='' then null else 0%assortment% end, user_id='%user_id%', fix_dt='%fix_dt%', photos=resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%')
+update dyn_shelfs set facing=case when '%facing%'='' then null else 0%facing% end, assortment=case when '%assortment%'='' then null else 0%assortment% end, user_id='%user_id%', fix_dt='%fix_dt%', target=case when '%target%'='' then null else 0%target% end, sos=case when '%sos%'='' then null else 0%sos% end, soa=case when '%soa%'='' then null else 0%soa% end, photos=resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%')
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and categ_id = '%categ_id%' and brand_id = '%brand_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into dyn_shelfs (db_id, fix_date, account_id, categ_id, brand_id, facing, assortment, photos, fix_dt, user_id)
-    values ('%ErpCode%', '%fix_date%', '%account_id%', '%categ_id%', '%brand_id%', case when '%facing%'='' then null else 0%facing% end, case when '%assortment%'='' then null else 0%assortment% end, resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%'), '%fix_dt%', '%user_id%')
+insert into dyn_shelfs (db_id, fix_date, account_id, categ_id, brand_id, facing, assortment, photos, fix_dt, user_id, target, sos, soa, photos)
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%categ_id%', '%brand_id%', case when '%facing%'='' then null else 0%facing% end, case when '%assortment%'='' then null else 0%assortment% end, resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%'), '%fix_dt%', '%user_id%', case when '%target%'='' then null else 0%target% end, case when '%sos%'='' then null else 0%sos% end, case when '%soa%'='' then null else 0%soa% end, resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%'))
   ]]>
 </insert>
 <end>

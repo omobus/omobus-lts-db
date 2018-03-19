@@ -930,6 +930,7 @@ create table users (
     shared 		bool_t 		not null default 0,
     mobile 		phone_t 	null,
     email 		email_t 	null,
+    area 		descr_t 	null,
     "rules:wd_begin" 	time_t 		null,
     "rules:wd_end" 	time_t 		null,
     hidden		bool_t		not null default 0,

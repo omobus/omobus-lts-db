@@ -9,7 +9,7 @@ select count(*) from data_stream
 <begin>
   <![CDATA[
 update canceling_types set hidden=1
-    where db_id = '%ErpCode%'
+    where db_id = '%ErpCode%' and hidden = 0
   ]]>
 </begin>
 <check_exist>

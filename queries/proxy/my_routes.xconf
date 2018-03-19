@@ -9,7 +9,9 @@ select count(*) from data_stream
 <begin>
   <![CDATA[
 delete from my_routes
-    where db_id = '%ErpCode%'
+    where db_id = '%ErpCode%' and
+p_date >= current_date::date_t
+--p_date >= convert(varchar(10), getdate(), 121)
   ]]>
 </begin>
 <insert>

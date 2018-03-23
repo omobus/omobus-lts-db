@@ -32,6 +32,14 @@ insert into consumers (db_id, consumer_id, name, surname, patronymic, email, mob
 </insert>
 <end>
   <![CDATA[
+update consumers set mobile=null where mobile='' and hidden=0;
+update consumers set birthday=null where birthday='' and hidden=0;
+update consumers set city_id=null where city_id='' and hidden=0;
+update consumers set extra_info=null where extra_info='' and hidden=0;
+update consumers set childbirth=null where childbirth='' and hidden=0;
+update consumers set childgend_id=null where childgend_id='' and hidden=0;
+update consumers set seg_id=null where seg_id='' and hidden=0;
+
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

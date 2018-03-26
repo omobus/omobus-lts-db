@@ -303,8 +303,8 @@ create table consumers (
     patronymic 		descr_t 	null,
     email 		email_t 	not null,
     mobile 		phone_t 	null,
-    birthday 		date_t 		not null,
-    city_id 		uid_t 		not null,
+    birthday 		date_t 		null,
+    city_id 		uid_t 		null,
     extra_info 		note_t 		null,
     childbirth 		month_t 	null,
     childgend_id 	uid_t 		null, 	/* child's gender */

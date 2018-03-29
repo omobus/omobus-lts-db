@@ -20,8 +20,8 @@ update dyn_shelfs set facing=case when '%facing%'='' then null else 0%facing% en
 </update>
 <insert>
   <![CDATA[
-insert into dyn_shelfs (db_id, fix_date, account_id, categ_id, brand_id, facing, assortment, photos, fix_dt, user_id, target, sos, soa, photos)
-    values ('%ErpCode%', '%fix_date%', '%account_id%', '%categ_id%', '%brand_id%', case when '%facing%'='' then null else 0%facing% end, case when '%assortment%'='' then null else 0%assortment% end, resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%'), '%fix_dt%', '%user_id%', case when '%target%'='' then null else 0%target% end, case when '%sos%'='' then null else 0%sos% end, case when '%soa%'='' then null else 0%soa% end, resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%'))
+insert into dyn_shelfs (db_id, fix_date, account_id, categ_id, brand_id, facing, assortment, fix_dt, user_id, target, sos, soa, photos)
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%categ_id%', '%brand_id%', case when '%facing%'='' then null else 0%facing% end, case when '%assortment%'='' then null else 0%assortment% end, '%fix_dt%', '%user_id%', case when '%target%'='' then null else 0%target% end, case when '%sos%'='' then null else 0%sos% end, case when '%soa%'='' then null else 0%soa% end, resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%'))
   ]]>
 </insert>
 <end>

@@ -14,7 +14,7 @@ select count(*) exist from sysparams
 </check_exist>
 <update>
   <![CDATA[
-update sysparams set descr='%timestamp%'
+update sysparams set param_value='%timestamp%'
     where param_id = '%ErpCode%:TS'
   ]]>
 </update>

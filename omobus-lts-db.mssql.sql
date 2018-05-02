@@ -1140,6 +1140,40 @@ create table dyn_prices (
     primary key(db_id, fix_date, account_id, prod_id)
 );
 
+create table dyn_ratings (
+    db_id 		uid_t 		not null,
+    fix_date		date_t 		not null,
+    account_id 		uid_t 		not null,
+    employee_id 	uid_t 		not null,
+    rating_criteria_id 	uid_t 		not null,
+    rating_score_id 	uid_t 		null,
+    criteria_wf 	wf_t 		not null check(criteria_wf between 0.01 and 1.00),
+    score_wf 		wf_t 		null check(score_wf between 0.00 and 1.00),
+    score 		int32_t 	null check (score >= 0),
+    note 		note_t 		null,
+    fix_dt		datetime_t 	not null,
+    user_id 		uid_t 		not null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, fix_date, account_id, employee_id, rating_criteria_id)
+);
+
+create table dyn_reviews (
+    db_id 		uid_t 		not null,
+    fix_date		date_t 		not null,
+    employee_id 	uid_t 		not null,
+    sla 		numeric(6,5)	not null check(sla between 0.0 and 1.0),
+    assessment 		numeric(5,3)    not null check(assessment >= 0),
+    note0 		note_t 		null,
+    note1 		note_t 		null,
+    note2 		note_t 		null,
+    fix_dt		datetime_t 	not null,
+    user_id 		uid_t 		not null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, fix_date, employee_id)
+);
+
 create table dyn_shelfs (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,

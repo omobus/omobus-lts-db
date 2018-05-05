@@ -808,6 +808,34 @@ create table target_types (
     primary key(db_id, target_type_id)
 );
 
+create table testing_criterias (
+    db_id 		uid_t 		not null,
+    testing_criteria_id uid_t 		not null,
+    pid 		uid_t 		null,
+    ftype 		ftype_t 	not null,
+    descr 		descr_t 	not null,
+    wf 			wf_t 		null /*check((ftype=0 and wf is not null and wf between 0.01 and 1.00) or (ftype<>0 and wf is null))*/,
+    mandatory 		bool_t 		null /*check((ftype=0 and mandatory is not null) or (ftype<>0 and mandatory is null))*/,
+    row_no 		int32_t 	null, -- ordering,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, testing_criteria_id)
+);
+
+create table testing_scores (
+    db_id 		uid_t 		not null,
+    testing_score_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    score 		int32_t 	not null /*check(score >= 0)*/,
+    wf 			wf_t 		not null /*check(wf between 0.00 and 1.00)*/,
+    row_no 		int32_t 	null, -- ordering,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, testing_score_id)
+);
+
 create table training_materials (
     db_id 		uid_t 		not null,
     tm_id 		uid_t 		not null,
@@ -953,6 +981,8 @@ create trigger trig_updated_ts before update on service_types for each row execu
 create trigger trig_updated_ts before update on shelfs for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on targets for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on target_types for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on testing_criterias for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on testing_scores for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on training_materials for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on training_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on unsched_types for each row execute procedure tf_updated_ts();
@@ -1251,6 +1281,25 @@ create table dyn_stocks (
     primary key(db_id, fix_date, account_id, prod_id)
 );
 
+create table dyn_testings (
+    db_id 		uid_t 		not null,
+    fix_date		date_t 		not null,
+    account_id 		uid_t 		not null,
+    contact_id 		uid_t 		not null,
+    testing_criteria_id uid_t 		not null,
+    testing_score_id 	uid_t 		null,
+    criteria_wf 	wf_t 		not null check(criteria_wf between 0.01 and 1.00),
+    score_wf 		wf_t 		null check(score_wf between 0.00 and 1.00),
+    score 		int32_t 	null check (score >= 0),
+    note 		note_t 		null,
+    sla 		numeric(6,5) 	not null check(sla between 0.0 and 1.0),
+    fix_dt		datetime_t 	not null,
+    user_id 		uid_t 		not null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, fix_date, contact_id, employee_id, testing_criteria_id)
+);
+
 create table orders (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1541,8 +1590,11 @@ create trigger trig_updated_ts before update on dyn_checkups for each row execut
 create trigger trig_updated_ts before update on dyn_oos for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_presences for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_prices for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on dyn_ratings for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on dyn_reviews for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_shelfs for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_stocks for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on dyn_testings for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on orders for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on photos for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on presentations for each row execute procedure tf_updated_ts();

@@ -636,10 +636,10 @@ create table products (
     manuf_id 		uid_t 		null,
     brand_id 		uid_t 		null,
     categ_id 		uid_t 		null,
+    shelf_life_id 	uid_t 		null,
     code 		code_t 		null,
     descr 		descr_t 	not null,
     art 		art_t 		null,
-    shelf_life 		descr_t 	null,
     obsolete 		bool_t 		null,
     novelty 		bool_t 		null,
     promo 		bool_t 		null,
@@ -779,6 +779,15 @@ create table service_types (
     primary key(db_id, service_type_id)
 );
 
+create table shelf_lifes (
+    db_id 		uid_t 		not null,
+    shelf_life_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, shelf_life_id)
+);
 
 create table shelfs ( /* distribution of brands on the shelf in the category */
     db_id 		uid_t 		not null,

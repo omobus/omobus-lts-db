@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<testing_criterias templ="%testing_criteria_id%;%pid%;%ftype%;%descr%;%wf%;%row_no%;%mandatory%;">
+<testing_criterias templ="%testing_criteria_id%;%pid%;%ftype%;%descr%;%wf%;%mandatory%;%extra_info%;%row_no%">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from testing_criterias
 </check_exist>
 <update>
   <![CDATA[
-update testing_criterias set pid=case when '%pid%'='' then null else '%pid%' end, ftype=%ftype%, descr='%descr%', wf=%wf%, row_no=case when '%row_no%'='' then null else 0%row_no% end, mandatory=0%mandatory%, hidden=0
+update testing_criterias set pid=case when '%pid%'='' then null else '%pid%' end, ftype=%ftype%, descr='%descr%', wf=%wf%, mandatory=0%mandatory%, extra_info=case when '%extra_info%'='' then null else '%extra_info%' end, row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
     where db_id = '%ErpCode%' and testing_criteria_id = '%testing_criteria_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into testing_criterias (db_id, testing_criteria_id, pid, ftype, descr, wf, row_no, mandatory, hidden) 
-    values ('%ErpCode%', '%testing_criteria_id%', case when '%pid%'='' then null else '%pid%' end, %ftype%, '%descr%', %wf%, case when '%row_no%'='' then null else 0%row_no% end, 0%mandatory%, 0)
+insert into testing_criterias (db_id, testing_criteria_id, pid, ftype, descr, wf, mandatory, extra_info, row_no, hidden) 
+    values ('%ErpCode%', '%testing_criteria_id%', case when '%pid%'='' then null else '%pid%' end, %ftype%, '%descr%', %wf%, 0%mandatory%, case when '%extra_info%'='' then null else '%extra_info%' end, case when '%row_no%'='' then null else 0%row_no% end, 0)
   ]]>
 </insert>
 <end>

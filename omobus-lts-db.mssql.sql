@@ -215,11 +215,25 @@ create table audit_criterias ( /* Service-Level-Agreement criterias for the audi
     descr 		descr_t 	not null,
     wf 			wf_t 		not null check(wf between 0.01 and 1.00),
     mandatory 		bool_t 		not null default 1,
+    extra_info 		note_t 		null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, audit_criteria_id)
+);
+
+create table audit_scores (
+    db_id 		uid_t 		not null,
+    audit_score_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    score 		int32_t 	not null /*check(score >= 0)*/,
+    wf 			wf_t 		not null /*check(wf between 0.00 and 1.00)*/,
+    row_no 		int32_t 	null, -- ordering,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, audit_score_id)
 );
 
 create table brands (
@@ -681,6 +695,7 @@ create table rating_criterias (
     descr 		descr_t 	not null,
     wf 			wf_t 		null /*check((ftype=0 and wf is not null and wf between 0.01 and 1.00) or (ftype<>0 and wf is null))*/,
     mandatory 		bool_t 		null /*check((ftype=0 and mandatory is not null) or (ftype<>0 and mandatory is null))*/,
+    extra_info 		note_t 		null,
     row_no 		int32_t 	null, -- ordering,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -843,6 +858,7 @@ create table testing_criterias (
     descr 		descr_t 	not null,
     wf 			wf_t 		null /*check((ftype=0 and wf is not null and wf between 0.01 and 1.00) or (ftype<>0 and wf is null))*/,
     mandatory 		bool_t 		null /*check((ftype=0 and mandatory is not null) or (ftype<>0 and mandatory is null))*/,
+    extra_info 		note_t 		null,
     row_no 		int32_t 	null, -- ordering,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<audit_criterias templ="%audit_criteria_id%;%descr%;%wf%;%row_no%;%mandatory%;">
+<audit_criterias templ="%audit_criteria_id%;%descr%;%wf%;%mandatory%;%extra_info%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from audit_criterias
 </check_exist>
 <update>
   <![CDATA[
-update audit_criterias set descr='%descr%', wf=%wf%, row_no=case when '%row_no%'='' then null else 0%row_no% end, mandatory=%mandatory%, hidden=0
+update audit_criterias set descr='%descr%', wf=%wf%, mandatory=%mandatory%, extra_info=case when '%extra_info%'='' then null else '%extra_info%' end, row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
     where db_id = '%ErpCode%' and audit_criteria_id = '%audit_criteria_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into audit_criterias (db_id, audit_criteria_id, descr, wf, row_no, mandatory, hidden) 
-    values ('%ErpCode%', '%audit_criteria_id%', '%descr%', %wf%, case when '%row_no%'='' then null else 0%row_no% end, %mandatory%, 0)
+insert into audit_criterias (db_id, audit_criteria_id, descr, wf, mandatory, extra_info, row_no, hidden) 
+    values ('%ErpCode%', '%audit_criteria_id%', '%descr%', %wf%, %mandatory%, case when '%extra_info%'='' then null else '%extra_info%' end, case when '%row_no%'='' then null else 0%row_no% end, 0)
   ]]>
 </insert>
 <end>

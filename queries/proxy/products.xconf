@@ -20,14 +20,14 @@ select count(*) exist from products
 </check_exist>
 <update>
   <![CDATA[
-update products set pid='%pid%', ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life_id=case when '%shelf_life_id%'='' then null else '%shelf_life_id%' end, manuf_id='%manuf_id%', brand_id='%brand_id%', categ_id='%categ_id%', obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, country_ids=string_to_array('%country_ids%',','), hidden=0
+update products set pid='%pid%', ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life_id='%shelf_life_id%', manuf_id='%manuf_id%', brand_id='%brand_id%', categ_id='%categ_id%', obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, country_ids=string_to_array('%country_ids%',','), hidden=0
     where db_id = '%ErpCode%' and prod_id = '%prod_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[ 
 insert into products (db_id, pid, prod_id, ftype, code, art, descr, manuf_id, shelf_life_id, brand_id, categ_id, obsolete, novelty, promo, country_ids, hidden)
-    values ('%ErpCode%', '%pid%', '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', '%manuf_id%', case when '%shelf_life_id%'='' then null else '%shelf_life_id%' end, '%brand_id%', '%categ_id%', 0%obsolete%, 0%novelty%, 0%promo%, string_to_array('%country_ids%',','), 0)
+    values ('%ErpCode%', '%pid%', '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', '%manuf_id%', '%shelf_life_id%', '%brand_id%', '%categ_id%', 0%obsolete%, 0%novelty%, 0%promo%, string_to_array('%country_ids%',','), 0)
   ]]>
 </insert>
 <end>
@@ -36,6 +36,7 @@ update products set pid=null where pid='' and hidden=0;
 update products set manuf_id=null where manuf_id='' and hidden=0;
 update products set brand_id=null where brand_id='' and hidden=0;
 update products set categ_id=null where categ_id='' and hidden=0;
+update products set shelf_life_id=null where shelf_life_id='' and hidden=0;
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

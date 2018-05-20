@@ -1403,7 +1403,7 @@ create table dyn_testings (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
-    primary key(db_id, fix_date, contact_id, employee_id, testing_criteria_id)
+    primary key(db_id, fix_date, account_id, contact_id, testing_criteria_id)
 );
 
 create table orders (

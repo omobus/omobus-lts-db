@@ -1314,6 +1314,7 @@ create table dyn_prices (
     prod_id 		uid_t 		not null,
     price 		currency_t 	not null,
     promo 		bool_t 		not null,
+    rrp 		currency_t 	null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,

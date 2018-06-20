@@ -8,6 +8,9 @@ select count(*) from data_stream
 </verification>
 <check_exist>
   <![CDATA[
+--delete from dyn_audits
+--    where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and categ_id = '%categ_id%' and (fix_dt <> '%fix_dt%' or user_id <> '%user_id%);
+
 select count(*) exist from dyn_audits 
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and categ_id = '%categ_id%' and audit_criteria_id = '%audit_criteria_id%'
   ]]>

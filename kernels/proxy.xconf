@@ -14,6 +14,9 @@
     ftp.recv_timeout="5"
     ftp.send_timeout="5"
     ftp.epsv="true"
+    ftp.tls="no"
+    ftp.ccc="no"
+    ftp.cdc="no"
     pack.gc="4"
     cache="LTS/proxy/"
     >

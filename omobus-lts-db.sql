@@ -482,6 +482,31 @@ create table distributors (
     primary key(db_id, distr_id)
 );
 
+create table equipment_types (
+    db_id 		uid_t 		not null,
+    equipment_type_id 	uid_t		not null,
+    descr 		descr_t		not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, equipment_type_id)
+);
+
+create table equipments (
+    db_id 		uid_t 		not null,
+    equipment_id 	uid_t 		not null,
+    account_id 		uid_t 		not null,
+    serial_number 	code_t 		not null,
+    equipment_type_id 	uid_t 		not null,
+    ownership_type_id 	uid_t 		null,
+    extra_info 		note_t 		null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, equipment_id)
+);
+
 create table genders (
     db_id 		uid_t 		not null,
     gend_id 		uid_t 		not null,
@@ -616,6 +641,17 @@ create table order_types (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, order_type_id)
+);
+
+create table ownership_types (
+    db_id 		uid_t 		not null,
+    ownership_type_id 	uid_t		not null,
+    descr 		descr_t		not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, ownership_type_id)
 );
 
 create table packs (

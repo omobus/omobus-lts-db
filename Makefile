@@ -32,17 +32,13 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 PACKAGE_NAME 	= omobus-lts-db
-PACKAGE_VERSION = 3.4.4
+PACKAGE_VERSION = 3.4.5
 COPYRIGHT 	= Copyright (c) 2006 - 2018 ak obs, ltd. <info@omobus.net>
 SUPPORT 	= Support and bug reports: <support@omobus.net>
 AUTHOR		= Author: Igor Artemov <i_artemov@ak-obs.ru>
 BUGREPORT	= support@omobus.net
 
-INSTALL		= install
 RM		= rm -f
-CP		= cp
-TAR		= tar -cf
-BZIP		= bzip2
 PP		= unifdef
 
 DISTR_NAME	= $(PACKAGE_NAME)-$(PACKAGE_VERSION)
@@ -62,14 +58,3 @@ mssql:
 	@$(PP) -U PGSQL -D MSSQL $(PACKAGE_NAME).sql > $(PACKAGE_NAME).mssql.sql; true
 	@$(PP) -U PGSQL -D MSSQL version.sql > version.mssql.sql; true
 	@echo "Compiled SQL script for the Microsoft SQL Server."
-
-distr:
-	$(INSTALL) -d $(DISTR_NAME)
-	$(INSTALL) -m 0644 *.xconf *.sql *.sh *.ldif *.default *.conf Makefile* ChangeLog AUTHO* COPY* README* ./$(DISTR_NAME)
-	$(CP) -r connections/ ./$(DISTR_NAME)/connections
-	$(CP) -r transactions/ ./$(DISTR_NAME)/transactions
-	$(CP) -r kernels/ ./$(DISTR_NAME)/kernels
-	$(CP) -r queries/ ./$(DISTR_NAME)/queries
-	$(TAR) ./$(DISTR_NAME).tar ./$(DISTR_NAME)
-	$(BZIP) ./$(DISTR_NAME).tar
-	$(RM) -f -r ./$(DISTR_NAME)

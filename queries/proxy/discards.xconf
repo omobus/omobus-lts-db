@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<discards templ="%account_id%;%user_id%;%fix_dt%;%activity_type_id%;%route_date%;%discard_type_id%;%note%;%hidden%;">
+<discards templ="%account_id%;%user_id%;%fix_dt%;%activity_type_id%;%route_date%;%discard_type_id%;%note%;%validator_id%;%validated%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from discards
 </check_exist>
 <update>
   <![CDATA[
-update discards set user_id='%user_id%', fix_dt='%fix_dt%', activity_type_id='%activity_type_id%', route_date='%route_date%', discard_type_id='%discard_type_id%', note='%note%', hidden=0%hidden%
+update discards set user_id='%user_id%', fix_dt='%fix_dt%', activity_type_id='%activity_type_id%', route_date='%route_date%', discard_type_id='%discard_type_id%', note='%note%', validator_id='%validator_id%', validated=0%validated%, hidden=0%hidden%
     where db_id = '%ErpCode%' and account_id = '%account_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into discards (db_id, account_id, user_id, fix_dt, activity_type_id, route_date, discard_type_id, note, hidden) 
-    values ('%ErpCode%', '%account_id%', '%user_id%', '%fix_dt%', '%activity_type_id%', '%route_date%', '%discard_type_id%', '%note%', 0%hidden%)
+insert into discards (db_id, account_id, user_id, fix_dt, activity_type_id, route_date, discard_type_id, note, validator_id, validated, hidden) 
+    values ('%ErpCode%', '%account_id%', '%user_id%', '%fix_dt%', '%activity_type_id%', '%route_date%', '%discard_type_id%', '%note%', '%validator_id%', 0%validated%, 0%hidden%)
   ]]>
 </insert>
 <end>

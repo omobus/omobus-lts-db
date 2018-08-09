@@ -1075,6 +1075,7 @@ create table additions (
     validator_id 	uid_t		null,
     validated 		bool_t 		not null default 0,
     hidden 		bool_t 		not null default 0,
+    geo_address 	address_t 	null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)

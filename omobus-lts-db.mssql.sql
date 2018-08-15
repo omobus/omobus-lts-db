@@ -860,16 +860,8 @@ create table targets (
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
     image 		blob_t 		null, /* image attached to the target */
-    country_id 		uid_t 		null,
-    dep_id		uid_t		null, /* task sets for the specific departmen or any department if null */
     author_id 		uid_t 		not null,
     myself 		bool_t 		not null default 0,
-    account_ids 	uids_t 		null,
-    region_ids 		uids_t		null,
-    city_ids 		uids_t		null,
-    rc_ids 		uids_t		null, /* -> retail_chains */
-    chan_ids		uids_t 		null,
-    poten_ids 		uids_t 		null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

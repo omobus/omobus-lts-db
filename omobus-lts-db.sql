@@ -920,6 +920,7 @@ create table targets (
     author_id 		uid_t 		not null,
     myself 		bool_t 		not null default 0,
     hidden 		bool_t 		not null default 0,
+    attrs 		varchar(1024) 	null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, target_id)

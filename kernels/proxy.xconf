@@ -4,7 +4,7 @@
     ldap.uri="ldap://127.0.0.1:389" 
     ldap.bind_dn="uid=omobusd,ou=services,dc=omobus,dc=local"
     ldap.bind_pw="0"
-    ldap.base="ou=proxy-db,dc=omobus,dc=local" 
+    ldap.base="ou=lts-db,dc=omobus,dc=local" 
     ldap.filter="(&amp;(objectClass=omobusMaintainPoint)(exchangeStatus=enabled))"
     Xldap.tls="yes"
     ftp.host="127.0.0.1"
@@ -109,7 +109,6 @@
 <xi:include href="../queries/proxy/segments.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/service_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/shelf_lifes.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
-<xi:include href="../queries/proxy/shelfs.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/target_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/targets.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/testing_criterias.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />

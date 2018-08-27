@@ -840,17 +840,6 @@ create table shelf_lifes (
     primary key(db_id, shelf_life_id)
 );
 
-create table shelfs ( /* distribution of brands on the shelf in the category */
-    db_id 		uid_t 		not null,
-    account_id 		uid_t 		not null,
-    categ_id 		uid_t 		not null,
-    brand_ids 		uids_t 		not null,
-    target 		wf_t 		null check(target between 0.01 and 1.00), /* Share-of-Shelf recomendations */
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, account_id, categ_id)
-);
-
 create table targets (
     db_id 		uid_t 		not null,
     target_id 		uid_t 		not null,

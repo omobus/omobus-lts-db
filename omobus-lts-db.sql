@@ -897,17 +897,6 @@ create table shelf_lifes (
     primary key(db_id, shelf_life_id)
 );
 
-create table shelfs ( /* distribution of brands on the shelf in the category */
-    db_id 		uid_t 		not null,
-    account_id 		uid_t 		not null,
-    categ_id 		uid_t 		not null,
-    brand_ids 		uids_t 		not null,
-    target 		wf_t 		null check(target between 0.01 and 1.00), /* Share-of-Shelf recomendations */
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, account_id, categ_id)
-);
-
 create table targets (
     db_id 		uid_t 		not null,
     target_id 		uid_t 		not null,
@@ -1109,7 +1098,6 @@ create trigger trig_updated_ts before update on sales_targets for each row execu
 create trigger trig_updated_ts before update on segments for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on service_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on shelf_lifes for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on shelfs for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on targets for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on target_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on testing_criterias for each row execute procedure tf_updated_ts();

@@ -675,6 +675,7 @@ create table products (
     obsolete 		bool_t 		null,
     novelty 		bool_t 		null,
     promo 		bool_t 		null,
+    barcodes 		codes_t 	null,
     country_ids 	countries_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,

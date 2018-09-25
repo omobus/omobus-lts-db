@@ -1268,6 +1268,20 @@ create table dyn_prices (
     primary key(db_id, fix_date, account_id, prod_id)
 );
 
+create table dyn_quests (
+    db_id 		uid_t 		not null,
+    fix_date		date_t 		not null,
+    account_id 		uid_t 		not null,
+    qname_id 		uid_t 		not null,
+    qrow_id 		uid_t		not null,
+    "value" 		varchar(64) 	not null,
+    fix_dt 		datetime_t 	not null,
+    user_id 		uid_t 		not null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, fix_date, account_id, qname_id, qrow_id)
+);
+
 create table dyn_ratings (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
@@ -1419,18 +1433,6 @@ create table presentations (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
-);
-
-create table quests (
-    db_id 		uid_t 		not null,
-    doc_id 		uid_t 		not null,
-    user_id 		uid_t 		not null,
-    account_id 		uid_t 		not null,
-    fix_dt 		datetime_t 	not null,
-    qname_id 		uid_t 		not null,
-    qrow_id 		uid_t		not null,
-    "value" 		varchar(64) 	not null,
-    primary key(db_id, doc_id, qname_id, qrow_id)
 );
 
 create table receipts (
@@ -1643,6 +1645,7 @@ create trigger trig_updated_ts before update on dyn_checkups for each row execut
 create trigger trig_updated_ts before update on dyn_oos for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_presences for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_prices for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on dyn_quests for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_ratings for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_reviews for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on dyn_shelfs for each row execute procedure tf_updated_ts();
@@ -1651,7 +1654,6 @@ create trigger trig_updated_ts before update on dyn_testings for each row execut
 create trigger trig_updated_ts before update on orders for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on photos for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on presentations for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on quests for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on receipts for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on reclamations for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on unsched for each row execute procedure tf_updated_ts();

@@ -1,5 +1,0 @@
-# This is a configuration file for /etc/init.d/omobusd; it allows you to
-# perform common modifications to the behavior of the omobusd daemon
-# startup without editing the init script.
-
-INSTANCES="proxy"

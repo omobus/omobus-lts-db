@@ -116,7 +116,6 @@ create table accounts (
     service_type_id 	uid_t 		null,
     attr_ids 		uids_t 		null,
     locked 		bool_t 		null default 0,
-    class 		varchar(10) 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

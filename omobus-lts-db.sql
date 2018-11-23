@@ -854,20 +854,6 @@ create table retail_chains (
     primary key(db_id, rc_id)
 );
 
-create table sales_targets (
-    db_id 		uid_t 		not null,
-    account_id 		uid_t 		not null,
-    prod_id 		uid_t 		not null,
-    year 		int32_t 	not null,
-    month 		int32_t 	not null,
-    pack_id 		uid_t 		null,
-    qty 		int32_t 	null,
-    amount 		currency_t 	null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, prod_id, year, month)
-);
-
 create table segments (
     db_id 		uid_t 		not null,
     seg_id 		uid_t 		not null,
@@ -1095,7 +1081,6 @@ create trigger trig_updated_ts before update on rating_scores for each row execu
 create trigger trig_updated_ts before update on receipt_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on reclamation_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on retail_chains for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on sales_targets for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on segments for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on service_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on shelf_lifes for each row execute procedure tf_updated_ts();

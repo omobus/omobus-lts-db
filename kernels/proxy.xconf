@@ -13,8 +13,8 @@
     ftp.connect_timeout="10"
     ftp.recv_timeout="5"
     ftp.send_timeout="5"
-    ftp.epsv="true"
-    ftp.tls="no"
+    ftp.epsv="yes"
+    ftp.tls="yes"
     ftp.ccc="no"
     ftp.cdc="no"
     pack.gc="4"
@@ -105,7 +105,6 @@
 <xi:include href="../queries/proxy/reclamation_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/regions.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/retail_chains.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
-<xi:include href="../queries/proxy/sales_targets.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/segments.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/service_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/proxy/shelf_lifes.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />

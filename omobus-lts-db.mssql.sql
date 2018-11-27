@@ -1501,6 +1501,7 @@ create index i_daily_user_documents on user_documents (user_id, fix_date);
 create table user_locations (
     db_id 		uid_t 		not null,
     act_id 		uid_t 		not null,
+    row_no 		int32_t 	not null,
     user_id 		uid_t 		not null,
     fix_date 		date_t 		not null,
     latitude 		gps_t 		not null,
@@ -1516,7 +1517,7 @@ create table user_locations (
     satellites 		int32_t 	null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
-    primary key(db_id, act_id)
+    primary key(db_id, act_id, row_no)
 );
 
 create index i_user_id_user_locations on user_locations (user_id);

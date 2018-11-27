@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<user_locations templ="%act_id%;%user_id%;%fix_date%;%latitude%;%longitude%;%fix_dt%;%satellite_dt%;%accuracy%;%altitude%;%bearing%;%speed%;%seconds%;%provider%;%satellites%;">
+<user_locations templ="%act_id%;%row_no%;%user_id%;%fix_date%;%latitude%;%longitude%;%fix_dt%;%satellite_dt%;%accuracy%;%altitude%;%bearing%;%speed%;%seconds%;%provider%;%satellites%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,8 +14,8 @@ select count(*) exist from user_locations
 </check_exist>
 <insert>
   <![CDATA[
-insert into user_locations (db_id, act_id, user_id, fix_date, latitude, longitude, fix_dt, satellite_dt, accuracy, altitude, bearing, speed, seconds, provider, satellites) 
-    values ('%ErpCode%', '%act_id%', '%user_id%', '%fix_date%', %latitude%, %longitude%, '%fix_dt%', '%satellite_dt%', %accuracy%, %altitude%, %bearing%, %speed%, %seconds%, '%provider%', '%satellites%')
+insert into user_locations (db_id, act_id, row_no, user_id, fix_date, latitude, longitude, fix_dt, satellite_dt, accuracy, altitude, bearing, speed, seconds, provider, satellites) 
+    values ('%ErpCode%', '%act_id%', %row_no%, '%user_id%', '%fix_date%', %latitude%, %longitude%, '%fix_dt%', '%satellite_dt%', %accuracy%, %altitude%, %bearing%, %speed%, %seconds%, '%provider%', '%satellites%')
   ]]>
 </insert>
 <end>

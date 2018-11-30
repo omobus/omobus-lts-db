@@ -911,7 +911,6 @@ create table users (
     dep_ids		uid_t		null,
     distr_ids		uids_t		null,
     agency_id 		uid_t 		null,
-    shared 		bool_t 		not null default 0,
     mobile 		phone_t 	null,
     email 		email_t 	null,
     area 		descr_t 	null,

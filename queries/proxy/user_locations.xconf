@@ -9,13 +9,13 @@ select count(*) from data_stream
 <check_exist>
   <![CDATA[
 select count(*) exist from user_locations 
-    where db_id = '%ErpCode%' and act_id = '%act_id%'
+    where db_id = '%ErpCode%' and act_id = '%act_id%' and row_no = %row_no%
   ]]>
 </check_exist>
 <insert>
   <![CDATA[
 insert into user_locations (db_id, act_id, row_no, user_id, fix_date, latitude, longitude, fix_dt, satellite_dt, accuracy, altitude, bearing, speed, seconds, provider, satellites) 
-    values ('%ErpCode%', '%act_id%', %row_no%, '%user_id%', '%fix_date%', %latitude%, %longitude%, '%fix_dt%', '%satellite_dt%', %accuracy%, %altitude%, %bearing%, %speed%, %seconds%, '%provider%', '%satellites%')
+    values ('%ErpCode%', '%act_id%', %row_no%, '%user_id%', '%fix_date%', %latitude%, %longitude%, '%fix_dt%', '%satellite_dt%', %accuracy%, %altitude%, %bearing%, %speed%, case when '%seconds%'='' then null else 0%seconds% end, '%provider%', '%satellites%')
   ]]>
 </insert>
 <end>

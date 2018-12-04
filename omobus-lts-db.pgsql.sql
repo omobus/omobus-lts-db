@@ -128,7 +128,6 @@ create table account_params (
     distr_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
     group_price_id 	uid_t 		null,
-    locked 		bool_t 		null default 0,
     payment_delay 	int32_t 	null,
     payment_method_id 	uid_t 		null,
     wareh_ids 		uids_t 		null,

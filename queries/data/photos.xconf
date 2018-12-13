@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<photos templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%placement_id%;%brand_id%;%photo_type_id%;%photo%;%doc_note%;">
+<photos templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%placement_id%;%brand_id%;%photo_type_id%;%photo%;%doc_note%;%photo_param_ids%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,8 +14,8 @@ select count(*) exist from photos
 </check_exist>
 <insert>
   <![CDATA[
-insert into photos (db_id, doc_id, fix_dt, user_id, account_id, placement_id, brand_id, photo_type_id, photo, doc_note) 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%placement_id%', '%brand_id%', '%photo_type_id%', resolve_blob_stream('//proxy/%uid%/%photo%'), '%doc_note%')
+insert into photos (db_id, doc_id, fix_dt, user_id, account_id, placement_id, brand_id, photo_type_id, photo, doc_note, photo_param_ids) 
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%placement_id%', '%brand_id%', '%photo_type_id%', resolve_blob_stream('//proxy/%uid%/%photo%'), '%doc_note%', case when '%photo_param_ids%'='' then null else string_to_array('%photo_param_ids%',',') end)
   ]]>
 </insert>
 <end>

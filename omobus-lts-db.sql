@@ -689,6 +689,17 @@ create table pending_types (
     primary key(db_id, pending_type_id)
 );
 
+create table photo_params (
+    db_id 		uid_t 		not null,
+    photo_param_id	uid_t		not null,
+    descr		descr_t		not null,
+    row_no 		int32_t 	null, -- ordering,
+    hidden		bool_t		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, photo_param_id)
+);
+
 create table photo_types (
     db_id 		uid_t 		not null,
     photo_type_id	uid_t		not null,
@@ -1067,6 +1078,7 @@ create trigger trig_updated_ts before update on order_params for each row execut
 create trigger trig_updated_ts before update on order_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on packs for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on pending_types for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on photo_params for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on photo_types for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on placements for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on pos_materials for each row execute procedure tf_updated_ts();
@@ -1477,6 +1489,7 @@ create table photos (
     photo_type_id	uid_t		null,
     photo		blob_t		not null,
     doc_note		note_t		null,
+    photo_param_ids	uid_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)

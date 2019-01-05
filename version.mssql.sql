@@ -1,5 +1,5 @@
 /* This file is a part of the omobus-lts-db project.
- * Copyright (c) 2006 - 2018 ak-obs, Ltd. <info@omobus.net>.
+ * Copyright (c) 2006 - 2019 ak-obs, Ltd. <info@omobus.net>.
  * All rights reserved.
  *
  * This program is a free software. Redistribution and use in source
@@ -32,6 +32,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-insert into sysparams(param_id, param_value, descr) values('db:vstamp', '3.4.12', 'Database version number.');
+update sysparams set param_value='3.4.14' where param_id='db:vstamp';
 
 go

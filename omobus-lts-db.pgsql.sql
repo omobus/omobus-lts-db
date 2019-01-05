@@ -1,5 +1,5 @@
 /* This file is a part of the omobus-lts-db project.
- * Copyright (c) 2006 - 2018 ak-obs, Ltd. <info@omobus.net>.
+ * Copyright (c) 2006 - 2019 ak-obs, Ltd. <info@omobus.net>.
  * All rights reserved.
  *
  * This program is a free software. Redistribution and use in source
@@ -1742,4 +1742,5 @@ create trigger trig_updated_ts before update on sysparams for each row execute p
 
 insert into sysparams(param_id, param_value, descr) values('db:created_ts', current_timestamp, 'Database creation datetime.');
 insert into sysparams(param_id, param_value, descr) values('db:id', 'LTS', 'Database unique ID.');
+insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Database version number.');
 

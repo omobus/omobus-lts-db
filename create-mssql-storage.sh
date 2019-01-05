@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # This file is a part of the omobus-lts-db project.
-# Copyright (c) 2006 - 2018 ak-obs, Ltd. <info@omobus.net>.
+# Copyright (c) 2006 - 2019 ak-obs, Ltd. <info@omobus.net>.
 # All rights reserved.
 #
 # This program is a free software. Redistribution and use in source
@@ -41,13 +41,13 @@ passwd=omobus
 fisql -I freetds.conf -S $srv -U $uname -P $passwd -D $dbname -i omobus-lts-db.mssql.sql
 fisql -I freetds.conf -S $srv -U $uname -P $passwd -D $dbname -i version.mssql.sql
 
-#sed -i -e 's/string_to_array/dbo.string_to_array/g' queries/proxy/*.xconf
-#sed -i -e 's/array_length/dbo.array_length/g' queries/proxy/*.xconf
-#sed -i -e 's/resolve_blob_stream/dbo.resolve_blob_stream/g' queries/proxy/*.xconf
-#sed -i -e 's/^select stor_data_stream/--select stor_data_stream/g' queries/proxy/*.xconf
-#sed -i -e 's/^--exec stor_data_stream/exec stor_data_stream/g' queries/proxy/*.xconf
-#sed -i -e 's/^select stor_blob_stream/--select stor_blob_stream/g' queries/proxy/*.xconf
-#sed -i -e 's/^--exec stor_blob_stream/exec stor_blob_stream/g' queries/proxy/*.xconf
+#sed -i -e 's/string_to_array/dbo.string_to_array/g' queries/data/*.xconf
+#sed -i -e 's/array_length/dbo.array_length/g' queries/data/*.xconf
+#sed -i -e 's/resolve_blob_stream/dbo.resolve_blob_stream/g' queries/data/*.xconf
+#sed -i -e 's/^select stor_data_stream/--select stor_data_stream/g' queries/data/*.xconf
+#sed -i -e 's/^--exec stor_data_stream/exec stor_data_stream/g' queries/data/*.xconf
+#sed -i -e 's/^select stor_blob_stream/--select stor_blob_stream/g' queries/data/*.xconf
+#sed -i -e 's/^--exec stor_blob_stream/exec stor_blob_stream/g' queries/data/*.xconf
 
 exit 0
 # The end of the script.

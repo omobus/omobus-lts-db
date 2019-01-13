@@ -20,13 +20,13 @@ select count(*) exist from packs
 </check_exist>
 <update>
   <![CDATA[
-update packs set descr='%descr%', pack=%pack%, weight=0%weight%, volume=0%volume%, precision=0%precision%, hidden=0
+update packs set descr='%descr%', pack=%pack%, weight=0%weight%, volume=0%volume%, "precision"=0%precision%, hidden=0
     where db_id = '%ErpCode%' and pack_id = '%pack_id%' and prod_id = '%prod_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into packs (db_id, pack_id, prod_id, descr, pack, weight, volume, precision, hidden) 
+insert into packs (db_id, pack_id, prod_id, descr, pack, weight, volume, "precision", hidden) 
     values ('%ErpCode%', '%pack_id%', '%prod_id%', '%descr%', 0%pack%, 0%weight%, 0%volume%, 0%precision%, 0)
   ]]>
 </insert>

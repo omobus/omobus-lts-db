@@ -123,6 +123,8 @@ create table accounts (
     primary key(db_id, account_id)
 );
 
+create trigger trig_updated_ts before update on accounts for each row execute procedure tf_updated_ts();
+
 create table account_params (
     db_id 		uid_t 		not null,
     distr_id 		uid_t 		not null,
@@ -136,6 +138,8 @@ create table account_params (
     primary key (db_id, distr_id, account_id)
 );
 
+create trigger trig_updated_ts before update on account_params for each row execute procedure tf_updated_ts();
+
 create table activity_types (
     db_id 		uid_t 		not null,
     activity_type_id 	uid_t 		not null,
@@ -147,6 +151,8 @@ create table activity_types (
     primary key(db_id, activity_type_id)
 );
 
+create trigger trig_updated_ts before update on activity_types for each row execute procedure tf_updated_ts();
+
 create table addition_types (
     db_id 		uid_t 		not null,
     addition_type_id 	uid_t 		not null,
@@ -157,6 +163,8 @@ create table addition_types (
     primary key(db_id, addition_type_id)
 );
 
+create trigger trig_updated_ts before update on addition_types for each row execute procedure tf_updated_ts();
+
 create table agencies (
     db_id 		uid_t 		not null,
     agency_id 		uid_t 		not null,
@@ -166,6 +174,8 @@ create table agencies (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, agency_id)
 );
+
+create trigger trig_updated_ts before update on agencies for each row execute procedure tf_updated_ts();
 
 create table agreements (
     db_id 		uid_t 		not null,
@@ -180,6 +190,8 @@ create table agreements (
     primary key (db_id, account_id, placement_id, posm_id, b_date)
 );
 
+create trigger trig_updated_ts before update on agreements for each row execute procedure tf_updated_ts();
+
 create table attributes (
     db_id 		uid_t 		not null,
     attr_id 		uid_t 		not null,
@@ -190,13 +202,12 @@ create table attributes (
     primary key (db_id, attr_id)
 );
 
-create table audit_criterias ( /* Service-Level-Agreement criterias for the audit document */
+create trigger trig_updated_ts before update on attributes for each row execute procedure tf_updated_ts();
+
+create table audit_criterias (
     db_id 		uid_t 		not null,
     audit_criteria_id 	uid_t 		not null,
     descr 		descr_t 	not null,
-    wf 			wf_t 		not null check(wf between 0.01 and 1.00),
-    mandatory 		bool_t 		not null default 1,
-    extra_info 		note_t 		null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -204,12 +215,13 @@ create table audit_criterias ( /* Service-Level-Agreement criterias for the audi
     primary key(db_id, audit_criteria_id)
 );
 
+create trigger trig_updated_ts before update on audit_criterias for each row execute procedure tf_updated_ts();
+
 create table audit_scores (
     db_id 		uid_t 		not null,
     audit_score_id 	uid_t 		not null,
     descr 		descr_t 	not null,
     score 		int32_t 	not null /*check(score >= 0)*/,
-    wf 			wf_t 		not null /*check(wf between 0.00 and 1.00)*/,
     row_no 		int32_t 	null, -- ordering,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -217,19 +229,22 @@ create table audit_scores (
     primary key(db_id, audit_score_id)
 );
 
+create trigger trig_updated_ts before update on audit_scores for each row execute procedure tf_updated_ts();
+
 create table brands (
     db_id 		uid_t 		not null,
     brand_id 		uid_t 		not null,
     descr 		descr_t 	not null,
+    manuf_id 		uid_t 		not null,
     dep_id		uid_t		null,
-    multi 		uids_t 		null, /* for compound brands: [multi] should contains [brand_id] array */
-    competitor		bool_t 		null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, brand_id)
 );
+
+create trigger trig_updated_ts before update on brands for each row execute procedure tf_updated_ts();
 
 create table canceling_types (
     db_id 		uid_t 		not null,
@@ -241,17 +256,20 @@ create table canceling_types (
     primary key(db_id, canceling_type_id)
 );
 
+create trigger trig_updated_ts before update on canceling_types for each row execute procedure tf_updated_ts();
+
 create table categories (
     db_id 		uid_t 		not null,
     categ_id 		uid_t 		not null,
     descr 		descr_t 	not null,
-    wf 			wf_t 		null check(wf between 0.01 and 1.00), /* Service-Level-Agreement weight for the audit document */
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, categ_id)
 );
+
+create trigger trig_updated_ts before update on categories for each row execute procedure tf_updated_ts();
 
 create table channels (
     db_id 		uid_t 		not null,
@@ -262,6 +280,8 @@ create table channels (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, chan_id)
 );
+
+create trigger trig_updated_ts before update on channels for each row execute procedure tf_updated_ts();
 
 create table cities (
     db_id 		uid_t 		not null,
@@ -277,6 +297,8 @@ create table cities (
     primary key(db_id, city_id)
 );
 
+create trigger trig_updated_ts before update on cities for each row execute procedure tf_updated_ts();
+
 create table comment_types (
     db_id 		uid_t 		not null,
     comment_type_id 	uid_t 		not null,
@@ -286,6 +308,8 @@ create table comment_types (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, comment_type_id)
 );
+
+create trigger trig_updated_ts before update on comment_types for each row execute procedure tf_updated_ts();
 
 create table conference_themes (
     db_id 		uid_t 		not null,
@@ -297,6 +321,8 @@ create table conference_themes (
     primary key(db_id, ctheme_id)
 );
 
+create trigger trig_updated_ts before update on conference_themes for each row execute procedure tf_updated_ts();
+
 create table confirmation_types (
     db_id 		uid_t 		not null,
     confirm_id 		uid_t 		not null,
@@ -307,6 +333,8 @@ create table confirmation_types (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, confirm_id)
 );
+
+create trigger trig_updated_ts before update on confirmation_types for each row execute procedure tf_updated_ts();
 
 create table consumers (
     db_id 		uid_t 		not null,
@@ -331,6 +359,8 @@ create table consumers (
     primary key(db_id, consumer_id)
 );
 
+create trigger trig_updated_ts before update on consumers for each row execute procedure tf_updated_ts();
+
 create table contacts (
     db_id 		uid_t 		not null,
     contact_id 		uid_t 		not null,
@@ -353,6 +383,8 @@ create table contacts (
 
 create index i_account_id_contacts on contacts(account_id);
 
+create trigger trig_updated_ts before update on contacts for each row execute procedure tf_updated_ts();
+
 create table countries (
     db_id 		uid_t 		not null,
     country_id 		country_t 	not null,
@@ -362,6 +394,8 @@ create table countries (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, country_id)
 );
+
+create trigger trig_updated_ts before update on countries for each row execute procedure tf_updated_ts();
 
 create table delivery_types (
     db_id 		uid_t 		not null,
@@ -373,6 +407,8 @@ create table delivery_types (
     primary key(db_id, delivery_type_id)
 );
 
+create trigger trig_updated_ts before update on delivery_types for each row execute procedure tf_updated_ts();
+
 create table departments (
     db_id 		uid_t 		not null,
     dep_id		uid_t		not null,
@@ -383,6 +419,8 @@ create table departments (
     primary key(db_id, dep_id)
 );
 
+create trigger trig_updated_ts before update on departments for each row execute procedure tf_updated_ts();
+
 create table discard_types (
     db_id 		uid_t 		not null,
     discard_type_id 	uid_t 		not null,
@@ -392,6 +430,8 @@ create table discard_types (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, discard_type_id)
 );
+
+create trigger trig_updated_ts before update on discard_types for each row execute procedure tf_updated_ts();
 
 create table distributors (
     db_id 		uid_t 		not null,
@@ -406,6 +446,8 @@ create table distributors (
     primary key(db_id, distr_id)
 );
 
+create trigger trig_updated_ts before update on distributors for each row execute procedure tf_updated_ts();
+
 create table equipment_types (
     db_id 		uid_t 		not null,
     equipment_type_id 	uid_t		not null,
@@ -416,6 +458,8 @@ create table equipment_types (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, equipment_type_id)
 );
+
+create trigger trig_updated_ts before update on equipment_types for each row execute procedure tf_updated_ts();
 
 create table equipments (
     db_id 		uid_t 		not null,
@@ -431,6 +475,8 @@ create table equipments (
     primary key(db_id, equipment_id)
 );
 
+create trigger trig_updated_ts before update on equipments for each row execute procedure tf_updated_ts();
+
 create table genders (
     db_id 		uid_t 		not null,
     gend_id 		uid_t 		not null,
@@ -441,6 +487,8 @@ create table genders (
     primary key(db_id, gend_id)
 );
 
+create trigger trig_updated_ts before update on genders for each row execute procedure tf_updated_ts();
+
 create table job_titles (
     db_id 		uid_t 		not null,
     job_title_id 	uid_t 		not null,
@@ -450,6 +498,21 @@ create table job_titles (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, job_title_id)
 );
+
+create trigger trig_updated_ts before update on job_titles for each row execute procedure tf_updated_ts();
+
+create table kinds (
+    db_id 		uid_t 		not null,
+    kind_id 		uid_t		not null,
+    descr 		descr_t		not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, kind_id)
+);
+
+create trigger trig_updated_ts before update on kinds for each row execute procedure tf_updated_ts();
 
 create table manufacturers (
     db_id 		uid_t 		not null,
@@ -462,6 +525,8 @@ create table manufacturers (
     primary key(db_id, manuf_id)
 );
 
+create trigger trig_updated_ts before update on manufacturers for each row execute procedure tf_updated_ts();
+
 create table matrix_types (
     db_id 		uid_t 		not null,
     matrix_type_id 	uid_t 		not null,
@@ -472,16 +537,26 @@ create table matrix_types (
     primary key(db_id, matrix_type_id)
 );
 
+create trigger trig_updated_ts before update on matrix_types for each row execute procedure tf_updated_ts();
+
 create table matrices (
     db_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
+    placement_id 	uid_t 		not null,
     prod_id 		uid_t 		not null,
     matrix_type_id 	uid_t 		not null,
     row_no 		int32_t 	null, -- ordering
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, prod_id, matrix_type_id)
+    primary key (db_id, account_id, placement_id, prod_id, matrix_type_id)
 );
+
+create trigger trig_updated_ts before update on matrices for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on my_accounts for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on my_cities for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on my_regions for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on my_retail_chains for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on my_routes for each row execute procedure tf_updated_ts();
 
 create table my_accounts (
     db_id 		uid_t 		not null,
@@ -492,6 +567,8 @@ create table my_accounts (
     primary key (db_id, user_id, account_id)
 );
 
+create trigger trig_updated_ts before update on my_accounts for each row execute procedure tf_updated_ts();
+
 create table my_cities (
     db_id 		uid_t 		not null,
     user_id 		uid_t 		not null,
@@ -500,6 +577,8 @@ create table my_cities (
     updated_ts 		ts_auto_t 	not null,
     primary key (db_id, user_id, city_id)
 );
+
+create trigger trig_updated_ts before update on my_cities for each row execute procedure tf_updated_ts();
 
 create table my_regions (
     db_id 		uid_t 		not null,
@@ -510,6 +589,8 @@ create table my_regions (
     primary key (db_id, user_id, region_id)
 );
 
+create trigger trig_updated_ts before update on my_regions for each row execute procedure tf_updated_ts();
+
 create table my_retail_chains (
     db_id 		uid_t 		not null,
     user_id 		uid_t 		not null,
@@ -519,6 +600,8 @@ create table my_retail_chains (
     updated_ts 		ts_auto_t 	not null,
     primary key (db_id, user_id, rc_id, region_id)
 );
+
+create trigger trig_updated_ts before update on my_retail_chains for each row execute procedure tf_updated_ts();
 
 create table my_routes (
     db_id 		uid_t 		not null,
@@ -535,6 +618,8 @@ create table my_routes (
 
 create index i_user_id_p_date_my_routes on my_routes(user_id, p_date);
 
+create trigger trig_updated_ts before update on my_routes for each row execute procedure tf_updated_ts();
+
 create table oos_types (
     db_id 		uid_t 		not null,
     oos_type_id		uid_t		not null,
@@ -545,6 +630,8 @@ create table oos_types (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, oos_type_id)
 );
+
+create trigger trig_updated_ts before update on oos_types for each row execute procedure tf_updated_ts();
 
 create table order_params (
     db_id 		uid_t 		not null,
@@ -557,6 +644,8 @@ create table order_params (
     primary key (db_id, distr_id, order_param_id)
 );
 
+create trigger trig_updated_ts before update on order_params for each row execute procedure tf_updated_ts();
+
 create table order_types (
     db_id 		uid_t 		not null,
     order_type_id 	uid_t 		not null,
@@ -566,6 +655,8 @@ create table order_types (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, order_type_id)
 );
+
+create trigger trig_updated_ts before update on order_types for each row execute procedure tf_updated_ts();
 
 create table ownership_types (
     db_id 		uid_t 		not null,
@@ -577,6 +668,8 @@ create table ownership_types (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, ownership_type_id)
 );
+
+create trigger trig_updated_ts before update on ownership_types for each row execute procedure tf_updated_ts();
 
 create table packs (
     db_id 		uid_t 		not null,
@@ -593,16 +686,21 @@ create table packs (
     primary key (db_id, pack_id, prod_id)
 );
 
+create trigger trig_updated_ts before update on packs for each row execute procedure tf_updated_ts();
+
 create table payment_methods (
     db_id 		uid_t 		not null,
     payment_method_id 	uid_t 		not null,
     descr 		descr_t 	not null,
     encashment 		bool_t 		null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, payment_method_id)
 );
+
+create trigger trig_updated_ts before update on payment_methods for each row execute procedure tf_updated_ts();
 
 create table pending_types (
     db_id 		uid_t 		not null,
@@ -613,6 +711,8 @@ create table pending_types (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, pending_type_id)
 );
+
+create trigger trig_updated_ts before update on pending_types for each row execute procedure tf_updated_ts();
 
 create table photo_params (
     db_id 		uid_t 		not null,
@@ -625,6 +725,8 @@ create table photo_params (
     primary key(db_id, photo_param_id)
 );
 
+create trigger trig_updated_ts before update on photo_params for each row execute procedure tf_updated_ts();
+
 create table photo_types (
     db_id 		uid_t 		not null,
     photo_type_id	uid_t		not null,
@@ -635,6 +737,8 @@ create table photo_types (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, photo_type_id)
 );
+
+create trigger trig_updated_ts before update on photo_types for each row execute procedure tf_updated_ts();
 
 create table placements (
     db_id 		uid_t 		not null,
@@ -647,18 +751,21 @@ create table placements (
     primary key(db_id, placement_id)
 );
 
+create trigger trig_updated_ts before update on placements for each row execute procedure tf_updated_ts();
+
 create table pos_materials (
     db_id 		uid_t 		not null,
     posm_id 		uid_t 		not null,
     descr 		descr_t 	not null,
-    country_id		country_t 	null,
-    brand_id 		uid_t 		null,
+    brand_ids 		uids_t 		null,
     placement_ids 	uids_t 		null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, posm_id)
 );
+
+create trigger trig_updated_ts before update on pos_materials for each row execute procedure tf_updated_ts();
 
 create table potentials (
     db_id 		uid_t 		not null,
@@ -670,12 +777,14 @@ create table potentials (
     primary key(db_id, poten_id)
 );
 
+create trigger trig_updated_ts before update on potentials for each row execute procedure tf_updated_ts();
+
 create table products (
     db_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
     pid 		uid_t 		null,
     ftype 		ftype_t 	not null,
-    manuf_id 		uid_t 		null,
+    group_id 		uid_t 		null,
     brand_id 		uid_t 		null,
     categ_id 		uid_t 		null,
     shelf_life_id 	uid_t 		null,
@@ -686,13 +795,13 @@ create table products (
     novelty 		bool_t 		null,
     promo 		bool_t 		null,
     barcodes 		codes_t 	null,
-    country_ids 	countries_t 	null,
-    rc_id 		uid_t 		null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, prod_id)
 );
+
+create trigger trig_updated_ts before update on products for each row execute procedure tf_updated_ts();
 
 create table quest_names (
     db_id 		uid_t 		not null,
@@ -704,28 +813,26 @@ create table quest_names (
     primary key(db_id, qname_id)
 );
 
+create trigger trig_updated_ts before update on quest_names for each row execute procedure tf_updated_ts();
+
 create table quest_rows (
     db_id 		uid_t 		not null,
     qname_id 		uid_t 		not null,
     qrow_id 		uid_t 		not null,
-    pid			uid_t		null,
-    ftype		ftype_t		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, qname_id, qrow_id)
 );
 
+create trigger trig_updated_ts before update on quest_rows for each row execute procedure tf_updated_ts();
+
 create table rating_criterias (
     db_id 		uid_t 		not null,
     rating_criteria_id 	uid_t 		not null,
-    pid 		uid_t 		null,
-    ftype 		ftype_t 	not null,
     descr 		descr_t 	not null,
-    wf 			wf_t 		null /*check((ftype=0 and wf is not null and wf between 0.01 and 1.00) or (ftype<>0 and wf is null))*/,
-    mandatory 		bool_t 		null /*check((ftype=0 and mandatory is not null) or (ftype<>0 and mandatory is null))*/,
-    extra_info 		note_t 		null,
     row_no 		int32_t 	null, -- ordering,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -733,18 +840,21 @@ create table rating_criterias (
     primary key(db_id, rating_criteria_id)
 );
 
+create trigger trig_updated_ts before update on rating_criterias for each row execute procedure tf_updated_ts();
+
 create table rating_scores (
     db_id 		uid_t 		not null,
     rating_score_id 	uid_t 		not null,
     descr 		descr_t 	not null,
     score 		int32_t 	not null /*check(score >= 0)*/,
-    wf 			wf_t 		not null /*check(wf between 0.00 and 1.00)*/,
     row_no 		int32_t 	null, -- ordering,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, rating_score_id)
 );
+
+create trigger trig_updated_ts before update on rating_scores for each row execute procedure tf_updated_ts();
 
 create table receipt_types (
     db_id 		uid_t 		not null,
@@ -756,6 +866,8 @@ create table receipt_types (
     primary key(db_id, receipt_type_id)
 );
 
+create trigger trig_updated_ts before update on receipt_types for each row execute procedure tf_updated_ts();
+
 create table reclamation_types (
     db_id 		uid_t 		not null,
     reclamation_type_id uid_t 		not null,
@@ -765,6 +877,8 @@ create table reclamation_types (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, reclamation_type_id)
 );
+
+create trigger trig_updated_ts before update on reclamation_types for each row execute procedure tf_updated_ts();
 
 create table regions (
     db_id 		uid_t 		not null,
@@ -776,6 +890,8 @@ create table regions (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, region_id)
 );
+
+create trigger trig_updated_ts before update on regions for each row execute procedure tf_updated_ts();
 
 create table retail_chains (
     db_id 		uid_t 		not null,
@@ -790,6 +906,8 @@ create table retail_chains (
     primary key(db_id, rc_id)
 );
 
+create trigger trig_updated_ts before update on retail_chains for each row execute procedure tf_updated_ts();
+
 create table segments (
     db_id 		uid_t 		not null,
     seg_id 		uid_t 		not null,
@@ -799,6 +917,8 @@ create table segments (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, seg_id)
 );
+
+create trigger trig_updated_ts before update on segments for each row execute procedure tf_updated_ts();
 
 create table service_types (
     db_id 		uid_t 		not null,
@@ -810,6 +930,8 @@ create table service_types (
     primary key(db_id, service_type_id)
 );
 
+create trigger trig_updated_ts before update on service_types for each row execute procedure tf_updated_ts();
+
 create table shelf_lifes (
     db_id 		uid_t 		not null,
     shelf_life_id 	uid_t 		not null,
@@ -819,6 +941,8 @@ create table shelf_lifes (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, shelf_life_id)
 );
+
+create trigger trig_updated_ts before update on shelf_lifes for each row execute procedure tf_updated_ts();
 
 create table targets (
     db_id 		uid_t 		not null,
@@ -838,6 +962,8 @@ create table targets (
     primary key(db_id, target_id)
 );
 
+create trigger trig_updated_ts before update on targets for each row execute procedure tf_updated_ts();
+
 create table target_types (
     db_id 		uid_t 		not null,
     target_type_id 	uid_t 		not null,
@@ -848,15 +974,12 @@ create table target_types (
     primary key(db_id, target_type_id)
 );
 
+create trigger trig_updated_ts before update on target_types for each row execute procedure tf_updated_ts();
+
 create table testing_criterias (
     db_id 		uid_t 		not null,
     testing_criteria_id uid_t 		not null,
-    pid 		uid_t 		null,
-    ftype 		ftype_t 	not null,
     descr 		descr_t 	not null,
-    wf 			wf_t 		null /*check((ftype=0 and wf is not null and wf between 0.01 and 1.00) or (ftype<>0 and wf is null))*/,
-    mandatory 		bool_t 		null /*check((ftype=0 and mandatory is not null) or (ftype<>0 and mandatory is null))*/,
-    extra_info 		note_t 		null,
     row_no 		int32_t 	null, -- ordering,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -864,12 +987,13 @@ create table testing_criterias (
     primary key(db_id, testing_criteria_id)
 );
 
+create trigger trig_updated_ts before update on testing_criterias for each row execute procedure tf_updated_ts();
+
 create table testing_scores (
     db_id 		uid_t 		not null,
     testing_score_id 	uid_t 		not null,
     descr 		descr_t 	not null,
     score 		int32_t 	not null /*check(score >= 0)*/,
-    wf 			wf_t 		not null /*check(wf between 0.00 and 1.00)*/,
     row_no 		int32_t 	null, -- ordering,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -877,16 +1001,20 @@ create table testing_scores (
     primary key(db_id, testing_score_id)
 );
 
+create trigger trig_updated_ts before update on testing_scores for each row execute procedure tf_updated_ts();
+
 create table training_materials (
     db_id 		uid_t 		not null,
     tm_id 		uid_t 		not null,
-    brand_id 		uid_t 		null,
     descr 		descr_t 	not null,
+    brand_ids 		uids_t 		null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, tm_id)
 );
+
+create trigger trig_updated_ts before update on training_materials for each row execute procedure tf_updated_ts();
 
 create table training_types (
     db_id 		uid_t 		not null,
@@ -900,6 +1028,8 @@ create table training_types (
     primary key(db_id, training_type_id)
 );
 
+create trigger trig_updated_ts before update on training_types for each row execute procedure tf_updated_ts();
+
 create table unsched_types (
     db_id 		uid_t 		not null,
     unsched_type_id	uid_t		not null,
@@ -910,6 +1040,8 @@ create table unsched_types (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, unsched_type_id)
 );
+
+create trigger trig_updated_ts before update on unsched_types for each row execute procedure tf_updated_ts();
 
 create table users (
     db_id 		uid_t 		not null,
@@ -932,6 +1064,8 @@ create table users (
     primary key(db_id, user_id)
 );
 
+create trigger trig_updated_ts before update on users for each row execute procedure tf_updated_ts();
+
 create table warehouses (
     db_id 		uid_t 		not null,
     distr_id 		uid_t 		not null,
@@ -943,16 +1077,7 @@ create table warehouses (
     primary key (db_id, distr_id, wareh_id)
 );
 
-create table wareh_stocks (
-    db_id 		uid_t 		not null,
-    distr_id 		uid_t 		not null,
-    wareh_id 		uid_t 		not null,
-    prod_id 		uid_t 		not null,
-    qty 		int32_t 	not null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, distr_id, wareh_id, prod_id)
-);
+create trigger trig_updated_ts before update on warehouses for each row execute procedure tf_updated_ts();
 
 create table working_hours (
     db_id 		uid_t 		not null,
@@ -964,71 +1089,6 @@ create table working_hours (
     primary key(db_id, working_hours_id)
 );
 
-create trigger trig_updated_ts before update on accounts for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on account_params for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on activity_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on addition_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on agencies for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on agreements for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on attributes for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on audit_criterias for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on brands for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on canceling_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on categories for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on channels for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on cities for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on comment_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on conference_themes for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on confirmation_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on consumers for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on contacts for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on countries for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on delivery_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on departments for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on discard_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on distributors for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on genders for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on job_titles for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on manufacturers for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on matrix for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on my_accounts for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on my_cities for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on my_regions for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on my_retail_chains for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on my_routes for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on regions for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on oos_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on order_params for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on order_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on packs for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on pending_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on photo_params for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on photo_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on placements for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on pos_materials for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on potentials for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on products for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on payment_methods for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on quest_names for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on quest_rows for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on rating_criterias for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on rating_scores for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on receipt_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on reclamation_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on retail_chains for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on segments for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on service_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on shelf_lifes for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on targets for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on target_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on testing_criterias for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on testing_scores for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on training_materials for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on training_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on unsched_types for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on users for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on warehouses for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on wareh_stocks for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on working_hours for each row execute procedure tf_updated_ts();
 
 
@@ -1059,6 +1119,8 @@ create table additions (
     primary key(db_id, doc_id)
 );
 
+create trigger trig_updated_ts before update on additions for each row execute procedure tf_updated_ts();
+
 create table cancellations (
     db_id 		uid_t 		not null,
     user_id		uid_t 		not null,
@@ -1070,6 +1132,8 @@ create table cancellations (
     updated_ts		ts_auto_t 	not null,
     primary key (db_id, user_id, route_date)
 );
+
+create trigger trig_updated_ts before update on cancellations for each row execute procedure tf_updated_ts();
 
 create table comments (
     db_id 		uid_t 		not null,
@@ -1084,6 +1148,8 @@ create table comments (
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
 );
+
+create trigger trig_updated_ts before update on comments for each row execute procedure tf_updated_ts();
 
 create table conferences (
     db_id 		uid_t 		not null,
@@ -1105,6 +1171,8 @@ create table conferences (
     primary key(db_id, doc_id)
 );
 
+create trigger trig_updated_ts before update on conferences for each row execute procedure tf_updated_ts();
+
 create table confirmations (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1120,6 +1188,8 @@ create table confirmations (
     primary key(db_id, doc_id)
 );
 
+create trigger trig_updated_ts before update on confirmations for each row execute procedure tf_updated_ts();
+
 create table deletions (
     db_id 		uid_t 		not null,
     account_id  	uid_t 		not null,
@@ -1134,6 +1204,8 @@ create table deletions (
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, account_id)
 );
+
+create trigger trig_updated_ts before update on deletions for each row execute procedure tf_updated_ts();
 
 create table discards (
     db_id 		uid_t 		not null,
@@ -1152,6 +1224,8 @@ create table discards (
     primary key(db_id, account_id, activity_type_id, route_date)
 );
 
+create trigger trig_updated_ts before update on discards for each row execute procedure tf_updated_ts();
+
 create table dyn_advt (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
@@ -1165,6 +1239,8 @@ create table dyn_advt (
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, fix_date, account_id, placement_id, posm_id)
 );
+
+create trigger trig_updated_ts before update on dyn_advt for each row execute procedure tf_updated_ts();
 
 create table dyn_audits (
     db_id 		uid_t 		not null,
@@ -1187,6 +1263,8 @@ create table dyn_audits (
     primary key(db_id, fix_date, account_id, categ_id, audit_criteria_id)
 );
 
+create trigger trig_updated_ts before update on dyn_audits for each row execute procedure tf_updated_ts();
+
 create table dyn_checkups (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
@@ -1200,6 +1278,8 @@ create table dyn_checkups (
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, fix_date, account_id, placement_id, prod_id)
 );
+
+create trigger trig_updated_ts before update on dyn_checkups for each row execute procedure tf_updated_ts();
 
 create table dyn_oos (
     db_id 		uid_t 		not null,
@@ -1215,6 +1295,8 @@ create table dyn_oos (
     primary key(db_id, fix_date, account_id, prod_id)
 );
 
+create trigger trig_updated_ts before update on dyn_oos for each row execute procedure tf_updated_ts();
+
 create table dyn_presences (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
@@ -1228,6 +1310,8 @@ create table dyn_presences (
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, fix_date, account_id, prod_id)
 );
+
+create trigger trig_updated_ts before update on dyn_presences for each row execute procedure tf_updated_ts();
 
 create table dyn_prices (
     db_id 		uid_t 		not null,
@@ -1244,6 +1328,8 @@ create table dyn_prices (
     primary key(db_id, fix_date, account_id, prod_id)
 );
 
+create trigger trig_updated_ts before update on dyn_prices for each row execute procedure tf_updated_ts();
+
 create table dyn_quests (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
@@ -1257,6 +1343,8 @@ create table dyn_quests (
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, fix_date, account_id, qname_id, qrow_id)
 );
+
+create trigger trig_updated_ts before update on dyn_quests for each row execute procedure tf_updated_ts();
 
 create table dyn_ratings (
     db_id 		uid_t 		not null,
@@ -1276,6 +1364,8 @@ create table dyn_ratings (
     primary key(db_id, fix_date, account_id, employee_id, rating_criteria_id)
 );
 
+create trigger trig_updated_ts before update on dyn_ratings for each row execute procedure tf_updated_ts();
+
 create table dyn_reviews (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
@@ -1292,6 +1382,8 @@ create table dyn_reviews (
     primary key(db_id, fix_date, employee_id)
 );
 
+create trigger trig_updated_ts before update on dyn_reviews for each row execute procedure tf_updated_ts();
+
 create table dyn_shelfs (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
@@ -1300,16 +1392,19 @@ create table dyn_shelfs (
     brand_id 		uid_t 		not null,
     facing 		int32_t 	null check (facing >= 0),
     assortment 		int32_t 	null check (assortment >= 0),
-    target 		wf_t 		null check(target between 0.01 and 1.00),
     sos 		numeric(6,5) 	null check(sos between 0.0 and 1.0),
     soa 		numeric(6,5) 	null check(soa between 0.0 and 1.0),
     photos		blobs_t		null,
+    sos_target 		wf_t 		null check(sos_target between 0.01 and 1.00),
+    soa_target 		wf_t 		null check(soa_target between 0.01 and 1.00),
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, fix_date, account_id, categ_id, brand_id)
 );
+
+create trigger trig_updated_ts before update on dyn_shelfs for each row execute procedure tf_updated_ts();
 
 create table dyn_stocks (
     db_id 		uid_t 		not null,
@@ -1323,6 +1418,8 @@ create table dyn_stocks (
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, fix_date, account_id, prod_id)
 );
+
+create trigger trig_updated_ts before update on dyn_stocks for each row execute procedure tf_updated_ts();
 
 create table dyn_testings (
     db_id 		uid_t 		not null,
@@ -1342,6 +1439,8 @@ create table dyn_testings (
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, fix_date, account_id, contact_id, testing_criteria_id)
 );
+
+create trigger trig_updated_ts before update on dyn_testings for each row execute procedure tf_updated_ts();
 
 create table orders (
     db_id 		uid_t 		not null,
@@ -1378,6 +1477,8 @@ create table orders (
     primary key (db_id, doc_id, prod_id)
 );
 
+create trigger trig_updated_ts before update on orders for each row execute procedure tf_updated_ts();
+
 create table photos (
     db_id 		uid_t 		not null,
     doc_id		uid_t		not null,
@@ -1394,6 +1495,8 @@ create table photos (
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
 );
+
+create trigger trig_updated_ts before update on photos for each row execute procedure tf_updated_ts();
 
 create table presentations (
     db_id 		uid_t 		not null,
@@ -1412,6 +1515,8 @@ create table presentations (
     primary key(db_id, doc_id)
 );
 
+create trigger trig_updated_ts before update on presentations for each row execute procedure tf_updated_ts();
+
 create table receipts (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1426,6 +1531,8 @@ create table receipts (
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
 );
+
+create trigger trig_updated_ts before update on receipts for each row execute procedure tf_updated_ts();
 
 create table reclamations (
     db_id 		uid_t 		not null,
@@ -1452,6 +1559,8 @@ create table reclamations (
     primary key (db_id, doc_id, prod_id)
 );
 
+create trigger trig_updated_ts before update on reclamations for each row execute procedure tf_updated_ts();
+
 create table trainings (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1465,6 +1574,8 @@ create table trainings (
     primary key(db_id, doc_id)
 );
 
+create trigger trig_updated_ts before update on trainings for each row execute procedure tf_updated_ts();
+
 create table unsched (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1476,6 +1587,8 @@ create table unsched (
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
 );
+
+create trigger trig_updated_ts before update on unsched for each row execute procedure tf_updated_ts();
 
 create table user_activities (
     db_id 		uid_t 		not null,
@@ -1504,6 +1617,8 @@ create index i_user_id_user_activities on user_activities (user_id);
 create index i_fix_date_user_activities on user_activities (fix_date);
 create index i_daily_user_activities on user_activities (user_id, fix_date);
 create index i_route_date_user_activities on user_activities(route_date);
+
+create trigger trig_updated_ts before update on user_activities for each row execute procedure tf_updated_ts();
 
 create table user_documents (
     db_id 		uid_t 		not null,
@@ -1535,6 +1650,8 @@ create index i_user_id_user_documents on user_documents (user_id);
 create index i_fix_date_user_documents on user_documents (fix_date);
 create index i_daily_user_documents on user_documents (user_id, fix_date);
 
+create trigger trig_updated_ts before update on user_documents for each row execute procedure tf_updated_ts();
+
 create table user_locations (
     db_id 		uid_t 		not null,
     act_id 		uid_t 		not null,
@@ -1560,6 +1677,8 @@ create table user_locations (
 create index i_user_id_user_locations on user_locations (user_id);
 create index i_fix_date_user_locations on user_locations (fix_date);
 create index i_daily_user_locations on user_locations (user_id, fix_date);
+
+create trigger trig_updated_ts before update on user_locations for each row execute procedure tf_updated_ts();
 
 create table user_reports (
     db_id 		uid_t 		not null,
@@ -1588,6 +1707,8 @@ create index i_user_id_user_reports on user_reports (user_id);
 create index i_fix_date_user_reports on user_reports (fix_date);
 create index i_daily_user_reports on user_reports (user_id, fix_date);
 
+create trigger trig_updated_ts before update on user_reports for each row execute procedure tf_updated_ts();
+
 create table user_works (
     db_id 		uid_t 		not null,
     user_id 		uid_t 		not null,
@@ -1610,35 +1731,6 @@ create index i_user_id_user_works on user_works (user_id);
 create index i_fix_date_user_works on user_works (fix_date);
 create index i_daily_user_works on user_works (user_id, fix_date);
 
-create trigger trig_updated_ts before update on additions for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on cancellations for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on comments for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on conferences for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on confirmations for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on deletions for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on discards for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_advt for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_audits for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_checkups for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_oos for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_presences for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_prices for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_quests for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_ratings for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_reviews for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_shelfs for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_stocks for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on dyn_testings for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on orders for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on photos for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on presentations for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on receipts for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on reclamations for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on unsched for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on user_activities for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on user_documents for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on user_locations for each row execute procedure tf_updated_ts();
-create trigger trig_updated_ts before update on user_reports for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on user_works for each row execute procedure tf_updated_ts();
 
 

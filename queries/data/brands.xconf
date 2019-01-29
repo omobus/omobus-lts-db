@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<brands templ="%brand_id%;%descr%;%dep_id%;%multi%;%competitor%;%row_no%;">
+<brands templ="%brand_id%;%descr%;%manuf_id%;%dep_id%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,20 +20,18 @@ select count(*) exist from brands
 </check_exist>
 <update>
   <![CDATA[
-update brands set descr='%descr%', dep_id='%dep_id%', multi=string_to_array('%multi%',','), competitor=case when '%competitor%'='' then null else 0%competitor% end, row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
+update brands set descr='%descr%', manuf_id='%manuf_id%', dep_id=case when '%dep_id%'='' then null else '%dep_id%' end, row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
     where db_id = '%ErpCode%' and brand_id = '%brand_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into brands (db_id, brand_id, descr, dep_id, multi, competitor, row_no, hidden) 
-    values ('%ErpCode%', '%brand_id%', '%descr%', '%dep_id%', string_to_array('%multi%',','), case when '%competitor%'='' then null else 0%competitor% end, case when '%row_no%'='' then null else 0%row_no% end, 0)
+insert into brands (db_id, brand_id, descr, manuf_id, dep_id, row_no, hidden) 
+    values ('%ErpCode%', '%brand_id%', '%descr%', '%manuf_id%', case when '%dep_id%'='' then null else '%dep_id%' end, case when '%row_no%'='' then null else 0%row_no% end, 0)
   ]]>
 </insert>
 <end>
   <![CDATA[
-update brands set dep_id=null where dep_id='';
-update brands set multi=null where array_length(multi, 1) is null or array_length(multi, 1) = 0;
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

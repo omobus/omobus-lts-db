@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<training_materials templ="%tm_id%;%descr%;%brand_id%;">
+<training_materials templ="%tm_id%;%descr%;%brand_ids%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from training_materials
 </check_exist>
 <update>
   <![CDATA[
-update training_materials set descr='%descr%', brand_id='%brand_id%', hidden=0 
+update training_materials set descr='%descr%', brand_ids=case when '%brand_ids%'='' then null else string_to_array('%brand_ids%',',') end, hidden=0 
     where db_id = '%ErpCode%' and tm_id = '%tm_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into training_materials (db_id, tm_id, descr, brand_id, hidden) 
-    values ('%ErpCode%', '%tm_id%', '%descr%', '%brand_id%', 0)
+insert into training_materials (db_id, tm_id, descr, brand_ids, hidden) 
+    values ('%ErpCode%', '%tm_id%', '%descr%', case when '%brand_ids%'='' then null else string_to_array('%brand_ids%',',') end, 0)
   ]]>
 </insert>
 <end>

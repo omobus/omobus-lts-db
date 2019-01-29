@@ -9,7 +9,7 @@ select count(*) from data_stream
 <check_exist>
   <![CDATA[
 select count(*) exist from dyn_reviews 
-    where db_id = '%ErpCode%' and fix_date = '%fix_date%' and and employee_id = '%employee_id%'
+    where db_id = '%ErpCode%' and fix_date = '%fix_date%' and employee_id = '%employee_id%'
   ]]>
 </check_exist>
 <update>

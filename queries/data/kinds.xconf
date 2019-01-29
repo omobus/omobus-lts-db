@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<categories templ="%categ_id%;%descr%;%row_no%;">
+<kinds templ="%kind_id%;%descr%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -8,26 +8,26 @@ select count(*) from data_stream
 </verification>
 <begin>
   <![CDATA[
-update categories set hidden=1
+update kinds set hidden=1
     where db_id = '%ErpCode%' and hidden = 0
   ]]>
 </begin>
 <check_exist>
   <![CDATA[
-select count(*) exist from categories 
-    where db_id = '%ErpCode%' and categ_id = '%categ_id%'
+select count(*) exist from kinds 
+    where db_id = '%ErpCode%' and kind_id = '%kind_id%'
   ]]>
 </check_exist>
 <update>
   <![CDATA[
-update categories set descr='%descr%', row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
-    where db_id = '%ErpCode%' and categ_id = '%categ_id%'
+update kinds set descr='%descr%', row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
+    where db_id = '%ErpCode%' and kind_id = '%kind_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into categories (db_id, categ_id, descr, row_no, hidden)
-    values ('%ErpCode%', '%categ_id%', '%descr%', case when '%row_no%'='' then null else 0%row_no% end, 0)
+insert into kinds (db_id, kind_id, descr, row_no, hidden)
+    values ('%ErpCode%', '%kind_id%', '%descr%', case when '%row_no%'='' then null else 0%row_no% end, 0)
   ]]>
 </insert>
 <end>
@@ -36,4 +36,4 @@ select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_h
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
-</categories>
+</kinds>

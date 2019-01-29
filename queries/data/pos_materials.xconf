@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pos_materials templ="%posm_id%;%descr%;%brand_id%;%country_id%;%placement_ids%;">
+<pos_materials templ="%posm_id%;%descr%;%brand_ids%;%placement_ids%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from pos_materials
 </check_exist>
 <update>
   <![CDATA[
-update pos_materials set descr='%descr%', brand_id='%brand_id%', country_id='%country_id%', placement_ids=string_to_array('%placement_ids%', ','), hidden=0 
+update pos_materials set descr='%descr%', brand_ids=case when '%brand_ids%'='' then null else string_to_array('%brand_ids%',',') end, placement_ids=case when '%placement_ids%'='' then null else string_to_array('%placement_ids%', ',') end, hidden=0 
     where db_id = '%ErpCode%' and posm_id = '%posm_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into pos_materials (db_id, posm_id, descr, brand_id, country_id, placement_ids, hidden) 
-    values ('%ErpCode%', '%posm_id%', '%descr%', '%brand_id%', '%country_id%', string_to_array('%placement_ids%', ','), 0)
+insert into pos_materials (db_id, posm_id, descr, brand_ids, placement_ids, hidden) 
+    values ('%ErpCode%', '%posm_id%', '%descr%', case when '%brand_ids%'='' then null else string_to_array('%brand_ids%',',') end, case when '%placement_ids%'='' then null else string_to_array('%placement_ids%', ',') end, 0)
   ]]>
 </insert>
 <end>

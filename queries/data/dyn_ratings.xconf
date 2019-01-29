@@ -14,7 +14,7 @@ select count(*) exist from dyn_ratings
 </check_exist>
 <update>
   <![CDATA[
-update dyn_ratings set rating_score_id=case when '%rating_score_id%'='' then null else '%rating_score_id%' end, criteria_wf=%criteria_wf%, score_wf=case when '%score_wf%'='' then null else 0%score_wf% end, case when '%score%'='' then null else 0%score% end, note=case when '%note%'='' then null else '%note%' end, user_id='%user_id%', fix_dt='%fix_dt%'
+update dyn_ratings set rating_score_id=case when '%rating_score_id%'='' then null else '%rating_score_id%' end, criteria_wf=%criteria_wf%, score_wf=case when '%score_wf%'='' then null else 0%score_wf% end, score=case when '%score%'='' then null else 0%score% end, note=case when '%note%'='' then null else '%note%' end, user_id='%user_id%', fix_dt='%fix_dt%'
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and employee_id = '%employee_id%' and rating_criteria_id = '%rating_criteria_id%'
   ]]>
 </update>

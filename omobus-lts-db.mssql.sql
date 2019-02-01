@@ -337,30 +337,6 @@ create table confirmation_types (
 );
 
 
-create table consumers (
-    db_id 		uid_t 		not null,
-    consumer_id 	uid_t 		not null,
-    name 		descr_t 	not null,
-    surname 		descr_t 	not null,
-    patronymic 		descr_t 	null,
-    email 		email_t 	not null,
-    mobile 		phone_t 	null,
-    birthday 		date_t 		null,
-    city_id 		uid_t 		null,
-    extra_info 		note_t 		null,
-    childbirth 		month_t 	null,
-    childgend_id 	uid_t 		null, 	/* child's gender */
-    author_id 		uid_t 		not null,
-    seg_id 		uid_t 		null,
-    subscribed 		bool_t 		null,
-    invited_ts 		datetimetz_t 	null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, consumer_id)
-);
-
-
 create table contacts (
     db_id 		uid_t 		not null,
     contact_id 		uid_t 		not null,
@@ -466,17 +442,6 @@ create table equipments (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, equipment_id)
-);
-
-
-create table genders (
-    db_id 		uid_t 		not null,
-    gend_id 		uid_t 		not null,
-    descr 		descr_t 	not null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, gend_id)
 );
 
 
@@ -860,17 +825,6 @@ create table retail_chains (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, rc_id)
-);
-
-
-create table segments (
-    db_id 		uid_t 		not null,
-    seg_id 		uid_t 		not null,
-    descr 		descr_t 	not null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, seg_id)
 );
 
 
@@ -1427,8 +1381,6 @@ create table presentations (
     user_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
     participants 	int32_t 	not null,
-    lactating_mothers 	int32_t 	null,
-    pregnant_women 	int32_t 	null,
     tm_ids 		uids_t 		null,
     doc_note 		note_t 		null,
     photo		blob_t		null,

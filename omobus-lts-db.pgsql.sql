@@ -108,12 +108,9 @@ create table accounts (
     rc_id 		uid_t		null, 		/* -> retail_chains */
     chan_id 		uid_t 		null,
     poten_id 		uid_t 		null,
-    outlet_size 	int32_t 	null,
     cash_register 	int32_t 	null,
     latitude 		gps_t 		null,
     longitude 		gps_t 		null,
-    working_hours_id 	uid_t 		null,
-    service_type_id 	uid_t 		null,
     attr_ids 		uids_t 		null,
     locked 		bool_t 		null default 0,
     approved 		bool_t 		null default 0,
@@ -124,21 +121,6 @@ create table accounts (
 );
 
 create trigger trig_updated_ts before update on accounts for each row execute procedure tf_updated_ts();
-
-create table account_params (
-    db_id 		uid_t 		not null,
-    distr_id 		uid_t 		not null,
-    account_id 		uid_t 		not null,
-    group_price_id 	uid_t 		null,
-    payment_delay 	int32_t 	null,
-    payment_method_id 	uid_t 		null,
-    wareh_ids 		uids_t 		null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, distr_id, account_id)
-);
-
-create trigger trig_updated_ts before update on account_params for each row execute procedure tf_updated_ts();
 
 create table activity_types (
     db_id 		uid_t 		not null,
@@ -747,7 +729,7 @@ create table products (
     prod_id 		uid_t 		not null,
     pid 		uid_t 		null,
     ftype 		ftype_t 	not null,
-    group_id 		uid_t 		null,
+    kind_id 		uid_t 		null,
     brand_id 		uid_t 		null,
     categ_id 		uid_t 		null,
     shelf_life_id 	uid_t 		null,
@@ -870,18 +852,6 @@ create table retail_chains (
 );
 
 create trigger trig_updated_ts before update on retail_chains for each row execute procedure tf_updated_ts();
-
-create table service_types (
-    db_id 		uid_t 		not null,
-    service_type_id 	uid_t 		not null,
-    descr 		descr_t 	not null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, service_type_id)
-);
-
-create trigger trig_updated_ts before update on service_types for each row execute procedure tf_updated_ts();
 
 create table shelf_lifes (
     db_id 		uid_t 		not null,
@@ -1029,18 +999,6 @@ create table warehouses (
 );
 
 create trigger trig_updated_ts before update on warehouses for each row execute procedure tf_updated_ts();
-
-create table working_hours (
-    db_id 		uid_t 		not null,
-    working_hours_id 	uid_t 		not null,
-    descr 		descr_t 	not null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, working_hours_id)
-);
-
-create trigger trig_updated_ts before update on working_hours for each row execute procedure tf_updated_ts();
 
 
 

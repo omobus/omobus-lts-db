@@ -2,5 +2,7 @@
 <trig_after>
   <![CDATA[ 
 /* point: %uid%, %ErpCode% */
+insert into large_objects(blob_id, ptr) select blob_id, ptr from createLO_container;
+delete from createLO_container;
   ]]>
 </trig_after>

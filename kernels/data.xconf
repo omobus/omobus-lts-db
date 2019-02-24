@@ -17,7 +17,7 @@
     ftp.tls="yes"
     ftp.ccc="no"
     ftp.cdc="no"
-    pack.gc="4"
+    pack.gc="1"
     cache="LTS/data/"
     >
 <!--<xi:include href="../queries/data/trig_before.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />-->

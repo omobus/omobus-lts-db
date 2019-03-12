@@ -1938,15 +1938,7 @@ go
 #ifdef MSSQL
 create table large_objects (
     blob_id blob_t not null primary key,
--- **** mssql 2005 and higher ****
-    ptr varbinary(max) null
-    --ptr image null 
-);
-go
-
-create table createLO_container (
-    blob_id blob_t not null primary key,
-    ptr image null 
+    ptr image not null 
 );
 go
 
@@ -1955,19 +1947,11 @@ create procedure createLO
 as
 begin
     declare @c int
-    select @c = count(*) from large_objects where blob_id=@blob_id and ptr is not null and datalength(ptr) > 0
+    select @c = count(*) from large_objects where blob_id=@blob_id
     if @c = 0
 	begin
-	    select @c = count(*) from createLO_container where blob_id=@blob_id and ptr is not null and datalength(ptr) > 0
-	    if @c = 0
-		begin
-		    insert into createLO_container values(@blob_id, 0x0)
-		    select 'dbwritetext' method, 'createLO_container.ptr' destination, ptr from createLO_container where blob_id=@blob_id
-		end
-	    else
-		begin
-		    select 'exist' method, null destination, null ptr
-	    end
+	    insert into large_objects values(@blob_id, 0x0)
+	    select 'dbwritetext' method, 'large_objects.ptr' destination, ptr from large_objects where blob_id=@blob_id
 	end
     else
 	begin
@@ -2176,12 +2160,14 @@ declare
     x ean13 array;
 begin
     perform isn_weak(true);
-    foreach m in array ar
-    loop
-	if m is not null and length(m) = 13 then
-	    x := array_append(x, ean13_in(m::cstring));
-	end if;
-    end loop;
+    if ar is not null then
+	foreach m in array ar
+	loop
+	    if m is not null and length(m) = 13 then
+		x := array_append(x, ean13_in(m::cstring));
+	    end if;
+	end loop;
+    end if;
     --perform isn_weak(false);
     return x;
 end;

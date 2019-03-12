@@ -1718,12 +1718,14 @@ declare
     x ean13 array;
 begin
     perform isn_weak(true);
-    foreach m in array ar
-    loop
-	if m is not null and length(m) = 13 then
-	    x := array_append(x, ean13_in(m::cstring));
-	end if;
-    end loop;
+    if ar is not null then
+	foreach m in array ar
+	loop
+	    if m is not null and length(m) = 13 then
+		x := array_append(x, ean13_in(m::cstring));
+	    end if;
+	end loop;
+    end if;
     --perform isn_weak(false);
     return x;
 end;

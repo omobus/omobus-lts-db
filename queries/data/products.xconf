@@ -20,14 +20,14 @@ select count(*) exist from products
 </check_exist>
 <update>
   <![CDATA[
-update products set pid='%pid%', ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life_id='%shelf_life_id%', kind_id='%kind_id%', brand_id='%brand_id%', categ_id='%categ_id%', obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, barcodes=string_to_array('%barcodes%',','), hidden=0
+update products set pid='%pid%', ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life_id='%shelf_life_id%', kind_id='%kind_id%', brand_id='%brand_id%', categ_id='%categ_id%', obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, barcodes=ean13_in(string_to_array('%barcodes%',',')), hidden=0
     where db_id = '%ErpCode%' and prod_id = '%prod_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[ 
 insert into products (db_id, pid, prod_id, ftype, code, art, descr, kind_id, shelf_life_id, brand_id, categ_id, obsolete, novelty, promo, barcodes, hidden)
-    values ('%ErpCode%', '%pid%', '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', '%kind_id%', '%shelf_life_id%', '%brand_id%', '%categ_id%', 0%obsolete%, 0%novelty%, 0%promo%, string_to_array('%barcodes%',','), 0)
+    values ('%ErpCode%', '%pid%', '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', '%kind_id%', '%shelf_life_id%', '%brand_id%', '%categ_id%', 0%obsolete%, 0%novelty%, 0%promo%, ean13_in(string_to_array('%barcodes%',',')), 0)
   ]]>
 </insert>
 <end>

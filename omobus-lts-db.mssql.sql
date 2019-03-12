@@ -36,6 +36,7 @@
  * ** 
  */
 
+
 set QUOTED_IDENTIFIER on
 go
 create login omobus with password = '0'
@@ -78,6 +79,8 @@ execute sp_addtype descr_t, 'varchar(256)'
 execute sp_addtype doctype_t, 'varchar(24)'
 execute sp_addtype double_t, 'float'
 execute sp_addtype discount_t, 'numeric(5,2)'
+execute sp_addtype ean13_t, 'varchar(13)'
+execute sp_addtype ean13s_t, 'varchar(280)'
 execute sp_addtype email_t, 'varchar(254)'
 execute sp_addtype emails_t, 'varchar(4096)'
 execute sp_addtype ftype_t, 'smallint'
@@ -706,7 +709,7 @@ create table products (
     obsolete 		bool_t 		null,
     novelty 		bool_t 		null,
     promo 		bool_t 		null,
-    barcodes 		codes_t 	null,
+    barcodes 		ean13s_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1747,7 +1750,12 @@ begin
 end
 go
 
-
+create function ean13_in(@arg0 varchar(280)) returns varchar(280)
+as
+begin
+    return @arg0
+end
+go
 
 create table sysparams (
     param_id 		uid_t 		not null primary key,

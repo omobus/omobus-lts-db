@@ -36,6 +36,8 @@
  * ** 
  */
 
+create extension isn;
+
 
 
 -- **** domains ****
@@ -57,6 +59,8 @@ create domain descr_t as varchar(256);
 create domain doctype_t as varchar(24) check (value is null or (value = lower(value)));
 create domain double_t as float8;
 create domain discount_t as numeric(5,2) check (value is null or (value between -100 and 100));
+create domain ean13_t as ean13;
+create domain ean13s_t as ean13 array;
 create domain email_t as varchar(254) /*check(value is null or (char_length(value)>=4 and position('@' in value)>1))*/;
 create domain emails_t as varchar(254) array /*check(value is null or (char_length(value)>=4 and position('@' in value)>1))*/;
 create domain ftype_t as int2 default 0 not null check (value between 0 and 1);
@@ -739,7 +743,7 @@ create table products (
     obsolete 		bool_t 		null,
     novelty 		bool_t 		null,
     promo 		bool_t 		null,
-    barcodes 		codes_t 	null,
+    barcodes 		ean13s_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1707,6 +1711,23 @@ end;
 $BODY$ language plpgsql;
 
 
+create or replace function ean13_in(ar text array) returns ean13 array
+as $body$
+declare
+    m text;
+    x ean13 array;
+begin
+    perform isn_weak(true);
+    foreach m in array ar
+    loop
+	if m is not null and length(m) = 13 then
+	    x := array_append(x, ean13_in(m::cstring));
+	end if;
+    end loop;
+    --perform isn_weak(false);
+    return x;
+end;
+$body$ language plpgsql;
 
 create table sysparams (
     param_id 		uid_t 		not null primary key,

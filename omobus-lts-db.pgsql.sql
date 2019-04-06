@@ -297,18 +297,6 @@ create table comment_types (
 
 create trigger trig_updated_ts before update on comment_types for each row execute procedure tf_updated_ts();
 
-create table conference_themes (
-    db_id 		uid_t 		not null,
-    ctheme_id 		uid_t 		not null,
-    descr 		descr_t 	not null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, ctheme_id)
-);
-
-create trigger trig_updated_ts before update on conference_themes for each row execute procedure tf_updated_ts();
-
 create table confirmation_types (
     db_id 		uid_t 		not null,
     confirm_id 		uid_t 		not null,
@@ -1063,7 +1051,7 @@ create table comments (
 );
 
 create trigger trig_updated_ts before update on comments for each row execute procedure tf_updated_ts();
-
+/*
 create table conferences (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1084,8 +1072,10 @@ create table conferences (
     primary key(db_id, doc_id)
 );
 
+#ifdef PGSQL
 create trigger trig_updated_ts before update on conferences for each row execute procedure tf_updated_ts();
-
+#endif //PGSQL
+*/
 create table confirmations (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1673,11 +1663,11 @@ create or replace function stor_data_stream(p_id varchar(256), p_digest varchar(
 as $BODY$
 begin
     if( (select count(*) from data_stream where s_id=p_id) > 0 ) then
-    update data_stream set digest=p_digest, inserted_node=hostname
-        where s_id=p_id;
+	update data_stream set digest=p_digest, inserted_node=hostname
+	    where s_id=p_id;
     else
-    insert into data_stream(s_id, digest, inserted_node)
-        values(p_id, p_digest, hostname);
+	insert into data_stream(s_id, digest, inserted_node)
+	    values(p_id, p_digest, hostname);
     end if;
 end;
 $BODY$ language plpgsql;
@@ -1685,12 +1675,12 @@ $BODY$ language plpgsql;
 create or replace function stor_blob_stream(p_id varchar(256), b_id blob_t, hostname hostname_t) returns void
 as $BODY$
 begin
-    if( (select count(*) from blob_stream where pack_id=p_id) > 0 ) then
-    update blob_stream set blob_id=b_id, inserted_node=hostname
-        where s_id=p_id;
+    if( (select count(*) from blob_stream where s_id=p_id) > 0 ) then
+	update blob_stream set blob_id=b_id, inserted_node=hostname
+	    where s_id=p_id;
     else
-    insert into blob_stream(s_id, blob_id, inserted_node)
-        values(p_id, b_id, hostname);
+	insert into blob_stream(s_id, blob_id, inserted_node)
+	    values(p_id, b_id, hostname);
     end if;
 end;
 $BODY$ language plpgsql;

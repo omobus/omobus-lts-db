@@ -300,17 +300,6 @@ create table comment_types (
 );
 
 
-create table conference_themes (
-    db_id 		uid_t 		not null,
-    ctheme_id 		uid_t 		not null,
-    descr 		descr_t 	not null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, ctheme_id)
-);
-
-
 create table confirmation_types (
     db_id 		uid_t 		not null,
     confirm_id 		uid_t 		not null,
@@ -1008,7 +997,7 @@ create table comments (
     primary key(db_id, doc_id)
 );
 
-
+/*
 create table conferences (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1029,7 +1018,10 @@ create table conferences (
     primary key(db_id, doc_id)
 );
 
-
+#ifdef PGSQL
+create trigger trig_updated_ts before update on conferences for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+*/
 create table confirmations (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,

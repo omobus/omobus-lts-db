@@ -32,5 +32,5 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-update sysparams set param_value='3.4.17' where param_id='db:vstamp';
+update sysparams set param_value='3.4.18' where param_id='db:vstamp';
 

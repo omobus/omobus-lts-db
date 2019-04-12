@@ -595,49 +595,19 @@ create table manufacturers (
 create trigger trig_updated_ts before update on manufacturers for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
-create table matrix_types (
-    db_id 		uid_t 		not null,
-    matrix_type_id 	uid_t 		not null,
-    descr 		descr_t 	not null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, matrix_type_id)
-);
-
-#ifdef PGSQL
-create trigger trig_updated_ts before update on matrix_types for each row execute procedure tf_updated_ts();
-#endif //PGSQL
-
 create table matrices (
     db_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
-    matrix_type_id 	uid_t 		not null,
     placement_ids 	uids_t 		null,
     row_no 		int32_t 	null, -- ordering
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, prod_id, matrix_type_id)
+    primary key (db_id, account_id, prod_id)
 );
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on matrices for each row execute procedure tf_updated_ts();
-#endif //PGSQL
-#ifdef PGSQL
-create trigger trig_updated_ts before update on my_accounts for each row execute procedure tf_updated_ts();
-#endif //PGSQL
-#ifdef PGSQL
-create trigger trig_updated_ts before update on my_cities for each row execute procedure tf_updated_ts();
-#endif //PGSQL
-#ifdef PGSQL
-create trigger trig_updated_ts before update on my_regions for each row execute procedure tf_updated_ts();
-#endif //PGSQL
-#ifdef PGSQL
-create trigger trig_updated_ts before update on my_retail_chains for each row execute procedure tf_updated_ts();
-#endif //PGSQL
-#ifdef PGSQL
-create trigger trig_updated_ts before update on my_routes for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table my_accounts (

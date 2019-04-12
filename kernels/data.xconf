@@ -70,7 +70,6 @@
 <xi:include href="../queries/data/kinds.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/manufacturers.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/matrices.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
-<xi:include href="../queries/data/matrix_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/my_accounts.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/my_cities.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/my_regions.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />

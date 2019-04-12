@@ -455,27 +455,15 @@ create table manufacturers (
 );
 
 
-create table matrix_types (
-    db_id 		uid_t 		not null,
-    matrix_type_id 	uid_t 		not null,
-    descr 		descr_t 	not null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, matrix_type_id)
-);
-
-
 create table matrices (
     db_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
-    matrix_type_id 	uid_t 		not null,
     placement_ids 	uids_t 		null,
     row_no 		int32_t 	null, -- ordering
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, prod_id, matrix_type_id)
+    primary key (db_id, account_id, prod_id)
 );
 
 

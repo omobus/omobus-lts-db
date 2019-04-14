@@ -1,40 +1,4 @@
-/* This file is a part of the omobus-lts-db project.
- * Copyright (c) 2006 - 2019 ak-obs, Ltd. <info@omobus.net>.
- * All rights reserved.
- *
- * This program is a free software. Redistribution and use in source
- * and binary forms, with or without modification, are permitted provided
- * that the following conditions are met:
- * 
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 
- * 2. The origin of this software must not be misrepresented; you must
- *    not claim that you wrote the original software.
- * 
- * 3. Altered source versions must be plainly marked as such, and must
- *    not be misrepresented as being the original software.
- * 
- * 4. The name of the author may not be used to endorse or promote
- *    products derived from this software without specific prior written
- *    permission.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
- * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
- * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-/* ** omobus-lts-db database schema.
- * ** 
- */
+/* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
 
 #ifdef PGSQL
 create extension isn;
@@ -1145,8 +1109,8 @@ create table users (
     pids		uids_t		null,
     descr		descr_t		not null,
     role 		code_t 		null, -- check (role in ('merch','sr','mr','sv','ise','cde','asm','rsm') and role = lower(role)),
-    country_ids		country_t 	null,
-    dep_ids		uid_t		null,
+    country_ids		countries_t 	null,
+    dep_ids		uids_t		null,
     distr_ids		uids_t		null,
     agency_id 		uid_t 		null,
     mobile 		phone_t 	null,
@@ -2003,11 +1967,11 @@ begin
 end;
 $BODY$ language plpgsql;
 
-create or replace function resolve_blob_stream4(p0_id varchar(256), p1_id varchar(256), p2_id varchar(256), p3_id varchar(256)) returns blob_t
+create or replace function resolve_blob_stream4(p0_id varchar(256), p1_id varchar(256), p2_id varchar(256), p3_id varchar(256)) returns blobs_t
 as $BODY$
 begin
-    return (select array_agg(a) from unnest(ARRAY[resolve_blob_stream(p0_id)::int, resolve_blob_stream(p1_id)::int, resolve_blob_stream(p2_id)::int,
-	resolve_blob_stream(p3_id)::int]) a where a is not null);
+    return (select array_agg(a) from unnest(ARRAY[resolve_blob_stream(p0_id)::OID, resolve_blob_stream(p1_id)::OID, resolve_blob_stream(p2_id)::OID,
+	resolve_blob_stream(p3_id)::OID]) a where a is not null);
 end;
 $BODY$ language plpgsql;
 #endif //PGSQL

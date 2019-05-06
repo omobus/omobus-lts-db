@@ -20,23 +20,26 @@ select count(*) exist from accounts
 </check_exist>
 <update>
   <![CDATA[
-update accounts set pid='%pid%', code='%code%', ftype=0%ftype%, descr='%descr%', address='%address%', rc_id='%rc_id%', chan_id='%chan_id%', poten_id='%poten_id%', cash_register=0%cash_register%, latitude=0%latitude%, longitude=0%longitude%, attr_ids=string_to_array('%attr_ids%',','), locked=0%locked%, approved=0%approved%, hidden=0
+update accounts set pid='%pid%', code='%code%', ftype=0%ftype%, descr='%descr%', address='%address%', region_id='%region_id%', city_id='%city_id%', rc_id='%rc_id%', chan_id='%chan_id%', poten_id='%poten_id%', cash_register=0%cash_register%, latitude=0%latitude%, longitude=0%longitude%, attr_ids=string_to_array('%attr_ids%',','), locked=0%locked%, approved=0%approved%, hidden=0
     where db_id = '%ErpCode%' and account_id = '%account_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into accounts(db_id, pid, account_id, code, ftype, descr, address, rc_id, chan_id, poten_id, cash_register, latitude, longitude, attr_ids, locked, approved, hidden)
-    values('%ErpCode%', '%pid%', '%account_id%', '%code%', 0%ftype%, '%descr%', '%address%', '%rc_id%', '%chan_id%', '%poten_id%', 0%cash_register%, 0%latitude%, 0%longitude%, string_to_array('%attr_ids%',','), 0%locked%, 0%approved%, 0)
+insert into accounts(db_id, pid, account_id, code, ftype, descr, address, region_id, city_id, rc_id, chan_id, poten_id, cash_register, latitude, longitude, attr_ids, locked, approved, hidden)
+    values('%ErpCode%', '%pid%', '%account_id%', '%code%', 0%ftype%, '%descr%', '%address%', '%region_id%', '%city_id%', '%rc_id%', '%chan_id%', '%poten_id%', 0%cash_register%, 0%latitude%, 0%longitude%, string_to_array('%attr_ids%',','), 0%locked%, 0%approved%, 0)
   ]]>
 </insert>
 <end>
   <![CDATA[
 update accounts set pid=null where pid='' and hidden=0;
+update accounts set region_id=null where region_id='' and hidden=0;
+update accounts set city_id=null where city_id='' and hidden=0;
 update accounts set rc_id=null where rc_id='' and hidden=0;
 update accounts set chan_id=null where chan_id='' and hidden=0;
 update accounts set poten_id=null where poten_id='' and hidden=0;
 update accounts set latitude=null, longitude=null where latitude=0 and longitude=0 and hidden=0;
+update accounts set attr_ids=null where array_length(attr_ids, 1) is null or array_length(attr_ids, 1) = 0 and hidden=0;
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

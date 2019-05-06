@@ -1322,7 +1322,7 @@ create table dyn_audits (
     audit_score_id 	uid_t 		null,
     criteria_wf 	wf_t 		not null check(criteria_wf between 0.01 and 1.00),
     score_wf 		wf_t 		null check(score_wf between 0.00 and 1.00),
-    score 		int32_t 	not null check (score >= 0),
+    score 		int32_t 	null check (score >= 0),
     note 		note_t 		null,
     wf 			wf_t 		not null check(wf between 0.01 and 1.00),
     sla 		numeric(6,5) 	not null check(sla between 0.0 and 1.0),
@@ -1585,7 +1585,7 @@ create table photos (
     photo_type_id	uid_t		null,
     photo		blob_t		not null,
     doc_note		note_t		null,
-    photo_param_ids	uid_t		null,
+    photo_param_ids	uids_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)

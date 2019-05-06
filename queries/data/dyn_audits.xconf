@@ -17,14 +17,14 @@ select count(*) exist from dyn_audits
 </check_exist>
 <update>
   <![CDATA[
-update dyn_audits set audit_score_id=case when '%audit_score_id%'='' then null else '%audit_score_id%' end, criteria_wf=%criteria_wf%, score_wf=case when '%score_wf%'='' then null else 0%score_wf% end, score=%score%, note=case when '%note%'='' then null else '%note%' end, user_id='%user_id%', fix_dt='%fix_dt%', photos=resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%')
+update dyn_audits set audit_score_id=case when '%audit_score_id%'='' then null else '%audit_score_id%' end, criteria_wf=%criteria_wf%, score_wf=case when '%score_wf%'='' then null else 0%score_wf% end, score=case when '%score%'='' then null else 0%score% end, note=case when '%note%'='' then null else '%note%' end, user_id='%user_id%', fix_dt='%fix_dt%', photos=resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%')
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and categ_id = '%categ_id%' and audit_criteria_id = '%audit_criteria_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into dyn_audits (db_id, fix_date, account_id, categ_id, audit_criteria_id, audit_score_id, criteria_wf, score_wf, score, note, wf, sla, photos, fix_dt, user_id)
-    values ('%ErpCode%', '%fix_date%', '%account_id%', '%categ_id%', '%audit_criteria_id%', case when '%audit_score_id%'='' then null else '%audit_score_id%' end, %criteria_wf%, case when '%score_wf%'='' then null else 0%score_wf% end, %score%, case when '%note%'='' then null else '%note%' end, %wf%, %sla%, resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%'), '%fix_dt%', '%user_id%')
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%categ_id%', '%audit_criteria_id%', case when '%audit_score_id%'='' then null else '%audit_score_id%' end, %criteria_wf%, case when '%score_wf%'='' then null else 0%score_wf% end, case when '%score%'='' then null else 0%score% end, case when '%note%'='' then null else '%note%' end, %wf%, %sla%, resolve_blob_stream4('//proxy/%uid%/%photo0%','//proxy/%uid%/%photo1%','//proxy/%uid%/%photo2%','//proxy/%uid%/%photo3%'), '%fix_dt%', '%user_id%')
   ]]>
 </insert>
 <end>

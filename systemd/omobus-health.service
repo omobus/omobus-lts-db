@@ -1,5 +1,5 @@
 [Unit]
-Description=OMOBUS lts service (health)
+Description=[omobusd: lts-health] service
 After=local-fs.target network.target
 
 [Service]

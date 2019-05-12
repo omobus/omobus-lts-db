@@ -7,12 +7,12 @@
     ldap.base="ou=lts-db,dc=omobus,dc=local" 
     ldap.filter="(&amp;(objectClass=omobusMaintainPoint)(exchangeStatus=enabled))"
     Xldap.tls="yes"
-    ftp.host="127.0.0.1"
+    ftp.host="zdev.omobus.net"
     ftp.port="21021"
     ftp.path="data/"
-    ftp.connect_timeout="10"
-    ftp.recv_timeout="5"
-    ftp.send_timeout="5"
+    ftp.connect_timeout="20"
+    ftp.recv_timeout="10"
+    ftp.send_timeout="10"
     ftp.epsv="yes"
     ftp.tls="yes"
     ftp.ccc="no"
@@ -106,6 +106,7 @@
 <xi:include href="../queries/data/targets.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/testing_criterias.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/testing_scores.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
+<xi:include href="../queries/data/thumbnails.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/training_materials.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/training_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/trainings.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />

@@ -20,14 +20,14 @@ select count(*) exist from shelf_lifes
 </check_exist>
 <update>
   <![CDATA[
-update shelf_lifes set descr='%descr%', days=case when '%days%'='' then null else 0%days% end, hidden=0
+update shelf_lifes set descr='%descr%', days=int32_in('%days%'), hidden=0
     where db_id = '%ErpCode%' and shelf_life_id = '%shelf_life_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into shelf_lifes (db_id, shelf_life_id, descr, days, hidden) 
-    values ('%ErpCode%', '%shelf_life_id%', '%descr%', case when '%days%'='' then null else 0%days% end, 0)
+    values ('%ErpCode%', '%shelf_life_id%', '%descr%', int32_in('%days%'), 0)
   ]]>
 </insert>
 <end>

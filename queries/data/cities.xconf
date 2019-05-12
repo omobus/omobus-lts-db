@@ -20,14 +20,14 @@ select count(*) exist from cities
 </check_exist>
 <update>
   <![CDATA[
-update cities set pid='%pid%', ftype=0%ftype%, descr='%descr%', country_id='%country_id%', population=case when '%population%'='' then null else 0%population% end, hidden=0
+update cities set pid='%pid%', ftype=0%ftype%, descr='%descr%', country_id='%country_id%', population=int32_in('%population%'), hidden=0
     where db_id = '%ErpCode%' and city_id = '%city_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into cities (db_id, pid, city_id, ftype, descr, country_id, population, hidden) 
-    values ('%ErpCode%', '%pid%', '%city_id%', 0%ftype%, '%descr%', '%country_id%', case when '%population%'='' then null else 0%population% end, 0)
+    values ('%ErpCode%', '%pid%', '%city_id%', 0%ftype%, '%descr%', '%country_id%', int32_in('%population%'), 0)
   ]]>
 </insert>
 <end>

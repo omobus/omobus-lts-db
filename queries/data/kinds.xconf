@@ -20,14 +20,14 @@ select count(*) exist from kinds
 </check_exist>
 <update>
   <![CDATA[
-update kinds set descr='%descr%', row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
+update kinds set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and kind_id = '%kind_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into kinds (db_id, kind_id, descr, row_no, hidden)
-    values ('%ErpCode%', '%kind_id%', '%descr%', case when '%row_no%'='' then null else 0%row_no% end, 0)
+    values ('%ErpCode%', '%kind_id%', '%descr%', int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

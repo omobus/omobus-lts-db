@@ -20,14 +20,14 @@ select count(*) exist from unsched_types
 </check_exist>
 <update>
   <![CDATA[
-update unsched_types set descr='%descr%', row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
+update unsched_types set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and unsched_type_id = '%unsched_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into unsched_types (db_id, unsched_type_id, descr, row_no, hidden) 
-    values ('%ErpCode%', '%unsched_type_id%', '%descr%', case when '%row_no%'='' then null else 0%row_no% end, 0)
+    values ('%ErpCode%', '%unsched_type_id%', '%descr%', int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

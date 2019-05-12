@@ -16,7 +16,7 @@ select count(*) exist from conferences
 <insert>
   <![CDATA[
 insert into conferences (db_id, doc_id, fix_dt, user_id, doc_note, title, b_date, e_date, ctheme_ids, participants, expenses, speakers, venue, address)
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%doc_note%', '%title%', '%b_date%', '%e_date%', '%ctheme_ids%', case when '%participants%'='' then null else 0%participants% end, case when '%expenses%'='' then null else 0%expenses% end, case when '%speakers%'='' then null else '%speakers%' end, '%venue%', '%address%')
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%doc_note%', '%title%', '%b_date%', '%e_date%', 
   ]]>
 </insert>
 <end>

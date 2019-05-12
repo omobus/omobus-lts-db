@@ -17,7 +17,7 @@ p_date >= current_date::date_t
 <insert>
   <![CDATA[
 insert into my_routes (db_id, user_id, account_id, activity_type_id, p_date, row_no, duration) 
-    values ('%ErpCode%', '%user_id%', '%account_id%', '%activity_type_id%', '%p_date%', case when '%row_no%'='' then null else 0%row_no% end, case when '%duration%'='' then null else 0%duration% end)
+    values ('%ErpCode%', '%user_id%', '%account_id%', '%activity_type_id%', '%p_date%', int32_in('%row_no%'), int32_in('%duration%'))
   ]]>
 </insert>
 <end>

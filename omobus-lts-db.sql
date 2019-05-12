@@ -35,7 +35,6 @@ go
 create domain address_t as varchar(256);
 create domain art_t as varchar(24);
 create domain blob_t as OID;
-create domain blobs_t as OID array;
 create domain bool_t as int2 check (value is null or (value between 0 and 1));
 create domain code_t as varchar(24);
 create domain codes_t as varchar(24) array;
@@ -78,7 +77,6 @@ create domain wf_t as numeric(3,2);
 execute sp_addtype address_t, 'varchar(256)'
 execute sp_addtype art_t, 'varchar(24)'
 execute sp_addtype blob_t, 'varchar(32)'
-execute sp_addtype blobs_t, 'varchar(2048)'
 execute sp_addtype bool_t, 'smallint'
 execute sp_addtype code_t, 'varchar(24)'
 execute sp_addtype codes_t, 'varchar(2048)'
@@ -980,6 +978,7 @@ create table shelf_lifes (
     db_id 		uid_t 		not null,
     shelf_life_id 	uid_t 		not null,
     descr 		descr_t 	not null,
+    days 		int32_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -998,7 +997,7 @@ create table targets (
     body 		varchar(2048)	not null,
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
-    image 		blob_t 		null, /* image attached to the target */
+    image 		uid_t 		null,
     author_id 		uid_t 		not null,
     myself 		bool_t 		not null default 0,
     hidden 		bool_t 		not null default 0,
@@ -1162,7 +1161,7 @@ create table additions (
     addition_type_id 	uid_t 		null,
     note 		note_t 		null,
     chan_id 		uid_t 		null,
-    photos 		blobs_t 	null,
+    photos 		uids_t 		null,
     attr_ids 		uids_t 		null,
     account_id 		uid_t 		not null,
     validator_id 	uid_t		null,
@@ -1202,7 +1201,7 @@ create table comments (
     account_id 		uid_t 		not null,
     comment_type_id 	uid_t 		not null,
     doc_note 		note_t 		null,
-    photo		blob_t		null,
+    photo		uid_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1245,7 +1244,7 @@ create table confirmations (
     target_id 		uid_t 		not null,
     confirm_id 		uid_t 		not null,
     doc_note 		note_t 		null,
-    photos		blobs_t		null,
+    photos		uids_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1261,7 +1260,7 @@ create table deletions (
     user_id		uid_t 		not null,
     fix_dt		datetime_t 	not null,
     note		note_t		null,
-    photo		blob_t		null,
+    photo		uid_t		null,
     validator_id 	uid_t		null,
     validated 		bool_t 		not null default 0,
     hidden 		bool_t 		not null default 0,
@@ -1326,7 +1325,7 @@ create table dyn_audits (
     note 		note_t 		null,
     wf 			wf_t 		not null check(wf between 0.01 and 1.00),
     sla 		numeric(6,5) 	not null check(sla between 0.0 and 1.0),
-    photos		blobs_t		null,
+    photos		uids_t		null,
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
@@ -1481,7 +1480,7 @@ create table dyn_shelfs (
     assortment 		int32_t 	null check (assortment >= 0),
     sos 		numeric(6,5) 	null check(sos between 0.0 and 1.0),
     soa 		numeric(6,5) 	null check(soa between 0.0 and 1.0),
-    photos		blobs_t		null,
+    photos		uids_t		null,
     sos_target 		wf_t 		null check(sos_target between 0.01 and 1.00),
     soa_target 		wf_t 		null check(soa_target between 0.01 and 1.00),
     fix_dt 		datetime_t 	not null,
@@ -1583,7 +1582,7 @@ create table photos (
     placement_id	uid_t		not null,
     brand_id		uid_t		null,
     photo_type_id	uid_t		null,
-    photo		blob_t		not null,
+    photo		uid_t		not null,
     doc_note		note_t		null,
     photo_param_ids	uids_t		null,
     inserted_ts 	ts_auto_t 	not null,
@@ -1604,7 +1603,7 @@ create table presentations (
     participants 	int32_t 	not null,
     tm_ids 		uids_t 		null,
     doc_note 		note_t 		null,
-    photo		blob_t		null,
+    photo		uid_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1672,11 +1671,29 @@ create table trainings (
     training_type_id	uid_t		null,
     contact_ids 	uids_t 		not null,
     tm_ids 		uids_t 		not null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
 );
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on trainings for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table thumbnails (
+    db_id 		uid_t 		not null,
+    ref_id 		uid_t 		not null,
+    photo 		blob_t 		not null,
+    thumb 		blob_t 		null,
+    thumb_width 	int32_t 	null check(thumb_width > 0),
+    thumb_height 	int32_t 	null check(thumb_height > 0),
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key (db_id, ref_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on thumbnails for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table unsched (
@@ -1966,14 +1983,6 @@ begin
     return (select blob_id from blob_stream where s_id=p_id);
 end;
 $BODY$ language plpgsql;
-
-create or replace function resolve_blob_stream4(p0_id varchar(256), p1_id varchar(256), p2_id varchar(256), p3_id varchar(256)) returns blobs_t
-as $BODY$
-begin
-    return (select array_agg(a) from unnest(ARRAY[resolve_blob_stream(p0_id)::OID, resolve_blob_stream(p1_id)::OID, resolve_blob_stream(p2_id)::OID,
-	resolve_blob_stream(p3_id)::OID]) a where a is not null);
-end;
-$BODY$ language plpgsql;
 #endif //PGSQL
 
 #ifdef MSSQL
@@ -2019,60 +2028,33 @@ begin
    return case when @arg is null then null when @arg = '' then null else (select blob_id from blob_stream where s_id=@arg) end
 end
 go
-
-create function resolve_blob_stream4(@arg0 varchar(256), @arg1 varchar(256), @arg2 varchar(256), @arg3 varchar(256)) returns blobs_t
-as
-begin
-    declare @rv blobs_t
-    declare @t blob_t
-    set @rv = ''
-
-    set @t = dbo.resolve_blob_stream(@arg0)
-    if @t is not null
-	begin
-	    if @rv <> ''
-		begin
-		    set @rv = @rv + ','
-		end
-	    set @rv = @rv + @t
-	end
-
-    set @t = dbo.resolve_blob_stream(@arg1)
-    if @t is not null
-	begin
-	    if @rv <> ''
-		begin
-		    set @rv = @rv + ','
-		end
-	    set @rv = @rv + @t
-	end
-
-    set @t = dbo.resolve_blob_stream(@arg2)
-    if @t is not null
-	begin
-	    if @rv <> ''
-		begin
-		    set @rv = @rv + ','
-		end
-	    set @rv = @rv + @t
-	end
-
-    set @t = dbo.resolve_blob_stream(@arg3)
-    if @t is not null
-	begin
-	    if @rv <> ''
-		begin
-		    set @rv = @rv + ','
-		end
-	    set @rv = @rv + @t
-	end
-
-    return case when @rv <> '' then @rv else null end
-end
-go
 #endif //MSSQL
 
 #ifdef PGSQL
+create or replace function bool_in(arg text) returns bool_t as
+$body$
+begin
+    return case when arg = '' then null else arg::bool_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function currency_in(arg text) returns currency_t as
+$body$
+begin
+    return case when arg = '' then null else arg::currency_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function datetime_in(arg text) returns datetime_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
 create or replace function ean13_in(ar text array) returns ean13 array
 as $body$
 declare
@@ -2092,12 +2074,138 @@ begin
     return x;
 end;
 $body$ language plpgsql;
+
+create or replace function ean13ar_in(arg text) returns ean13 array as
+$body$
+begin
+    return case when arg = '' then null else ean13_in(string_to_array(arg, ',')) end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function gps_in(arg text) returns gps_t as
+$body$
+begin
+    return case when arg = '' then null else arg::gps_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function int32_in(arg text) returns int32_t as
+$body$
+begin
+    return case when arg = '' then null else arg::int32_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function note_in(arg text) returns note_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function uid_in(arg text) returns uid_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function uids_in(arg text) returns uids_t as
+$body$
+begin
+    return case when arg = '' then null else string_to_array(arg, ',') end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function wf_in(arg text) returns wf_t as
+$body$
+begin
+    return case when arg = '' then null else arg::wf_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
 #endif //PGSQL
 #ifdef MSSQL
+create function bool_in(@arg0 varchar(1)) returns bool_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function currency_in(@arg0 varchar(20)) returns currency_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function datetime_in(@arg0 varchar(19)) returns datetime_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
 create function ean13_in(@arg0 varchar(280)) returns varchar(280)
 as
 begin
     return @arg0
+end
+go
+
+create function ean13ar_in(@arg0 varchar(2048)) returns codes_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function gps_in(@arg0 varchar(12)) returns gps_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function int32_in(@arg0 varchar(11)) returns int32_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function note_in(@arg0 uid_t) returns note_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function uid_in(@arg0 uid_t) returns uid_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function uids_in(@arg0 varchar(2048)) returns uids_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function wf_in(@arg0 varchar(5)) returns wf_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
 end
 go
 #endif //MSSQL

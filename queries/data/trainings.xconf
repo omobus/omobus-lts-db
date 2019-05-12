@@ -15,7 +15,7 @@ select count(*) exist from trainings
 <insert>
   <![CDATA[
 insert into trainings (db_id, doc_id, fix_dt, user_id, account_id, training_type_id, contact_ids, tm_ids, doc_note) 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%training_type_id%', string_to_array('%contact_ids%',','), string_to_array('%tm_ids%',','), '%doc_note%')
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%training_type_id%', uids_in('%contact_ids%'), uids_in('%tm_ids%'), note_in('%doc_note%'))
   ]]>
 </insert>
 <end>

@@ -20,26 +20,18 @@ select count(*) exist from users
 </check_exist>
 <update>
   <![CDATA[
-update users set pids=string_to_array('%pids%',','), descr='%descr%', role='%role%', dep_ids=string_to_array('%dep_ids%',','), country_ids=string_to_array('%country_ids%',','), distr_ids=string_to_array('%distr_ids%',','), agency_id='%agency_id%', mobile='%mobile%', email='%email%', "rules:wd_begin"='%rules:wd_begin%', "rules:wd_end"='%rules:wd_end%', hidden=0
+update users set pids=uids_in('%pids%'), descr='%descr%', role='%role%', dep_ids=uids_in('%dep_ids%'), country_ids=uids_in('%country_ids%'), distr_ids=uids_in('%distr_ids%'), agency_id=uid_in('%agency_id%'), mobile='%mobile%', email='%email%', "rules:wd_begin"='%rules:wd_begin%', "rules:wd_end"='%rules:wd_end%', hidden=0
     where db_id = '%ErpCode%' and user_id = '%user_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[ 
 insert into users (db_id, user_id, pids, descr, role, dep_ids, country_ids, distr_ids, agency_id, mobile, email, area, "rules:wd_begin", "rules:wd_end", hidden)
-    values ('%ErpCode%', '%user_id%', string_to_array('%pids%',','), '%descr%', '%role%', string_to_array('%dep_ids%',','), string_to_array('%country_ids%',','), string_to_array('%distr_ids%',','), '%agency_id%', '%mobile%', '%email%', '%area%', '%rules:wd_begin%', '%rules:wd_end%', 0)
+    values ('%ErpCode%', '%user_id%', uids_in('%pids%'), '%descr%', '%role%', uids_in('%dep_ids%'), uids_in('%country_ids%'), uids_in('%distr_ids%'), uid_in('%agency_id%'), '%mobile%', '%email%', '%area%', '%rules:wd_begin%', '%rules:wd_end%', 0)
   ]]>
 </insert>
 <end>
   <![CDATA[
-update users set pids=null where array_length(pids, 1) is null or array_length(pids, 1) = 0 and hidden=0;
-update users set dep_ids=null where array_length(dep_ids, 1) is null or array_length(dep_ids, 1) = 0 and hidden=0;
-update users set country_ids=null where array_length(country_ids, 1) is null or array_length(country_ids, 1) = 0 and hidden=0;
-update users set distr_ids=null where array_length(distr_ids, 1) is null or array_length(distr_ids, 1) = 0 and hidden=0;
-update users set agency_id=null where agency_id = '' and hidden=0;
-update users set mobile=null where mobile = '' and hidden=0;
-update users set email=null where email = '' and hidden=0;
-update users set area=null where area = '' and hidden=0;
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

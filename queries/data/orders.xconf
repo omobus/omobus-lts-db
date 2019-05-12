@@ -15,7 +15,7 @@ select count(*) exist from orders
 <insert>
   <![CDATA[
 insert into orders (db_id, doc_id, fix_dt, user_id, account_id, distr_id, order_type_id, group_price_id, wareh_id, delivery_date, delivery_type_id, delivery_note, doc_note, payment_method_id, payment_delay, bonus, encashment, order_param_ids, rows, prod_id, row_no, pack_id, pack, qty, unit_price, discount, amount, weight, volume)
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%distr_id%', '%order_type_id%', '%group_price_id%', '%wareh_id%', '%delivery_date%', case when '%delivery_type_id%'='' then null else '%delivery_type_id%' end, '%delivery_note%', '%doc_note%', '%payment_method_id%', 0%payment_delay%, case when '%bonus%'='' then null else 0%bonus% end, case when '%encashment%'='' then null else 0%encashment% end, case when '%order_param_ids%'='' then null else string_to_array('%order_param_ids%',',') end, %rows%, '%prod_id%', %row_no%, '%pack_id%', %pack%, %qty%, %unit_price%, 0%discount%, %amount%, %weight%, %volume%)
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%distr_id%', '%order_type_id%', '%group_price_id%', '%wareh_id%', '%delivery_date%', uid_in('%delivery_type_id%'), '%delivery_note%', '%doc_note%', '%payment_method_id%', int32_in('%payment_delay%'), currency_in('%bonus%'), currency_in('%encashment%'), uids_in('%order_param_ids%'), %rows%, '%prod_id%', %row_no%, '%pack_id%', %pack%, %qty%, %unit_price%, 0%discount%, %amount%, %weight%, %volume%)
   ]]>
 </insert>
 <end>

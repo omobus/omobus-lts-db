@@ -20,14 +20,14 @@ select count(*) exist from rating_scores
 </check_exist>
 <update>
   <![CDATA[
-update rating_scores set descr='%descr%', score=%score%, row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
+update rating_scores set descr='%descr%', score=%score%, row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and rating_score_id = '%rating_score_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into rating_scores (db_id, rating_score_id, descr, score, row_no, hidden) 
-    values ('%ErpCode%', '%rating_score_id%', '%descr%', %score%, case when '%row_no%'='' then null else 0%row_no% end, 0)
+    values ('%ErpCode%', '%rating_score_id%', '%descr%', %score%, int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

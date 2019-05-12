@@ -15,7 +15,7 @@ delete from matrices
 <insert>
   <![CDATA[
 insert into matrices (db_id, account_id, prod_id, placement_ids, row_no) 
-    values ('%ErpCode%', '%account_id%', '%prod_id%', case when '%placement_ids%'='' then null else string_to_array('%placement_ids%',',') end, case when '%row_no%'='' then null else 0%row_no% end)
+    values ('%ErpCode%', '%account_id%', '%prod_id%', uids_in('%placement_ids%'), int32_in('%row_no%'))
   ]]>
 </insert>
 <end>

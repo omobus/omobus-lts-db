@@ -14,14 +14,14 @@ select count(*) exist from dyn_reviews
 </check_exist>
 <update>
   <![CDATA[
-update dyn_reviews set sla=%sla%, assessment=%assessment%, note0=case when '%note0%'='' then null else '%note0%' end, note1=case when '%note1%'='' then null else '%note1%' end, note2=case when '%note2%'='' then null else '%note2%' end, user_id='%user_id%', fix_dt='%fix_dt%'
+update dyn_reviews set sla=%sla%, assessment=%assessment%, note0=note_in('%note0%'), note1=note_in('%note1%'), note2=note_in('%note2%'), user_id='%user_id%', fix_dt='%fix_dt%'
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and employee_id = '%employee_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into dyn_reviews (db_id, fix_date, employee_id, sla, assessment, note0, note1, note2, fix_dt, user_id)
-    values ('%ErpCode%', '%fix_date%', '%employee_id%', %sla%, %assessment%, case when '%note0%'='' then null else '%note0%' end, case when '%note1%'='' then null else '%note1%' end, case when '%note2%'='' then null else '%note2%' end, '%fix_dt%', '%user_id%')
+    values ('%ErpCode%', '%fix_date%', '%employee_id%', %sla%, %assessment%, note_in('%note0%'), note_in('%note1%'), note_in('%note2%'), '%fix_dt%', '%user_id%')
   ]]>
 </insert>
 <end>

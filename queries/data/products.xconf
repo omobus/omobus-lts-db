@@ -20,23 +20,18 @@ select count(*) exist from products
 </check_exist>
 <update>
   <![CDATA[
-update products set pid='%pid%', ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life_id='%shelf_life_id%', kind_id='%kind_id%', brand_id='%brand_id%', categ_id='%categ_id%', obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, barcodes=ean13_in(string_to_array('%barcodes%',',')), hidden=0
+update products set pid=uid_in('%pid%'), ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life_id=uid_in('%shelf_life_id%'), kind_id=uid_in('%kind_id%'), brand_id=uid_in('%brand_id%'), categ_id=uid_in('%categ_id%'), obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, barcodes=ean13ar_in('%barcodes%'), hidden=0
     where db_id = '%ErpCode%' and prod_id = '%prod_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[ 
 insert into products (db_id, pid, prod_id, ftype, code, art, descr, kind_id, shelf_life_id, brand_id, categ_id, obsolete, novelty, promo, barcodes, hidden)
-    values ('%ErpCode%', '%pid%', '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', '%kind_id%', '%shelf_life_id%', '%brand_id%', '%categ_id%', 0%obsolete%, 0%novelty%, 0%promo%, ean13_in(string_to_array('%barcodes%',',')), 0)
+    values ('%ErpCode%', uid_in('%pid%'), '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', uid_in('%kind_id%'), uid_in('%shelf_life_id%'), uid_in('%brand_id%'), uid_in('%categ_id%'), 0%obsolete%, 0%novelty%, 0%promo%, ean13ar_in('%barcodes%'), 0)
   ]]>
 </insert>
 <end>
   <![CDATA[
-update products set pid=null where pid='' and hidden=0;
-update products set kind_id=null where kind_id='' and hidden=0;
-update products set brand_id=null where brand_id='' and hidden=0;
-update products set categ_id=null where categ_id='' and hidden=0;
-update products set shelf_life_id=null where shelf_life_id='' and hidden=0;
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 --exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

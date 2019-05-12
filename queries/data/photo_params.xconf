@@ -20,14 +20,14 @@ select count(*) exist from photo_params
 </check_exist>
 <update>
   <![CDATA[
-update photo_params set descr='%descr%', row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
+update photo_params set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and photo_param_id = '%photo_param_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into photo_params (db_id, photo_param_id, descr, row_no, hidden) 
-    values ('%ErpCode%', '%photo_param_id%', '%descr%', case when '%row_no%'='' then null else 0%row_no% end, 0)
+    values ('%ErpCode%', '%photo_param_id%', '%descr%', int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

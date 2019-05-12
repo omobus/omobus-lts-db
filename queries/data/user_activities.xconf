@@ -14,14 +14,14 @@ select count(*) exist from user_activities
 </check_exist>
 <update>
   <![CDATA[
-update user_activities set e_dt=case when '%e_dt%'='' then null else '%e_dt%' end, e_la=case when '%e_la%'='' then null else 0%e_la% end, e_lo=case when '%e_lo%'='' then null else 0%e_lo% end, e_sat_dt=case when '%e_sat_dt%'='' then null else '%e_sat_dt%' end, employee_id=case when '%employee_id%'='' then null else '%employee_id%' end
+update user_activities set e_dt=datetime_in('%e_dt%'), e_la=gps_in('%e_la%'), e_lo=gps_in('%e_lo%'), e_sat_dt=datetime_in('%e_sat_dt%'), employee_id=uid_in('%employee_id%'
     where db_id = '%ErpCode%' and user_id = '%user_id%' and account_id = '%account_id%' and activity_type_id = '%activity_type_id%' and w_cookie = '%w_cookie%' and a_cookie = '%a_cookie%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into user_activities (db_id, user_id, account_id, w_cookie, a_cookie, activity_type_id, fix_date, route_date, b_dt, b_la, b_lo, b_sat_dt, e_dt, e_la, e_lo, e_sat_dt, employee_id) 
-    values ('%ErpCode%', '%user_id%', '%account_id%', '%w_cookie%', '%a_cookie%', '%activity_type_id%', '%fix_date%', '%route_date%', '%b_dt%', 0%b_la%, 0%b_lo%, '%b_sat_dt%', case when '%e_dt%'='' then null else '%e_dt%' end, case when '%e_la%'='' then null else 0%e_la% end, case when '%e_lo%'='' then null else 0%e_lo% end, case when '%e_sat_dt%'='' then null else '%e_sat_dt%' end, case when '%employee_id%'='' then null else '%employee_id%' end)
+    values ('%ErpCode%', '%user_id%', '%account_id%', '%w_cookie%', '%a_cookie%', '%activity_type_id%', '%fix_date%', '%route_date%', '%b_dt%', gps_in('%b_la%'), gps_in('%b_lo%'), datetime_in('%b_sat_dt%'), datetime_in('%e_dt%'), gps_in('%e_la%'), gps_in('%e_lo%'), datetime_in('%e_sat_dt%'), uid_in('%employee_id%'))
   ]]>
 </insert>
 <end>

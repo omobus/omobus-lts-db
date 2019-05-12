@@ -20,14 +20,14 @@ select count(*) exist from training_types
 </check_exist>
 <update>
   <![CDATA[
-update training_types set descr='%descr%', personal=%personal%, row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
+update training_types set descr='%descr%', personal=%personal%, row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and training_type_id = '%training_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into training_types (db_id, training_type_id, descr, personal, row_no, hidden) 
-    values ('%ErpCode%', '%training_type_id%', '%descr%', %personal%, case when '%row_no%'='' then null else 0%row_no% end, 0)
+    values ('%ErpCode%', '%training_type_id%', '%descr%', %personal%, int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

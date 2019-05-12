@@ -20,14 +20,14 @@ select count(*) exist from oos_types
 </check_exist>
 <update>
   <![CDATA[
-update oos_types set descr='%descr%', row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
+update oos_types set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and oos_type_id = '%oos_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into oos_types (db_id, oos_type_id, descr, row_no, hidden) 
-    values ('%ErpCode%', '%oos_type_id%', '%descr%', case when '%row_no%'='' then null else 0%row_no% end, 0)
+    values ('%ErpCode%', '%oos_type_id%', '%descr%', int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

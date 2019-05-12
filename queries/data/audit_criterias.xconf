@@ -20,14 +20,14 @@ select count(*) exist from audit_criterias
 </check_exist>
 <update>
   <![CDATA[
-update audit_criterias set descr='%descr%', row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
+update audit_criterias set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and audit_criteria_id = '%audit_criteria_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into audit_criterias (db_id, audit_criteria_id, descr, row_no, hidden) 
-    values ('%ErpCode%', '%audit_criteria_id%', '%descr%', case when '%row_no%'='' then null else 0%row_no% end, 0)
+    values ('%ErpCode%', '%audit_criteria_id%', '%descr%', int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

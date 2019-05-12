@@ -15,7 +15,7 @@ select count(*) exist from comments
 <insert>
   <![CDATA[
 insert into comments (db_id, doc_id, fix_dt, user_id, account_id, comment_type_id, doc_note, photo) 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%comment_type_id%', '%doc_note%', resolve_blob_stream('//proxy/%uid%/%photo%'))
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%comment_type_id%', '%doc_note%', uid_in('%photo%'))
   ]]>
 </insert>
 <end>

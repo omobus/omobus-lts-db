@@ -20,14 +20,14 @@ select count(*) exist from brands
 </check_exist>
 <update>
   <![CDATA[
-update brands set descr='%descr%', manuf_id='%manuf_id%', dep_id=case when '%dep_id%'='' then null else '%dep_id%' end, row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
+update brands set descr='%descr%', manuf_id='%manuf_id%', dep_id=uid_in('%dep_id%'), row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and brand_id = '%brand_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into brands (db_id, brand_id, descr, manuf_id, dep_id, row_no, hidden) 
-    values ('%ErpCode%', '%brand_id%', '%descr%', '%manuf_id%', case when '%dep_id%'='' then null else '%dep_id%' end, case when '%row_no%'='' then null else 0%row_no% end, 0)
+    values ('%ErpCode%', '%brand_id%', '%descr%', '%manuf_id%', uid_in('%dep_id%'), int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

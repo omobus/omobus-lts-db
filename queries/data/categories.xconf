@@ -20,14 +20,14 @@ select count(*) exist from categories
 </check_exist>
 <update>
   <![CDATA[
-update categories set descr='%descr%', row_no=case when '%row_no%'='' then null else 0%row_no% end, hidden=0
+update categories set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and categ_id = '%categ_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into categories (db_id, categ_id, descr, row_no, hidden)
-    values ('%ErpCode%', '%categ_id%', '%descr%', case when '%row_no%'='' then null else 0%row_no% end, 0)
+    values ('%ErpCode%', '%categ_id%', '%descr%', int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

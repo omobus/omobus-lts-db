@@ -15,7 +15,7 @@ select count(*) exist from photos
 <insert>
   <![CDATA[
 insert into photos (db_id, doc_id, fix_dt, user_id, account_id, placement_id, brand_id, photo_type_id, photo, doc_note, photo_param_ids) 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%placement_id%', '%brand_id%', '%photo_type_id%', resolve_blob_stream('//proxy/%uid%/%photo%'), '%doc_note%', case when '%photo_param_ids%'='' then null else string_to_array('%photo_param_ids%',',') end)
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%placement_id%', '%brand_id%', '%photo_type_id%', uid_in('%photo%'), note_in('%doc_note%'), uids_in('%photo_param_ids%'))
   ]]>
 </insert>
 <end>

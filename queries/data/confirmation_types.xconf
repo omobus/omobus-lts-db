@@ -20,14 +20,14 @@ select count(*) exist from confirmation_types
 </check_exist>
 <update>
   <![CDATA[
-update confirmation_types set descr='%descr%', target_type_ids=string_to_array('%target_type_ids%',','), hidden=0
+update confirmation_types set descr='%descr%', target_type_ids=uids_in('%target_type_ids%'), hidden=0
     where db_id = '%ErpCode%' and confirm_id = '%confirm_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into confirmation_types (db_id, confirm_id, descr, target_type_ids, hidden) 
-    values ('%ErpCode%', '%confirm_id%', '%descr%', string_to_array('%target_type_ids%',','), 0)
+    values ('%ErpCode%', '%confirm_id%', '%descr%', uids_in('%target_type_ids%'), 0)
   ]]>
 </insert>
 <end>

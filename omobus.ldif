@@ -25,13 +25,13 @@ uidNumber: 902
 userPassword:: e1NTSEF9dkhOUmxBbkdYZEs2U1lZNjlWY2kwWlpDaUgwMEw3MVpKYlduQkE9P
  Q==
 
-dn: ou=proxy-db,dc=omobus,dc=local
+dn: ou=lts-db,dc=omobus,dc=local
 objectClass: top
 objectClass: organizationalUnit
-ou: proxy-db
+ou: lts-db
 description: Attached storages
 
-dn: cn=p0,ou=proxy-db,dc=omobus,dc=local
+dn: cn=p0,ou=lts-db,dc=omobus,dc=local
 objectClass: omobusMaintainPoint
 objectClass: top
 objectClass: omobusAccount

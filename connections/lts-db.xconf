@@ -7,5 +7,5 @@ MSSQLserver="srv1"
     storage="omobus-lts-db"
     user="omobus"
     password="omobus"
-    trace="yes"
+    trace="no"
     />

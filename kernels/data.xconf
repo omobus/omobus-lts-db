@@ -101,6 +101,7 @@
 <xi:include href="../queries/data/reclamation_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/regions.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/retail_chains.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
+<xi:include href="../queries/data/revocations.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/shelf_lifes.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/target_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/data/targets.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />

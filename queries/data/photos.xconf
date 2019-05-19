@@ -15,7 +15,7 @@ select count(*) exist from photos
 <insert>
   <![CDATA[
 insert into photos (db_id, doc_id, fix_dt, user_id, account_id, placement_id, brand_id, photo_type_id, photo, doc_note, photo_param_ids, fix_year, fix_month) 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%placement_id%', '%brand_id%', '%photo_type_id%', uid_in('%photo%'), note_in('%doc_note%'), uids_in('%photo_param_ids%'), int32_in(left(fix_dt,4)), int32_in(substring(fix_dt,6,2)))
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%placement_id%', '%brand_id%', '%photo_type_id%', uid_in('%photo%'), note_in('%doc_note%'), uids_in('%photo_param_ids%'), int32_in(left('%fix_dt%',4)), int32_in(substring('%fix_dt%',6,2)))
   ]]>
 </insert>
 <end>

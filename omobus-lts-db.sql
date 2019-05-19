@@ -1661,6 +1661,20 @@ create table reclamations (
 create trigger trig_updated_ts before update on reclamations for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
+create table revocations (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    doc_type 		doctype_t 	not null,
+    hidden		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key (db_id, doc_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on revocations for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
 create table trainings (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1911,19 +1925,20 @@ begin
 end
 go
 
-create function string_to_rowset(@string varchar(1024), @delimiter char(1))
-    returns @output table(ar_value varchar(1024))
+create function uids_unnest(@string uids_t)
+    returns @output table(ar_value uid_t)
 begin
-    declare @start int, @end int
+    declare @start int, @end int, @delimiter char(1)
+    set @delimiter = ','
     select @start = 1, @end = CHARINDEX(@delimiter, @string)
-    while @start < LEN(@string) + 1 BEGIN
-    if @end = 0
-        set @end = LEN(@string) + 1
+    while @start < LEN(@string) + 1 begin
+	if @end = 0
+	    set @end = LEN(@string) + 1
 
-    insert into @output (ar_value)
-        values(SUBSTRING(@string, @start, @end - @start))
-    set @start = @end + 1
-    set @end = CHARINDEX(@delimiter, @string, @start)
+	insert into @output (ar_value)
+	    values(SUBSTRING(@string, @start, @end - @start))
+	set @start = @end + 1
+	set @end = CHARINDEX(@delimiter, @string, @start)
     end
     return
 end
@@ -2123,6 +2138,14 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
+create or replace function uids_out(arg uids_t) returns text as
+$body$
+begin
+    return case when arg is null then null else array_to_string(arg, ',') end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
 create or replace function wf_in(arg text) returns wf_t as
 $body$
 begin
@@ -2199,6 +2222,13 @@ create function uids_in(@arg0 varchar(2048)) returns uids_t
 as
 begin
     return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function uids_out(@arg0 uids_t) returns varchar(2048)
+as
+begin
+    return @arg0
 end
 go
 

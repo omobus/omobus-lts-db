@@ -1,6 +1,8 @@
 #!/bin/sh
-
 # Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file.
+
+# mssql: isql -I freetds.conf -S $srv -U $uname -P $passwd -D $dbname -i omobus-lts-db.mssql.sql
+
 
 dbname=omobus-lts-db
 
@@ -23,8 +25,7 @@ psql -d postgres -c \
 psql -d $dbname -c \
     "CREATE LANGUAGE plpgsql"
 
-psql -d $dbname -f ./$dbname.pgsql.sql
-psql -d $dbname -f ./version.pgsql.sql
+psql -d $dbname -f /etc/omobus.d/.build/pgsql/$dbname.sql
 
 exit 0
 # The end of the script.

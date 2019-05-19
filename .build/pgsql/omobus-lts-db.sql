@@ -9,7 +9,6 @@ create extension isn;
 create domain address_t as varchar(256);
 create domain art_t as varchar(24);
 create domain blob_t as OID;
-create domain blobs_t as OID array;
 create domain bool_t as int2 check (value is null or (value between 0 and 1));
 create domain code_t as varchar(24);
 create domain codes_t as varchar(24) array;
@@ -795,6 +794,7 @@ create table shelf_lifes (
     db_id 		uid_t 		not null,
     shelf_life_id 	uid_t 		not null,
     descr 		descr_t 	not null,
+    days 		int32_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -811,7 +811,7 @@ create table targets (
     body 		varchar(2048)	not null,
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
-    image 		blob_t 		null, /* image attached to the target */
+    image 		uid_t 		null,
     author_id 		uid_t 		not null,
     myself 		bool_t 		not null default 0,
     hidden 		bool_t 		not null default 0,
@@ -954,7 +954,7 @@ create table additions (
     addition_type_id 	uid_t 		null,
     note 		note_t 		null,
     chan_id 		uid_t 		null,
-    photos 		blobs_t 	null,
+    photos 		uids_t 		null,
     attr_ids 		uids_t 		null,
     account_id 		uid_t 		not null,
     validator_id 	uid_t		null,
@@ -990,7 +990,7 @@ create table comments (
     account_id 		uid_t 		not null,
     comment_type_id 	uid_t 		not null,
     doc_note 		note_t 		null,
-    photo		blob_t		null,
+    photo		uid_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1031,7 +1031,7 @@ create table confirmations (
     target_id 		uid_t 		not null,
     confirm_id 		uid_t 		not null,
     doc_note 		note_t 		null,
-    photos		blobs_t		null,
+    photos		uids_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1045,7 +1045,7 @@ create table deletions (
     user_id		uid_t 		not null,
     fix_dt		datetime_t 	not null,
     note		note_t		null,
-    photo		blob_t		null,
+    photo		uid_t		null,
     validator_id 	uid_t		null,
     validated 		bool_t 		not null default 0,
     hidden 		bool_t 		not null default 0,
@@ -1104,7 +1104,7 @@ create table dyn_audits (
     note 		note_t 		null,
     wf 			wf_t 		not null check(wf between 0.01 and 1.00),
     sla 		numeric(6,5) 	not null check(sla between 0.0 and 1.0),
-    photos		blobs_t		null,
+    photos		uids_t		null,
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
@@ -1243,7 +1243,7 @@ create table dyn_shelfs (
     assortment 		int32_t 	null check (assortment >= 0),
     sos 		numeric(6,5) 	null check(sos between 0.0 and 1.0),
     soa 		numeric(6,5) 	null check(soa between 0.0 and 1.0),
-    photos		blobs_t		null,
+    photos		uids_t		null,
     sos_target 		wf_t 		null check(sos_target between 0.01 and 1.00),
     soa_target 		wf_t 		null check(soa_target between 0.01 and 1.00),
     fix_dt 		datetime_t 	not null,
@@ -1337,7 +1337,7 @@ create table photos (
     placement_id	uid_t		not null,
     brand_id		uid_t		null,
     photo_type_id	uid_t		null,
-    photo		blob_t		not null,
+    photo		uid_t		not null,
     doc_note		note_t		null,
     photo_param_ids	uids_t		null,
     inserted_ts 	ts_auto_t 	not null,
@@ -1356,7 +1356,7 @@ create table presentations (
     participants 	int32_t 	not null,
     tm_ids 		uids_t 		null,
     doc_note 		note_t 		null,
-    photo		blob_t		null,
+    photo		uid_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1408,6 +1408,18 @@ create table reclamations (
 
 create trigger trig_updated_ts before update on reclamations for each row execute procedure tf_updated_ts();
 
+create table revocations (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    doc_type 		doctype_t 	not null,
+    hidden		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key (db_id, doc_id)
+);
+
+create trigger trig_updated_ts before update on revocations for each row execute procedure tf_updated_ts();
+
 create table trainings (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1418,10 +1430,26 @@ create table trainings (
     training_type_id	uid_t		null,
     contact_ids 	uids_t 		not null,
     tm_ids 		uids_t 		not null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
 );
 
 create trigger trig_updated_ts before update on trainings for each row execute procedure tf_updated_ts();
+
+create table thumbnails (
+    db_id 		uid_t 		not null,
+    ref_id 		uid_t 		not null,
+    photo 		blob_t 		not null,
+    thumb 		blob_t 		null,
+    thumb_width 	int32_t 	null check(thumb_width > 0),
+    thumb_height 	int32_t 	null check(thumb_height > 0),
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key (db_id, ref_id)
+);
+
+create trigger trig_updated_ts before update on thumbnails for each row execute procedure tf_updated_ts();
 
 create table unsched (
     db_id 		uid_t 		not null,
@@ -1638,14 +1666,30 @@ begin
 end;
 $BODY$ language plpgsql;
 
-create or replace function resolve_blob_stream4(p0_id varchar(256), p1_id varchar(256), p2_id varchar(256), p3_id varchar(256)) returns blobs_t
-as $BODY$
-begin
-    return (select array_agg(a) from unnest(ARRAY[resolve_blob_stream(p0_id)::OID, resolve_blob_stream(p1_id)::OID, resolve_blob_stream(p2_id)::OID,
-	resolve_blob_stream(p3_id)::OID]) a where a is not null);
-end;
-$BODY$ language plpgsql;
 
+create or replace function bool_in(arg text) returns bool_t as
+$body$
+begin
+    return case when arg = '' then null else arg::bool_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function currency_in(arg text) returns currency_t as
+$body$
+begin
+    return case when arg = '' then null else arg::currency_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function datetime_in(arg text) returns datetime_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
+end;
+$body$
+language plpgsql IMMUTABLE;
 
 create or replace function ean13_in(ar text array) returns ean13 array
 as $body$
@@ -1667,6 +1711,70 @@ begin
 end;
 $body$ language plpgsql;
 
+create or replace function ean13ar_in(arg text) returns ean13 array as
+$body$
+begin
+    return case when arg = '' then null else ean13_in(string_to_array(arg, ',')) end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function gps_in(arg text) returns gps_t as
+$body$
+begin
+    return case when arg = '' then null else arg::gps_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function int32_in(arg text) returns int32_t as
+$body$
+begin
+    return case when arg = '' then null else arg::int32_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function note_in(arg text) returns note_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function uid_in(arg text) returns uid_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function uids_in(arg text) returns uids_t as
+$body$
+begin
+    return case when arg = '' then null else string_to_array(arg, ',') end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function uids_out(arg uids_t) returns text as
+$body$
+begin
+    return case when arg is null then null else array_to_string(arg, ',') end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function wf_in(arg text) returns wf_t as
+$body$
+begin
+    return case when arg = '' then null else arg::wf_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
 create table sysparams (
     param_id 		uid_t 		not null primary key,
     param_value 	uid_t 		null,
@@ -1681,4 +1789,8 @@ create trigger trig_updated_ts before update on sysparams for each row execute p
 insert into sysparams(param_id, param_value, descr) values('db:created_ts', current_timestamp, 'Database creation datetime.');
 insert into sysparams(param_id, param_value, descr) values('db:id', 'LTS', 'Database unique ID.');
 insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Database version number.');
+
+/* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
+
+update sysparams set param_value='3.4.20' where param_id='db:vstamp';
 

@@ -1713,7 +1713,49 @@ create table thumbnails (
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on thumbnails for each row execute procedure tf_updated_ts();
+
+create or replace function photo_get(arg0 /*db_id*/ uid_t, arg1 /*ref_id*/ uid_t) returns blob_t as
+$body$
+declare
+    rv blob_t;
+begin
+    select photo from thumbnails where db_id = arg0 and ref_id = arg1
+	into rv;
+    return rv;
+end;
+$body$
+language plpgsql STABLE;
+
+create or replace function thumb_get(arg0 /*db_id*/ uid_t, arg1 /*ref_id*/ uid_t) returns blob_t as
+$body$
+declare
+    rv blob_t;
+begin
+    select thumb from thumbnails where db_id = arg0 and ref_id = arg1
+	into rv;
+    return rv;
+end;
+$body$
+language plpgsql STABLE;
 #endif //PGSQL
+#ifdef MSSQL
+create function photo_get(@arg0 /*db_id*/ uid_t, @arg1 /*ref_id*/ uid_t) returns blob_t
+as
+begin
+    declare @rv blob_t
+    select @rv = ptr from large_objects where blob_id = (select photo from thumbnails where db_id = @arg0 and ref_id = @arg1)
+    return @rv
+end
+
+create function thumb_get(@arg0 /*db_id*/ uid_t, @arg1 /*ref_id*/ uid_t) returns blob_t
+as
+begin
+    declare @rv blob_t
+    select @rv = ptr from large_objects where blob_id = (select thumb from thumbnails where db_id = @arg0 and ref_id = @arg1)
+    return @rv
+end
+go
+#endif //MSSQL
 
 create table unsched (
     db_id 		uid_t 		not null,

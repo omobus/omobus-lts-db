@@ -32,8 +32,8 @@ insert into equipments (db_id, equipment_id, account_id, serial_number, equipmen
 </insert>
 <end>
   <![CDATA[
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostserial_number%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostserial_number%'
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </equipments>

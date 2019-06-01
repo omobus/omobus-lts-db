@@ -1170,13 +1170,8 @@ create table additions (
     geo_address 	address_t 	null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
-    fix_year 		int32_t 	not null,
-    fix_month 		int32_t 	not null,
     primary key(db_id, doc_id)
 );
-
-create index i_year_photos1 on photos(db_id, fix_year);
-create index i_year_photos2 on photos(db_id, fix_year, account_id);
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on additions for each row execute procedure tf_updated_ts();
@@ -1592,8 +1587,13 @@ create table photos (
     photo_param_ids	uids_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    fix_year 		int32_t 	not null,
+    fix_month 		int32_t 	not null,
     primary key(db_id, doc_id)
 );
+
+create index i_year_photos1 on photos(db_id, fix_year);
+create index i_year_photos2 on photos(db_id, fix_year, account_id);
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on photos for each row execute procedure tf_updated_ts();

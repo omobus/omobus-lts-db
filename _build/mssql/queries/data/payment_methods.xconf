@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<payment_methods templ="%payment_method_id%;%descr%;%encashment%;%row_no%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update payment_methods set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from payment_methods 
+    where db_id = '%ErpCode%' and payment_method_id = '%payment_method_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update payment_methods set descr='%descr%', encashment=dbo.bool_in('%encashment%'), row_no=dbo.int32_in('%row_no%'), hidden=0 
+    where db_id = '%ErpCode%' and payment_method_id = '%payment_method_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into payment_methods (db_id, payment_method_id, descr, encashment, row_no, hidden) 
+    values ('%ErpCode%', '%payment_method_id%', '%descr%', dbo.bool_in('%encashment%'), dbo.int32_in('%row_no%'), 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+--select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</payment_methods>

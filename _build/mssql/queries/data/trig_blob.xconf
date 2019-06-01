@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trig_blob>
+  <![CDATA[ 
+--select stor_blob_stream('//proxy/%uid%/%pack_name%', $1:blob, '%server_hostname%')
+exec stor_blob_stream '//proxy/%uid%/%pack_name%', '$1:blob', '%server_hostname%'
+  ]]>
+</trig_blob>

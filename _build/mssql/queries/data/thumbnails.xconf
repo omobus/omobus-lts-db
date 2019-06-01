@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<thumbnails templ="%ref_id%;%photo%;%thumb%;%thumb_width%;%thumb_height%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from thumbnails 
+    where db_id = '%ErpCode%' and ref_id = '%ref_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update thumbnails set thumb = dbo.resolve_blob_stream('//proxy/%uid%/%thumb%'), thumb_width = dbo.int32_in('%thumb_width%'), thumb_height = dbo.int32_in('%thumb_height%')
+    where db_id = '%ErpCode%' and ref_id = '%ref_id%' and thumb is null
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into thumbnails (db_id, ref_id, photo, thumb, thumb_width, thumb_height) 
+    values ('%ErpCode%', '%ref_id%', dbo.resolve_blob_stream('//proxy/%uid%/%photo%'), dbo.resolve_blob_stream('//proxy/%uid%/%thumb%'), dbo.int32_in('%thumb_width%'), dbo.int32_in('%thumb_height%'))
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+--select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</thumbnails>

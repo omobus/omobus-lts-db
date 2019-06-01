@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+<conferences templ="%doc_id%;%fix_dt%;%user_id%;%doc_note%;%title%;%b_date%;%e_date%;%ctheme_ids%;%participants%;%expenses%;%speakers%;%venue%;%address%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from conferences 
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
+  ]]>
+</check_exist>
+<insert>
+  <![CDATA[
+insert into conferences (db_id, doc_id, fix_dt, user_id, doc_note, title, b_date, e_date, ctheme_ids, participants, expenses, speakers, venue, address)
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%doc_note%', '%title%', '%b_date%', '%e_date%', 
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</conferences>
+-->

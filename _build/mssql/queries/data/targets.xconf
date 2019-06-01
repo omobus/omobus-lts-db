@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<targets templ="%target_id%;%target_type_id%;%subject%;%body%;%b_date%;%e_date%;%image%;%author_id%;%myself%;%hidden%;%attrs%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from targets 
+    where db_id = '%ErpCode%' and target_id = '%target_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update targets set target_type_id='%target_type_id%', subject='%subject%', body='%body%', b_date='%b_date%', e_date='%e_date%', image=dbo.uid_in('%image%'), author_id='%author_id%', myself='%myself%', hidden=0%hidden%, attrs='%attrs%'
+    where db_id = '%ErpCode%' and target_id = '%target_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into targets (db_id, target_id, target_type_id, subject, body, b_date, e_date, image, author_id, myself, hidden, attrs) 
+    values ('%ErpCode%', '%target_id%', '%target_type_id%', '%subject%', '%body%', '%b_date%', '%e_date%', dbo.uid_in('%image%'), '%author_id%', '%myself%', 0%hidden%, '%attrs%')
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+--select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</targets>

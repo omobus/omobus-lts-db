@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<storage 
+    module="stor_pgsql" 
+MSSQLmodule="stor_tds"
+    server="hostaddr=127.0.0.1 port=5432"
+MSSQLserver="srv1"
+    storage="omobus-lts-db"
+    user="omobus"
+    password="omobus"
+    trace="no"
+    />

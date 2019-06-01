@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<users templ="%user_id%;%pids%;%descr%;%role%;%country_ids%;%dep_ids%;%distr_ids%;%agency_id%;%mobile%;%email%;%area%;%rules:wd_begin%;%rules:wd_end%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update users set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from users 
+    where db_id = '%ErpCode%' and user_id = '%user_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update users set pids=dbo.uids_in('%pids%'), descr='%descr%', role='%role%', dep_ids=dbo.uids_in('%dep_ids%'), country_ids=dbo.uids_in('%country_ids%'), distr_ids=dbo.uids_in('%distr_ids%'), agency_id=dbo.uid_in('%agency_id%'), mobile='%mobile%', email='%email%', "rules:wd_begin"='%rules:wd_begin%', "rules:wd_end"='%rules:wd_end%', hidden=0
+    where db_id = '%ErpCode%' and user_id = '%user_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[ 
+insert into users (db_id, user_id, pids, descr, role, dep_ids, country_ids, distr_ids, agency_id, mobile, email, area, "rules:wd_begin", "rules:wd_end", hidden)
+    values ('%ErpCode%', '%user_id%', dbo.uids_in('%pids%'), '%descr%', '%role%', dbo.uids_in('%dep_ids%'), dbo.uids_in('%country_ids%'), dbo.uids_in('%distr_ids%'), dbo.uid_in('%agency_id%'), '%mobile%', '%email%', '%area%', '%rules:wd_begin%', '%rules:wd_end%', 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+--select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</users>

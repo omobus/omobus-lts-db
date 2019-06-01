@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<equipments templ="%equipment_id%;%account_id%;%serial_number%;%equipment_type_id%;%ownership_type_id%;%extra_info%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update equipments set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from equipments 
+    where db_id = '%ErpCode%' and equipment_id = '%equipment_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update equipments set account_id='%account_id%', serial_number='%serial_number%', equipment_type_id='%equipment_type_id%', ownership_type_id='%ownership_type_id%', extra_info='%extra_info%', hidden=0
+    where db_id = '%ErpCode%' and equipment_id = '%equipment_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into equipments (db_id, equipment_id, account_id, serial_number, equipment_type_id, ownership_type_id, extra_info, hidden) 
+    values ('%ErpCode%', '%equipment_id%', '%account_id%', '%serial_number%', '%equipment_type_id%', '%ownership_type_id%', '%extra_info%', 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</equipments>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discards templ="%account_id%;%user_id%;%fix_dt%;%activity_type_id%;%route_date%;%discard_type_id%;%note%;%validator_id%;%validated%;%hidden%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from discards 
+    where db_id = '%ErpCode%' and account_id = '%account_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update discards set user_id='%user_id%', fix_dt='%fix_dt%', activity_type_id='%activity_type_id%', route_date='%route_date%', discard_type_id='%discard_type_id%', note='%note%', validator_id='%validator_id%', validated=0%validated%, hidden=0%hidden%
+    where db_id = '%ErpCode%' and account_id = '%account_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into discards (db_id, account_id, user_id, fix_dt, activity_type_id, route_date, discard_type_id, note, validator_id, validated, hidden) 
+    values ('%ErpCode%', '%account_id%', '%user_id%', '%fix_dt%', '%activity_type_id%', '%route_date%', '%discard_type_id%', '%note%', '%validator_id%', 0%validated%, 0%hidden%)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</discards>

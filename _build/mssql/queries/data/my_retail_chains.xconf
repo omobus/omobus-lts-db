@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<my_retail_chains templ="%user_id%;%rc_id%;%region_id%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+delete from my_retail_chains
+    where db_id = '%ErpCode%'
+  ]]>
+</begin>
+<insert>
+  <![CDATA[
+insert into my_retail_chains (db_id, user_id, rc_id, region_id) 
+    values ('%ErpCode%', '%user_id%', '%rc_id%', '%region_id%')
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+--select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</my_retail_chains>

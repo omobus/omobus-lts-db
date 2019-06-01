@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<additions templ="%doc_id%;%fix_dt%;%user_id%;%account%;%address%;%legal_address%;%number%;%addition_type_id%;%note%;%chan_id%;%attr_ids%;%photos%;%account_id%;%validator_id%;%validated%;%hidden%;%geo_address%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from additions 
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update additions set user_id='%user_id%', fix_dt='%fix_dt%', account='%account%', address='%address%', legal_address='%legal_address%', number='%number%', addition_type_id='%addition_type_id%', note='%note%', chan_id='%chan_id%', attr_ids=dbo.uids_in('%attr_ids%'), photos=dbo.uids_in('%photos%'), account_id='%account_id%', validator_id=dbo.uid_in('%validator_id%'), validated=0%validated%, hidden=0%hidden%, geo_address='%geo_address%'
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into additions (db_id, doc_id, user_id, fix_dt, account, address, legal_address, number, addition_type_id, note, chan_id, attr_ids, photos, account_id, validator_id, validated, hidden, geo_address) 
+    values ('%ErpCode%', '%doc_id%', '%user_id%', '%fix_dt%', '%account%', '%address%', '%legal_address%', '%number%', '%addition_type_id%', '%note%', '%chan_id%', dbo.uids_in('%attr_ids%'), dbo.uids_in('%photos%'), '%account_id%', dbo.uid_in('%validator_id%'), 0%validated%, 0%hidden%, '%geo_address%')
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+--select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</additions>

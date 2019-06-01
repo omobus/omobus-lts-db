@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cities templ="%city_id%;%pid%;%ftype%;%descr%;%country_id%;%population%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update cities set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from cities 
+    where db_id = '%ErpCode%' and city_id = '%city_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update cities set pid='%pid%', ftype=0%ftype%, descr='%descr%', country_id='%country_id%', population=int32_in('%population%'), hidden=0
+    where db_id = '%ErpCode%' and city_id = '%city_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into cities (db_id, pid, city_id, ftype, descr, country_id, population, hidden) 
+    values ('%ErpCode%', '%pid%', '%city_id%', 0%ftype%, '%descr%', '%country_id%', int32_in('%population%'), 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</cities>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<my_routes templ="%user_id%;%account_id%;%activity_type_id%;%p_date%;%row_no%;%duration%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+delete from my_routes
+    where db_id = '%ErpCode%' and
+p_date >= current_date::date_t
+--p_date >= convert(varchar(10), getdate(), 121)
+  ]]>
+</begin>
+<insert>
+  <![CDATA[
+insert into my_routes (db_id, user_id, account_id, activity_type_id, p_date, row_no, duration) 
+    values ('%ErpCode%', '%user_id%', '%account_id%', '%activity_type_id%', '%p_date%', dbo.int32_in('%row_no%'), dbo.int32_in('%duration%'))
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+--select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</my_routes>

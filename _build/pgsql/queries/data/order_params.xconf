@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<order_params templ="%distr_id%;%order_param_id%;%descr%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update order_params set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from order_params
+    where db_id = '%ErpCode%' and distr_id = '%distr_id%' and order_param_id = '%order_param_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update order_params set descr='%descr%', hidden=0
+    where db_id = '%ErpCode%' and distr_id = '%distr_id%' and order_param_id = '%order_param_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into order_params (db_id, distr_id, order_param_id, descr)
+    values ('%ErpCode%', '%distr_id%', '%order_param_id%', '%descr%')
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+--exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</order_params>

@@ -14,7 +14,7 @@ select count(*) exist from user_activities
 </check_exist>
 <update>
   <![CDATA[
-update user_activities set e_dt=datetime_in('%e_dt%'), e_la=gps_in('%e_la%'), e_lo=gps_in('%e_lo%'), e_sat_dt=datetime_in('%e_sat_dt%'), employee_id=uid_in('%employee_id%'
+update user_activities set e_dt=datetime_in('%e_dt%'), e_la=gps_in('%e_la%'), e_lo=gps_in('%e_lo%'), e_sat_dt=datetime_in('%e_sat_dt%'), employee_id=uid_in('%employee_id%')
     where db_id = '%ErpCode%' and user_id = '%user_id%' and account_id = '%account_id%' and activity_type_id = '%activity_type_id%' and w_cookie = '%w_cookie%' and a_cookie = '%a_cookie%'
   ]]>
 </update>

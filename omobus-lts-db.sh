@@ -25,7 +25,7 @@ psql -d postgres -c \
 psql -d $dbname -c \
     "CREATE LANGUAGE plpgsql"
 
-psql -d $dbname -f /etc/omobus.d/.build/pgsql/$dbname.sql
+psql -d $dbname -f _build/pgsql/$dbname.sql
 
 exit 0
 # The end of the script.

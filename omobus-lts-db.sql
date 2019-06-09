@@ -1739,18 +1739,18 @@ $body$
 language plpgsql STABLE;
 #endif //PGSQL
 #ifdef MSSQL
-create function photo_get(@arg0 /*db_id*/ uid_t, @arg1 /*ref_id*/ uid_t) returns blob_t
+create function photo_get(@arg0 /*db_id*/ uid_t, @arg1 /*ref_id*/ uid_t) returns varbinary(max)
 as
 begin
-    declare @rv blob_t
+    declare @rv varbinary(max)
     select @rv = ptr from large_objects where blob_id = (select photo from thumbnails where db_id = @arg0 and ref_id = @arg1)
     return @rv
 end
 
-create function thumb_get(@arg0 /*db_id*/ uid_t, @arg1 /*ref_id*/ uid_t) returns blob_t
+create function thumb_get(@arg0 /*db_id*/ uid_t, @arg1 /*ref_id*/ uid_t) returns varbinary(max)
 as
 begin
-    declare @rv blob_t
+    declare @rv varbinary(max)
     select @rv = ptr from large_objects where blob_id = (select thumb from thumbnails where db_id = @arg0 and ref_id = @arg1)
     return @rv
 end

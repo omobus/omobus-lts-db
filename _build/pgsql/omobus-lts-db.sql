@@ -1361,7 +1361,7 @@ create table presentations (
     participants 	int32_t 	not null,
     tm_ids 		uids_t 		null,
     doc_note 		note_t 		null,
-    photo		uid_t		null,
+    photos		uids_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)

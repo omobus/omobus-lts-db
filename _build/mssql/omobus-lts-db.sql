@@ -1296,7 +1296,7 @@ create table presentations (
     participants 	int32_t 	not null,
     tm_ids 		uids_t 		null,
     doc_note 		note_t 		null,
-    photo		uid_t		null,
+    photos		uids_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1384,18 +1384,18 @@ create table thumbnails (
     primary key (db_id, ref_id)
 );
 
-create function photo_get(@arg0 /*db_id*/ uid_t, @arg1 /*ref_id*/ uid_t) returns blob_t
+create function photo_get(@arg0 /*db_id*/ uid_t, @arg1 /*ref_id*/ uid_t) returns varbinary(max)
 as
 begin
-    declare @rv blob_t
+    declare @rv varbinary(max)
     select @rv = ptr from large_objects where blob_id = (select photo from thumbnails where db_id = @arg0 and ref_id = @arg1)
     return @rv
 end
 
-create function thumb_get(@arg0 /*db_id*/ uid_t, @arg1 /*ref_id*/ uid_t) returns blob_t
+create function thumb_get(@arg0 /*db_id*/ uid_t, @arg1 /*ref_id*/ uid_t) returns varbinary(max)
 as
 begin
-    declare @rv blob_t
+    declare @rv varbinary(max)
     select @rv = ptr from large_objects where blob_id = (select thumb from thumbnails where db_id = @arg0 and ref_id = @arg1)
     return @rv
 end

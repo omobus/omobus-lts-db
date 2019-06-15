@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<confirmations templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%target_id%;%confirm_id%;%doc_note%;%photo0%;%photo1%;%photo2%;%photo3%;">
+<confirmations templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%target_id%;%confirm_id%;%doc_note%;%photos%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream

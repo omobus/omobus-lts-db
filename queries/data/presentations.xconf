@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<presentations templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%participants%;%tm_ids%;%doc_note%;%photo%;">
+<presentations templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%participants%;%tm_ids%;%doc_note%;%photos%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,8 +14,8 @@ select count(*) exist from presentations
 </check_exist>
 <insert>
   <![CDATA[
-insert into presentations (db_id, doc_id, fix_dt, user_id, account_id, participants, tm_ids, doc_note, photo) 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', %participants%, uids_in('%tm_ids%'), note_in('%doc_note%'), uid_in('%photo%'))
+insert into presentations (db_id, doc_id, fix_dt, user_id, account_id, participants, tm_ids, doc_note, photos) 
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', %participants%, uids_in('%tm_ids%'), note_in('%doc_note%'), uids_in('%photos%'))
   ]]>
 </insert>
 <end>

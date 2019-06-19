@@ -14,8 +14,8 @@ select count(*) exist from trainings
 </check_exist>
 <insert>
   <![CDATA[
-insert into trainings (db_id, doc_id, fix_dt, user_id, account_id, training_type_id, contact_ids, tm_ids, doc_note) 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%training_type_id%', uids_in('%contact_ids%'), uids_in('%tm_ids%'), note_in('%doc_note%'))
+insert into trainings (db_id, doc_id, fix_dt, user_id, account_id, training_type_id, contact_ids, tm_ids, doc_note, photos) 
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%training_type_id%', uids_in('%contact_ids%'), uids_in('%tm_ids%'), note_in('%doc_note%'), uids_in('%photos%'))
   ]]>
 </insert>
 <end>

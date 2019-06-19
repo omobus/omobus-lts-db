@@ -1690,6 +1690,7 @@ create table trainings (
     training_type_id	uid_t		null,
     contact_ids 	uids_t 		not null,
     tm_ids 		uids_t 		not null,
+    photos		uids_t		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)

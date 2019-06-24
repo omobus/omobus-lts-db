@@ -27,7 +27,6 @@ insert into dyn_ratings (db_id, fix_date, account_id, employee_id, rating_criter
 <end>
   <![CDATA[
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </dyn_ratings>

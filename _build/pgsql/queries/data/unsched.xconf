@@ -21,7 +21,6 @@ insert into unsched (db_id, doc_id, fix_dt, user_id, unsched_type_id, doc_note)
 <end>
   <![CDATA[
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </unsched>

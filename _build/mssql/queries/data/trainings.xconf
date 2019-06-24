@@ -20,7 +20,6 @@ insert into trainings (db_id, doc_id, fix_dt, user_id, account_id, training_type
 </insert>
 <end>
   <![CDATA[
---select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>

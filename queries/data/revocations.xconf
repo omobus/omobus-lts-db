@@ -26,8 +26,12 @@ insert into revocations (db_id, doc_id, doc_type, hidden)
 </insert>
 <end>
   <![CDATA[
+#ifdef PGSQL
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //PGSQL
+#ifdef MSSQL
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //MSSQL
   ]]>
 </end>
 </revocations>

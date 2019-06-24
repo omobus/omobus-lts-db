@@ -32,7 +32,6 @@ insert into training_materials (db_id, tm_id, descr, brand_ids, hidden)
 </insert>
 <end>
   <![CDATA[
---select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>

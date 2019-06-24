@@ -32,7 +32,6 @@ insert into brands (db_id, brand_id, descr, manuf_id, dep_id, row_no, hidden)
 </insert>
 <end>
   <![CDATA[
---select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>

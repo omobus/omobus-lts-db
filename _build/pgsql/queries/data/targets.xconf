@@ -27,7 +27,6 @@ insert into targets (db_id, target_id, target_type_id, subject, body, b_date, e_
 <end>
   <![CDATA[
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </targets>

@@ -8,22 +8,59 @@ select count(*) from data_stream
 </verification>
 <begin>
   <![CDATA[
-delete from agreements
-    where db_id = '%ErpCode%' and 
-e_date >= current_date::date_t
---e_date >= convert(varchar(10), getdate(), 121)
+#ifdef PGSQL
+create temporary table if not exists ".%uid%_agreements" (
+    account_id		uid_t		not null,
+    placement_id 	uid_t 		not null,
+    posm_id 		uid_t 		not null,
+    b_date 		date_t 		not null,
+    e_date 		date_t 		not null,
+    strict 		bool_t 		not null,
+    primary key (account_id, placement_id, posm_id, b_date)
+);
+#endif //PGSQL
+#ifdef MSSQL
+create table dbo.#%uid%_agreements (
+    account_id		varchar(48)	not null,
+    placement_id 	varchar(48) 	not null,
+    posm_id 		varchar(48) 	not null,
+    b_date 		varchar(10) 	not null,
+    e_date 		varchar(10) 	not null,
+    strict 		smallint 	not null
+)
+#endif //MSSQL
   ]]>
 </begin>
 <insert>
   <![CDATA[
-insert into agreements (db_id, account_id, placement_id, posm_id, b_date, e_date, "strict")
-    values ('%ErpCode%', '%account_id%', '%placement_id%', '%posm_id%', '%b_date%', '%e_date%', 0%strict%)
+#ifdef PGSQL
+insert into ".%uid%_agreements" (account_id, placement_id, posm_id, b_date, e_date, "strict")
+#endif //PGSQL
+#ifdef MSSQL
+insert into dbo.#%uid%_agreements (account_id, placement_id, posm_id, b_date, e_date, "strict")
+#endif //MSSQL
+    values ('%account_id%', '%placement_id%', '%posm_id%', '%b_date%', '%e_date%', 0%strict%)
   ]]>
 </insert>
 <end>
   <![CDATA[
+#ifdef PGSQL
+delete from agreements
+    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from ".%uid%_agreements");
+insert into agreements (db_id, account_id, placement_id, posm_id, b_date, e_date, "strict")
+    select '%ErpCode%', account_id, placement_id, posm_id, b_date, e_date, "strict" from ".%uid%_agreements";
+
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //PGSQL
+#ifdef MSSQL
+delete from agreements
+    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.#%uid%_agreements)
+insert into agreements (db_id, account_id, placement_id, posm_id, b_date, e_date, "strict")
+    select '%ErpCode%', account_id, placement_id, posm_id, b_date, e_date, "strict" from dbo.#%uid%_agreements
+drop table from dbo.#%uid%_agreements
+
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //MSSQL
   ]]>
 </end>
 </agreements>

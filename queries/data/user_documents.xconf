@@ -26,8 +26,12 @@ update user_documents set doc_id='%doc_id%'
 </update>
 <end>
   <![CDATA[
+#ifdef PGSQL
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //PGSQL
+#ifdef MSSQL
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //MSSQL
   ]]>
 </end>
 </user_documents>

@@ -20,7 +20,6 @@ insert into my_regions (db_id, user_id, region_id)
 </insert>
 <end>
   <![CDATA[
---select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>

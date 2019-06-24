@@ -32,8 +32,12 @@ insert into payment_methods (db_id, payment_method_id, descr, encashment, row_no
 </insert>
 <end>
   <![CDATA[
+#ifdef PGSQL
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //PGSQL
+#ifdef MSSQL
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //MSSQL
   ]]>
 </end>
 </payment_methods>

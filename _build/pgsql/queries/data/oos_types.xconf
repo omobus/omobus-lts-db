@@ -33,7 +33,6 @@ insert into oos_types (db_id, oos_type_id, descr, row_no, hidden)
 <end>
   <![CDATA[
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </oos_types>

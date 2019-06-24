@@ -33,7 +33,6 @@ insert into order_params (db_id, distr_id, order_param_id, descr)
 <end>
   <![CDATA[
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </order_params>

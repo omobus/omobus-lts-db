@@ -32,8 +32,12 @@ insert into order_params (db_id, distr_id, order_param_id, descr)
 </insert>
 <end>
   <![CDATA[
+#ifdef PGSQL
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //PGSQL
+#ifdef MSSQL
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //MSSQL
   ]]>
 </end>
 </order_params>

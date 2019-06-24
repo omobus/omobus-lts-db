@@ -8,22 +8,31 @@ select count(*) from data_stream
 </verification>
 <begin>
   <![CDATA[
-delete from agreements
-    where db_id = '%ErpCode%' and 
-e_date >= current_date::date_t
---e_date >= convert(varchar(10), getdate(), 121)
+create temporary table if not exists ".%uid%_agreements" (
+    account_id		uid_t		not null,
+    placement_id 	uid_t 		not null,
+    posm_id 		uid_t 		not null,
+    b_date 		date_t 		not null,
+    e_date 		date_t 		not null,
+    strict 		bool_t 		not null,
+    primary key (account_id, placement_id, posm_id, b_date)
+);
   ]]>
 </begin>
 <insert>
   <![CDATA[
-insert into agreements (db_id, account_id, placement_id, posm_id, b_date, e_date, "strict")
-    values ('%ErpCode%', '%account_id%', '%placement_id%', '%posm_id%', '%b_date%', '%e_date%', 0%strict%)
+insert into ".%uid%_agreements" (account_id, placement_id, posm_id, b_date, e_date, "strict")
+    values ('%account_id%', '%placement_id%', '%posm_id%', '%b_date%', '%e_date%', 0%strict%)
   ]]>
 </insert>
 <end>
   <![CDATA[
+delete from agreements
+    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from ".%uid%_agreements");
+insert into agreements (db_id, account_id, placement_id, posm_id, b_date, e_date, "strict")
+    select '%ErpCode%', account_id, placement_id, posm_id, b_date, e_date, "strict" from ".%uid%_agreements";
+
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </agreements>

@@ -20,22 +20,19 @@ select count(*) exist from distributors
 </check_exist>
 <update>
   <![CDATA[
-update distributors set descr='%descr%', pid='%pid%', country_id='%country_id%', hidden=0
+update distributors set descr='%descr%', pid=uid_in('%pid%'), country_id=uid_in('%country_id%'), hidden=0
     where db_id = '%ErpCode%' and distr_id = '%distr_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into distributors (db_id, distr_id, descr, pid, country_id, hidden) 
-    values ('%ErpCode%', '%distr_id%', '%descr%', '%pid%', '%country_id%', 0)
+    values ('%ErpCode%', '%distr_id%', '%descr%', uid_in('%pid%'), uid_in('%country_id%'), 0)
   ]]>
 </insert>
 <end>
   <![CDATA[
-update distributors set pid=null where pid='' and hidden=0;
-update distributors set country_id=null where country_id='' and hidden=0;
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </distributors>

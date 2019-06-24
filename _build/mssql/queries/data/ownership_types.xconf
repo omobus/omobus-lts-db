@@ -32,7 +32,6 @@ insert into ownership_types (db_id, ownership_type_id, descr, row_no, hidden)
 </insert>
 <end>
   <![CDATA[
---select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>

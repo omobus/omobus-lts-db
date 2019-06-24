@@ -33,7 +33,6 @@ insert into cities (db_id, pid, city_id, ftype, descr, country_id, population, h
 <end>
   <![CDATA[
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </cities>

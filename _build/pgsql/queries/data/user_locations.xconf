@@ -21,7 +21,6 @@ insert into user_locations (db_id, act_id, row_no, user_id, fix_date, latitude, 
 <end>
   <![CDATA[
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </user_locations>

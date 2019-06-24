@@ -33,7 +33,6 @@ insert into reclamation_types (db_id, reclamation_type_id, descr, hidden)
 <end>
   <![CDATA[
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </reclamation_types>

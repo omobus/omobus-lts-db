@@ -26,8 +26,12 @@ insert into discards (db_id, account_id, user_id, fix_dt, activity_type_id, rout
 </insert>
 <end>
   <![CDATA[
+#ifdef PGSQL
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
---exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //PGSQL
+#ifdef MSSQL
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //MSSQL
   ]]>
 </end>
 </discards>

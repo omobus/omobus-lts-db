@@ -1,7 +1,7 @@
 # Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file.
 
 PACKAGE_NAME 	= omobus-lts-db
-PACKAGE_VERSION = 3.4.22
+PACKAGE_VERSION = 3.4.23
 COPYRIGHT 	= Copyright (c) 2006 - 2019 ak obs, ltd. <info@omobus.net>
 SUPPORT 	= Support and bug reports: <support@omobus.net>
 AUTHOR		= Author: Igor Artemov <i_artemov@ak-obs.ru>
@@ -12,6 +12,7 @@ PP		= unifdef
 MKDIR 		= mkdir -p
 SED 		= sed -i -e
 CP 		= cp
+MV 		= mv
 
 DISTR_NAME	= $(PACKAGE_NAME)-$(PACKAGE_VERSION)
 
@@ -34,6 +35,7 @@ pgsql:
 	@$(CP) -r kernels/ _build/pgsql/
 	@$(CP) -r queries/ _build/pgsql/
 	@$(CP) -r transactions/ _build/pgsql/
+	@for i in _build/pgsql/queries/data/*.xconf; do $(PP) -D PGSQL -U MSSQL $$i > $$i.1; $(MV) $$i.1 $$i; done
 	@echo "Compiled omobusd server configuration for the PostgreSQL."
 
 mssql:
@@ -61,8 +63,5 @@ mssql:
 	@$(SED) 's/uids_in/dbo.uids_in/g' _build/mssql/queries/data/*.xconf
 	@$(SED) 's/wf_in/dbo.wf_in/g' _build/mssql/queries/data/*.xconf
 	@$(SED) 's/resolve_blob_stream/dbo.resolve_blob_stream/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/^select stor_data_stream/--select stor_data_stream/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/^--exec stor_data_stream/exec stor_data_stream/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/^select stor_blob_stream/--select stor_blob_stream/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/^--exec stor_blob_stream/exec stor_blob_stream/g' _build/mssql/queries/data/*.xconf
+	@for i in _build/mssql/queries/data/*.xconf; do $(PP) -U PGSQL -D MSSQL $$i > $$i.1; $(MV) $$i.1 $$i; done
 	@echo "Compiled omobusd server configuration for the Microsoft SQL Server."

@@ -1109,7 +1109,6 @@ create table training_types (
     db_id 		uid_t 		not null,
     training_type_id	uid_t		not null,
     descr		descr_t		not null,
-    personal 		bool_t 		not null default 0,
     row_no 		int32_t 	null, -- ordering,
     hidden		bool_t		not null default 0,
     inserted_ts 	ts_auto_t 	not null,

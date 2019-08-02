@@ -7,7 +7,7 @@
     ldap.base="ou=lts-db,dc=omobus,dc=local"
     ldap.filter="(&amp;(objectClass=omobusMaintainPoint)(exchangeStatus=enabled))"
     Xldap.tls="yes"
-    ftp.host="zdev.omobus.net"
+    ftp.host="192.168.130.5"
     ftp.port="21021"
     ftp.path="health/"
     ftp.connect_timeout="20"

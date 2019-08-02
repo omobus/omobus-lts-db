@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<revocations templ="%doc_id%;%doc_type%;%hidden%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from revocations 
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update revocations set hidden=0%hidden%
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into revocations (db_id, doc_id, doc_type, hidden) 
+    values ('%ErpCode%', '%doc_id%', '%doc_type%', 0%hidden%)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</revocations>

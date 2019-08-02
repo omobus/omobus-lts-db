@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<agreements1 templ="%account_id%;%placement_id%;%posm_id%;%b_date%;%e_date%;%strict%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+create temporary table if not exists ".%uid%_agreements1" (
+    account_id		uid_t		not null,
+    placement_id 	uid_t 		not null,
+    posm_id 		uid_t 		not null,
+    b_date 		date_t 		not null,
+    e_date 		date_t 		not null,
+    strict 		bool_t 		not null,
+    primary key (account_id, placement_id, posm_id, b_date)
+);
+  ]]>
+</begin>
+<insert>
+  <![CDATA[
+insert into ".%uid%_agreements1" (account_id, placement_id, posm_id, b_date, e_date, "strict")
+    values ('%account_id%', '%placement_id%', '%posm_id%', '%b_date%', '%e_date%', 0%strict%)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+delete from agreements1
+    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from ".%uid%_agreements1");
+insert into agreements1 (db_id, account_id, placement_id, posm_id, b_date, e_date, "strict")
+    select '%ErpCode%', account_id, placement_id, posm_id, b_date, e_date, "strict" from ".%uid%_agreements1";
+
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+  ]]>
+</end>
+</agreements1>

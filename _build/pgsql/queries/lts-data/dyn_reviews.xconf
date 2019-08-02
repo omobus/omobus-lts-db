@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dyn_reviews templ="%fix_date%;%employee_id%;%sla%;%assessment%;%note0%;%note1%;%note2%;%fix_dt%;%user_id%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from dyn_reviews 
+    where db_id = '%ErpCode%' and fix_date = '%fix_date%' and employee_id = '%employee_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update dyn_reviews set sla=%sla%, assessment=%assessment%, note0=note_in('%note0%'), note1=note_in('%note1%'), note2=note_in('%note2%'), user_id='%user_id%', fix_dt='%fix_dt%'
+    where db_id = '%ErpCode%' and fix_date = '%fix_date%' and employee_id = '%employee_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into dyn_reviews (db_id, fix_date, employee_id, sla, assessment, note0, note1, note2, fix_dt, user_id)
+    values ('%ErpCode%', '%fix_date%', '%employee_id%', %sla%, %assessment%, note_in('%note0%'), note_in('%note1%'), note_in('%note2%'), '%fix_dt%', '%user_id%')
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+  ]]>
+</end>
+</dyn_reviews>

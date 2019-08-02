@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<job_titles templ="%job_title_id%;%descr%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update job_titles set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from job_titles 
+    where db_id = '%ErpCode%' and job_title_id = '%job_title_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update job_titles set descr='%descr%', hidden=0
+    where db_id = '%ErpCode%' and job_title_id = '%job_title_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into job_titles (db_id, job_title_id, descr, hidden) 
+    values ('%ErpCode%', '%job_title_id%', '%descr%', 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</job_titles>

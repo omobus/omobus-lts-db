@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<quest_rows templ="%qname_id%;%qrow_id%;%descr%;%row_no%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update quest_rows set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from quest_rows 
+    where db_id = '%ErpCode%' and qname_id='%qname_id%' and qrow_id = '%qrow_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update quest_rows set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
+    where db_id = '%ErpCode%' and qname_id='%qname_id%' and qrow_id = '%qrow_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into quest_rows (db_id, qname_id, qrow_id, descr, row_no, hidden) 
+    values ('%ErpCode%', '%qname_id%', '%qrow_id%', '%descr%', int32_in('%row_no%'), 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+  ]]>
+</end>
+</quest_rows>

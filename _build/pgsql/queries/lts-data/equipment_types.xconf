@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<equipment_types templ="%equipment_type_id%;%descr%;%row_no%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update equipment_types set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from equipment_types 
+    where db_id = '%ErpCode%' and equipment_type_id = '%equipment_type_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update equipment_types set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
+    where db_id = '%ErpCode%' and equipment_type_id = '%equipment_type_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into equipment_types (db_id, equipment_type_id, descr, row_no, hidden) 
+    values ('%ErpCode%', '%equipment_type_id%', '%descr%', int32_in('%row_no%'), 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+  ]]>
+</end>
+</equipment_types>

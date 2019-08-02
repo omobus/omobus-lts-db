@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<activity_types templ="%activity_type_id%;%descr%;%strict%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update activity_types set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from activity_types 
+    where db_id = '%ErpCode%' and activity_type_id = '%activity_type_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update activity_types set descr='%descr%', strict=0%strict%, hidden=0
+    where db_id = '%ErpCode%' and activity_type_id = '%activity_type_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into activity_types (db_id, activity_type_id, descr, strict, hidden) 
+    values ('%ErpCode%', '%activity_type_id%', '%descr%', 0%strict%, 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+  ]]>
+</end>
+</activity_types>

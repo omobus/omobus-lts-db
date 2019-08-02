@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<trainings templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%training_type_id%;%contact_ids%;%tm_ids%;%doc_note%;%photos%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from trainings 
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
+  ]]>
+</check_exist>
+<insert>
+  <![CDATA[
+insert into trainings (db_id, doc_id, fix_dt, user_id, account_id, training_type_id, contact_ids, tm_ids, doc_note, photos) 
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%training_type_id%', dbo.uids_in('%contact_ids%'), dbo.uids_in('%tm_ids%'), dbo.note_in('%doc_note%'), dbo.uids_in('%photos%'))
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</trainings>

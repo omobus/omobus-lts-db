@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<training_materials templ="%tm_id%;%descr%;%brand_ids%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update training_materials set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from training_materials 
+    where db_id = '%ErpCode%' and tm_id = '%tm_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update training_materials set descr='%descr%', brand_ids=uids_in('%brand_ids%'), hidden=0 
+    where db_id = '%ErpCode%' and tm_id = '%tm_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into training_materials (db_id, tm_id, descr, brand_ids, hidden) 
+    values ('%ErpCode%', '%tm_id%', '%descr%', uids_in('%brand_ids%'), 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+  ]]>
+</end>
+</training_materials>

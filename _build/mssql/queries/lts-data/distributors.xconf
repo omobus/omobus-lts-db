@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<distributors templ="%distr_id%;%pid%;%descr%;%country_id%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update distributors set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from distributors 
+    where db_id = '%ErpCode%' and distr_id = '%distr_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update distributors set descr='%descr%', pid=dbo.uid_in('%pid%'), country_id=dbo.uid_in('%country_id%'), hidden=0
+    where db_id = '%ErpCode%' and distr_id = '%distr_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into distributors (db_id, distr_id, descr, pid, country_id, hidden) 
+    values ('%ErpCode%', '%distr_id%', '%descr%', dbo.uid_in('%pid%'), dbo.uid_in('%country_id%'), 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</distributors>

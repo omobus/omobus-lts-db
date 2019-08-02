@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<receipt_types templ="%receipt_type_id%;%descr%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update receipt_types set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from receipt_types 
+    where db_id = '%ErpCode%' and receipt_type_id = '%receipt_type_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update receipt_types set descr='%descr%', hidden=0 
+    where db_id = '%ErpCode%' and receipt_type_id = '%receipt_type_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into receipt_types (db_id, receipt_type_id, descr, hidden) 
+    values ('%ErpCode%', '%receipt_type_id%', '%descr%', 0)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</receipt_types>

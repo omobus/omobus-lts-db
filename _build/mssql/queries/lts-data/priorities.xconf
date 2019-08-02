@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<priorities templ="%country_id%;%brand_id%;%b_date%;%e_date%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+create table dbo.#%uid%_priorities (
+    country_id		varchar(48)	not null,
+    brand_id 		varchar(48) 	not null,
+    b_date 		varchar(10) 	not null,
+    e_date 		varchar(10) 	not null
+)
+  ]]>
+</begin>
+<insert>
+  <![CDATA[
+insert into dbo.#%uid%_priorities (country_id, brand_id, b_date, e_date)
+    values ('%country_id%', '%brand_id%', '%b_date%', '%e_date%')
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+delete from priorities
+    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.#%uid%_priorities)
+insert into priorities (db_id, country_id, brand_id, b_date, e_date)
+    select '%ErpCode%', country_id, brand_id, b_date, e_date from dbo.#%uid%_priorities
+drop table from dbo.#%uid%_priorities
+
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</priorities>

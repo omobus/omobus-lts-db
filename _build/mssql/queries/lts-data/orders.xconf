@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<orders templ="%doc_id%;%fix_dt%;%distr_id%;%user_id%;%account_id%;%order_type_id%;%group_price_id%;%wareh_id%;%delivery_date%;%delivery_type_id%;%delivery_note%;%doc_note%;%payment_method_id%;%payment_delay%;%bonus%;%encashment%;%order_param_ids%;%rows%;%prod_id%;%row_no%;%pack_id%;%pack%;%qty%;%unit_price%;%discount%;%amount%;%weight%;%volume%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from orders 
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%' and prod_id = '%prod_id%'
+  ]]>
+</check_exist>
+<insert>
+  <![CDATA[
+insert into orders (db_id, doc_id, fix_dt, user_id, account_id, distr_id, order_type_id, group_price_id, wareh_id, delivery_date, delivery_type_id, delivery_note, doc_note, payment_method_id, payment_delay, bonus, encashment, order_param_ids, rows, prod_id, row_no, pack_id, pack, qty, unit_price, discount, amount, weight, volume)
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', '%distr_id%', '%order_type_id%', '%group_price_id%', '%wareh_id%', '%delivery_date%', dbo.uid_in('%delivery_type_id%'), '%delivery_note%', '%doc_note%', '%payment_method_id%', dbo.int32_in('%payment_delay%'), dbo.currency_in('%bonus%'), dbo.currency_in('%encashment%'), dbo.uids_in('%order_param_ids%'), %rows%, '%prod_id%', %row_no%, '%pack_id%', %pack%, %qty%, %unit_price%, 0%discount%, %amount%, %weight%, %volume%)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</orders>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<deletions templ="%account_id%;%user_id%;%fix_dt%;%note%;%photo%;%validator_id%;%validated%;%hidden%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from deletions 
+    where db_id = '%ErpCode%' and account_id = '%account_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update deletions set user_id='%user_id%', fix_dt='%fix_dt%', note='%note%', photo=uid_in('%photo%'), validator_id=uid_in('%validator_id%'), validated=0%validated%, hidden=0%hidden%
+    where db_id = '%ErpCode%' and account_id = '%account_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into deletions (db_id, account_id, user_id, fix_dt, note, photo, validator_id, validated, hidden) 
+    values ('%ErpCode%', '%account_id%', '%user_id%', '%fix_dt%', '%note%', uid_in('%photo%'), uid_in('%validator_id%'), 0%validated%, 0%hidden%)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+  ]]>
+</end>
+</deletions>

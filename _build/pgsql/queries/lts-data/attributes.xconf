@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<attributes templ="%attr_id%;%descr%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<begin>
+  <![CDATA[
+update attributes set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
+<check_exist>
+  <![CDATA[
+select count(*) exist from attributes
+    where db_id = '%ErpCode%' and attr_id = '%attr_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update attributes set descr='%descr%', hidden=0
+    where db_id = '%ErpCode%' and attr_id = '%attr_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into attributes (db_id, attr_id, descr)
+    values ('%ErpCode%', '%attr_id%', '%descr%')
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+  ]]>
+</end>
+</attributes>

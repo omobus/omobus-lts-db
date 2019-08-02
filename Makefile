@@ -35,7 +35,7 @@ pgsql:
 	@$(CP) -r kernels/ _build/pgsql/
 	@$(CP) -r queries/ _build/pgsql/
 	@$(CP) -r transactions/ _build/pgsql/
-	@for i in _build/pgsql/queries/data/*.xconf; do $(PP) -D PGSQL -U MSSQL $$i > $$i.1; $(MV) $$i.1 $$i; done
+	@for i in _build/pgsql/queries/lts-data/*.xconf; do $(PP) -D PGSQL -U MSSQL $$i > $$i.1; $(MV) $$i.1 $$i; done
 	@echo "Compiled omobusd server configuration for the PostgreSQL."
 
 mssql:
@@ -49,19 +49,19 @@ mssql:
 	@$(CP) -r kernels/ _build/mssql/
 	@$(CP) -r queries/ _build/mssql/
 	@$(CP) -r transactions/ _build/mssql/
-	@$(SED) 's/string_to_array/dbo.string_to_array/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/array_length/dbo.array_length/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/bool_in/dbo.bool_in/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/currency_in/dbo.currency_in/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/datetime_in/dbo.datetime_in/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/ean13_in/dbo.ean13_in/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/ean13ar_in/dbo.ean13ar_in/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/gps_in/dbo.gps_in/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/int32_in/dbo.int32_in/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/note_in/dbo.note_in/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/uid_in/dbo.uid_in/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/uids_in/dbo.uids_in/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/wf_in/dbo.wf_in/g' _build/mssql/queries/data/*.xconf
-	@$(SED) 's/resolve_blob_stream/dbo.resolve_blob_stream/g' _build/mssql/queries/data/*.xconf
-	@for i in _build/mssql/queries/data/*.xconf; do $(PP) -U PGSQL -D MSSQL $$i > $$i.1; $(MV) $$i.1 $$i; done
+	@$(SED) 's/string_to_array/dbo.string_to_array/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/array_length/dbo.array_length/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/bool_in/dbo.bool_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/currency_in/dbo.currency_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/datetime_in/dbo.datetime_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/ean13_in/dbo.ean13_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/ean13ar_in/dbo.ean13ar_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/gps_in/dbo.gps_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/int32_in/dbo.int32_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/note_in/dbo.note_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/uid_in/dbo.uid_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/uids_in/dbo.uids_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/wf_in/dbo.wf_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/resolve_blob_stream/dbo.resolve_blob_stream/g' _build/mssql/queries/lts-data/*.xconf
+	@for i in _build/mssql/queries/lts-data/*.xconf; do $(PP) -U PGSQL -D MSSQL $$i > $$i.1; $(MV) $$i.1 $$i; done
 	@echo "Compiled omobusd server configuration for the Microsoft SQL Server."

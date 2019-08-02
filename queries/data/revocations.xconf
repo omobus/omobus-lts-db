@@ -15,7 +15,7 @@ select count(*) exist from revocations
 <update>
   <![CDATA[
 update revocations set hidden=0%hidden%
-    where db_id = '%ErpCode%' and user_id = '%doc_id%'
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
   ]]>
 </update>
 <insert>

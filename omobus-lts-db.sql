@@ -212,7 +212,7 @@ create table agencies (
 create trigger trig_updated_ts before update on agencies for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
-create table agreements (
+create table agreements1 (
     db_id 		uid_t 		not null,
     account_id		uid_t		not null,
     placement_id 	uid_t 		not null,
@@ -226,7 +226,23 @@ create table agreements (
 );
 
 #ifdef PGSQL
-create trigger trig_updated_ts before update on agreements for each row execute procedure tf_updated_ts();
+create trigger trig_updated_ts before update on agreements1 for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table agreements2 (
+    db_id 		uid_t 		not null,
+    account_id		uid_t		not null,
+    prod_id 		uid_t 		not null,
+    b_date 		date_t 		not null,
+    e_date 		date_t 		not null,
+    facing 		int32_t 	not null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, account_id, prod_id, b_date)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on agreements2 for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table attributes (
@@ -498,7 +514,7 @@ create trigger trig_updated_ts before update on equipment_types for each row exe
 create table equipments (
     db_id 		uid_t 		not null,
     equipment_id 	uid_t 		not null,
-    account_id 		uid_t 		not null,
+    account_id 		uid_t 		null,
     serial_number 	code_t 		not null,
     equipment_type_id 	uid_t 		not null,
     ownership_type_id 	uid_t 		null,
@@ -803,6 +819,11 @@ create table pos_materials (
     descr 		descr_t 	not null,
     brand_ids 		uids_t 		null,
     placement_ids 	uids_t 		null,
+    chan_id 		uids_t 		null,
+    dep_id 		uid_t 		null,
+    country_id		country_t 	null,
+    b_date 		date_t 		null,
+    e_date 		date_t 		null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -825,6 +846,19 @@ create table potentials (
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on potentials for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table priorities (
+    db_id 		uid_t 		not null,
+    country_id 		uid_t 		not null,
+    brand_id 		uid_t 		not null,
+    b_date 		date_t 		not null,
+    e_date 		date_t 		not null,
+    primary key (db_id, country_id, brand_id, b_date)
+)
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on priorities for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table products (
@@ -994,7 +1028,7 @@ create table targets (
     target_id 		uid_t 		not null,
     target_type_id 	uid_t 		not null,
     subject 		descr_t 	not null,
-    body 		varchar(2048)	not null,
+    body 		varchar(4096)	not null,
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
     image 		uid_t 		null,
@@ -2110,6 +2144,14 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
+create or replace function date_in(arg text) returns date_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
 create or replace function datetime_in(arg text) returns datetime_t as
 $body$
 begin
@@ -2211,6 +2253,13 @@ end
 go
 
 create function currency_in(@arg0 varchar(20)) returns currency_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function date_in(@arg0 varchar(10)) returns date_t
 as
 begin
     return case when @arg0 = '' then null else @arg0 end

@@ -877,6 +877,8 @@ create table products (
     novelty 		bool_t 		null,
     promo 		bool_t 		null,
     barcodes 		ean13s_t 	null,
+    country_ids 	countries_t 	null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -906,6 +908,7 @@ create table quest_rows (
     qname_id 		uid_t 		not null,
     qrow_id 		uid_t 		not null,
     descr 		descr_t 	not null,
+    country_ids 	countries_t 	null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,

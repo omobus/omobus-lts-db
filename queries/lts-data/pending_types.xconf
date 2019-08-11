@@ -20,14 +20,14 @@ select count(*) exist from pending_types
 </check_exist>
 <update>
   <![CDATA[
-update pending_types set descr='%descr%', hidden=0 
+update pending_types set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0 
     where db_id = '%ErpCode%' and pending_type_id = '%pending_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into pending_types (db_id, pending_type_id, descr, hidden) 
-    values ('%ErpCode%', '%pending_type_id%', '%descr%', 0)
+insert into pending_types (db_id, pending_type_id, descr, row_no, hidden) 
+    values ('%ErpCode%', '%pending_type_id%', '%descr%', int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

@@ -441,6 +441,7 @@ create table delivery_types (
     db_id 		uid_t 		not null,
     delivery_type_id	uid_t		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -469,6 +470,7 @@ create table discard_types (
     db_id 		uid_t 		not null,
     discard_type_id 	uid_t 		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -758,6 +760,7 @@ create table pending_types (
     db_id 		uid_t 		not null,
     pending_type_id 	uid_t 		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<delivery_types templ="%delivery_type_id%;%descr%;">
+<delivery_types templ="%delivery_type_id%;%descr%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from delivery_types
 </check_exist>
 <update>
   <![CDATA[
-update delivery_types set descr='%descr%', hidden=0
+update delivery_types set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and delivery_type_id = '%delivery_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into delivery_types (db_id, delivery_type_id, descr, hidden) 
-    values ('%ErpCode%', '%delivery_type_id%', '%descr%', 0)
+insert into delivery_types (db_id, delivery_type_id, descr, row_no, hidden) 
+    values ('%ErpCode%', '%delivery_type_id%', '%descr%', int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

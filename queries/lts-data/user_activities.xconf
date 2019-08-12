@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<user_activities templ="%user_id%;%account_id%;%w_cookie%;%a_cookie%;%activity_type_id%;%fix_date%;%route_date%;%b_dt%;%b_la%;%b_lo%;%b_sat_dt%;%e_dt%;%e_la%;%e_lo%;%e_sat_dt%;%employee_id%;">
+<user_activities templ="%user_id%;%account_id%;%w_cookie%;%a_cookie%;%activity_type_id%;%fix_date%;%route_date%;%b_dt%;%b_la%;%b_lo%;%b_sat_dt%;%e_dt%;%e_la%;%e_lo%;%e_sat_dt%;%employee_id%;%extra_info%;%docs%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from user_activities
 </check_exist>
 <update>
   <![CDATA[
-update user_activities set e_dt=datetime_in('%e_dt%'), e_la=gps_in('%e_la%'), e_lo=gps_in('%e_lo%'), e_sat_dt=datetime_in('%e_sat_dt%'), employee_id=uid_in('%employee_id%')
+update user_activities set e_dt=datetime_in('%e_dt%'), e_la=gps_in('%e_la%'), e_lo=gps_in('%e_lo%'), e_sat_dt=datetime_in('%e_sat_dt%'), employee_id=uid_in('%employee_id%'), extra_info=note_in('%extra_info%'), docs=int32_in('%docs%')
     where db_id = '%ErpCode%' and user_id = '%user_id%' and account_id = '%account_id%' and activity_type_id = '%activity_type_id%' and w_cookie = '%w_cookie%' and a_cookie = '%a_cookie%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into user_activities (db_id, user_id, account_id, w_cookie, a_cookie, activity_type_id, fix_date, route_date, b_dt, b_la, b_lo, b_sat_dt, e_dt, e_la, e_lo, e_sat_dt, employee_id) 
-    values ('%ErpCode%', '%user_id%', '%account_id%', '%w_cookie%', '%a_cookie%', '%activity_type_id%', '%fix_date%', '%route_date%', '%b_dt%', gps_in('%b_la%'), gps_in('%b_lo%'), datetime_in('%b_sat_dt%'), datetime_in('%e_dt%'), gps_in('%e_la%'), gps_in('%e_lo%'), datetime_in('%e_sat_dt%'), uid_in('%employee_id%'))
+insert into user_activities (db_id, user_id, account_id, w_cookie, a_cookie, activity_type_id, fix_date, route_date, b_dt, b_la, b_lo, b_sat_dt, e_dt, e_la, e_lo, e_sat_dt, employee_id, extra_info, docs) 
+    values ('%ErpCode%', '%user_id%', '%account_id%', '%w_cookie%', '%a_cookie%', '%activity_type_id%', '%fix_date%', '%route_date%', '%b_dt%', gps_in('%b_la%'), gps_in('%b_lo%'), datetime_in('%b_sat_dt%'), datetime_in('%e_dt%'), gps_in('%e_la%'), gps_in('%e_lo%'), datetime_in('%e_sat_dt%'), uid_in('%employee_id%'), note_in('%extra_info%'), int32_in('%docs%'))
   ]]>
 </insert>
 <end>

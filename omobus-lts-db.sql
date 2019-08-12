@@ -1831,6 +1831,8 @@ create table user_activities (
     e_lo 		gps_t 		null,
     e_sat_dt 		datetime_t 	null,
     employee_id 	uid_t 		null,
+    extra_info 		note_t 		null,
+    docs 		int32_t 	null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key (db_id, user_id, account_id, activity_type_id, w_cookie, a_cookie)

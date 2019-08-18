@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<training_types templ="%training_type_id%;%descr%;%personal%;%row_no%;">
+<training_types templ="%training_type_id%;%descr%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from training_types
 </check_exist>
 <update>
   <![CDATA[
-update training_types set descr='%descr%', personal=%personal%, row_no=dbo.int32_in('%row_no%'), hidden=0
+update training_types set descr='%descr%', row_no=dbo.int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and training_type_id = '%training_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into training_types (db_id, training_type_id, descr, personal, row_no, hidden) 
-    values ('%ErpCode%', '%training_type_id%', '%descr%', %personal%, dbo.int32_in('%row_no%'), 0)
+insert into training_types (db_id, training_type_id, descr, row_no, hidden) 
+    values ('%ErpCode%', '%training_type_id%', '%descr%', dbo.int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

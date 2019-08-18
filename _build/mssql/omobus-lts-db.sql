@@ -326,6 +326,7 @@ create table delivery_types (
     db_id 		uid_t 		not null,
     delivery_type_id	uid_t		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -348,6 +349,7 @@ create table discard_types (
     db_id 		uid_t 		not null,
     discard_type_id 	uid_t 		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -580,6 +582,7 @@ create table pending_types (
     db_id 		uid_t 		not null,
     pending_type_id 	uid_t 		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -678,6 +681,8 @@ create table products (
     novelty 		bool_t 		null,
     promo 		bool_t 		null,
     barcodes 		ean13s_t 	null,
+    country_ids 	countries_t 	null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -701,6 +706,7 @@ create table quest_rows (
     qname_id 		uid_t 		not null,
     qrow_id 		uid_t 		not null,
     descr 		descr_t 	not null,
+    country_ids 	countries_t 	null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -865,7 +871,6 @@ create table training_types (
     db_id 		uid_t 		not null,
     training_type_id	uid_t		not null,
     descr		descr_t		not null,
-    personal 		bool_t 		not null default 0,
     row_no 		int32_t 	null, -- ordering,
     hidden		bool_t		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -1461,6 +1466,8 @@ create table user_activities (
     e_lo 		gps_t 		null,
     e_sat_dt 		datetime_t 	null,
     employee_id 	uid_t 		null,
+    extra_info 		note_t 		null,
+    docs 		int32_t 	null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key (db_id, user_id, account_id, activity_type_id, w_cookie, a_cookie)
@@ -1812,6 +1819,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.23' where param_id='db:vstamp';
+update sysparams set param_value='3.4.24' where param_id='db:vstamp';
 
 go

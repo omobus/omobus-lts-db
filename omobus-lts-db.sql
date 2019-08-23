@@ -853,11 +853,11 @@ create trigger trig_updated_ts before update on potentials for each row execute 
 
 create table priorities (
     db_id 		uid_t 		not null,
-    country_id 		uid_t 		not null,
     brand_id 		uid_t 		not null,
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
-    primary key (db_id, country_id, brand_id, b_date)
+    country_id 		uid_t 		not null,
+    primary key (db_id, brand_id, b_date, country_id)
 )
 
 #ifdef PGSQL

@@ -657,11 +657,11 @@ create table potentials (
 
 create table priorities (
     db_id 		uid_t 		not null,
-    country_id 		uid_t 		not null,
     brand_id 		uid_t 		not null,
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
-    primary key (db_id, country_id, brand_id, b_date)
+    country_id 		uid_t 		not null,
+    primary key (db_id, brand_id, b_date, country_id)
 )
 
 
@@ -1819,6 +1819,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.24' where param_id='db:vstamp';
+update sysparams set param_value='3.4.25' where param_id='db:vstamp';
 
 go

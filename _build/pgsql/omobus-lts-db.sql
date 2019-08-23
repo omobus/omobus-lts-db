@@ -685,11 +685,11 @@ create trigger trig_updated_ts before update on potentials for each row execute 
 
 create table priorities (
     db_id 		uid_t 		not null,
-    country_id 		uid_t 		not null,
     brand_id 		uid_t 		not null,
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
-    primary key (db_id, country_id, brand_id, b_date)
+    country_id 		uid_t 		not null,
+    primary key (db_id, brand_id, b_date, country_id)
 )
 
 create trigger trig_updated_ts before update on priorities for each row execute procedure tf_updated_ts();
@@ -1867,5 +1867,5 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 
 /* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.24' where param_id='db:vstamp';
+update sysparams set param_value='3.4.25' where param_id='db:vstamp';
 

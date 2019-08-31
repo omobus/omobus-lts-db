@@ -384,13 +384,13 @@ create trigger trig_updated_ts before update on comment_types for each row execu
 
 create table confirmation_types (
     db_id 		uid_t 		not null,
-    confirm_id 		uid_t 		not null,
+    confirmation_type_id uid_t 		not null,
     descr 		descr_t 	not null,
     target_type_ids 	uids_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, confirm_id)
+    primary key(db_id, confirmation_type_id)
 );
 
 #ifdef PGSQL
@@ -1281,7 +1281,7 @@ create table confirmations (
     user_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
     target_id 		uid_t 		not null,
-    confirm_id 		uid_t 		not null,
+    confirmation_type_id uid_t 		not null,
     doc_note 		note_t 		null,
     photos		uids_t		null,
     inserted_ts 	ts_auto_t 	not null,

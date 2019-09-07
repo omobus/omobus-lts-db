@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<confirmation_types templ="%confirm_id%;%descr%;%target_type_ids%;">
+<confirmation_types templ="%confirmation_type_id%;%descr%;%target_type_ids%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -15,19 +15,19 @@ update confirmation_types set hidden=1
 <check_exist>
   <![CDATA[
 select count(*) exist from confirmation_types 
-    where db_id = '%ErpCode%' and confirm_id = '%confirm_id%'
+    where db_id = '%ErpCode%' and confirmation_type_id = '%confirmation_type_id%'
   ]]>
 </check_exist>
 <update>
   <![CDATA[
 update confirmation_types set descr='%descr%', target_type_ids=uids_in('%target_type_ids%'), hidden=0
-    where db_id = '%ErpCode%' and confirm_id = '%confirm_id%'
+    where db_id = '%ErpCode%' and confirmation_type_id = '%confirmation_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into confirmation_types (db_id, confirm_id, descr, target_type_ids, hidden) 
-    values ('%ErpCode%', '%confirm_id%', '%descr%', uids_in('%target_type_ids%'), 0)
+insert into confirmation_types (db_id, confirmation_type_id, descr, target_type_ids, hidden) 
+    values ('%ErpCode%', '%confirmation_type_id%', '%descr%', uids_in('%target_type_ids%'), 0)
   ]]>
 </insert>
 <end>

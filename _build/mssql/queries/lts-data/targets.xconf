@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<targets templ="%target_id%;%target_type_id%;%subject%;%body%;%b_date%;%e_date%;%image%;%author_id%;%myself%;%hidden%;%attrs%;">
+<targets templ="%target_id%;%target_type_id%;%subject%;%body%;%b_date%;%e_date%;%image%;%b_offset%;%author_id%;%myself%;%hidden%;%props%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from targets
 </check_exist>
 <update>
   <![CDATA[
-update targets set target_type_id='%target_type_id%', subject='%subject%', body='%body%', b_date='%b_date%', e_date='%e_date%', image=dbo.uid_in('%image%'), author_id='%author_id%', myself='%myself%', hidden=0%hidden%, attrs='%attrs%'
+update targets set target_type_id='%target_type_id%', subject='%subject%', body='%body%', b_date='%b_date%', e_date='%e_date%', image=dbo.uid_in('%image%'), b_offset=dbo.int32_in('%b_offset%'), author_id='%author_id%', myself='%myself%', hidden=0%hidden%, props='%props%'
     where db_id = '%ErpCode%' and target_id = '%target_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into targets (db_id, target_id, target_type_id, subject, body, b_date, e_date, image, author_id, myself, hidden, attrs) 
-    values ('%ErpCode%', '%target_id%', '%target_type_id%', '%subject%', '%body%', '%b_date%', '%e_date%', dbo.uid_in('%image%'), '%author_id%', '%myself%', 0%hidden%, '%attrs%')
+insert into targets (db_id, target_id, target_type_id, subject, body, b_date, e_date, image, b_offset, author_id, myself, hidden, props) 
+    values ('%ErpCode%', '%target_id%', '%target_type_id%', '%subject%', '%body%', '%b_date%', '%e_date%', dbo.uid_in('%image%'), dbo.int32_in('%b_offset%'), '%author_id%', '%myself%', 0%hidden%, '%props%')
   ]]>
 </insert>
 <end>

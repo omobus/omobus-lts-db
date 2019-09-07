@@ -1,5 +1,6 @@
 /* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
 
+create extension hstore;
 create extension isn;
 
 
@@ -28,6 +29,7 @@ create domain email_t as varchar(254) /*check(value is null or (char_length(valu
 create domain emails_t as varchar(254) array /*check(value is null or (char_length(value)>=4 and position('@' in value)>1))*/;
 create domain ftype_t as int2 default 0 not null check (value between 0 and 1);
 create domain gps_t as numeric(10,6);
+create domain hstore_t as hstore;
 create domain hostname_t as varchar(255);
 create domain int32_t as int4;
 create domain int64_t as int8;
@@ -81,6 +83,7 @@ create table accounts (
     attr_ids 		uids_t 		null,
     locked 		bool_t 		null default 0,
     approved 		bool_t 		null default 0,
+    props 		hstore_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -148,6 +151,7 @@ create table agreements2 (
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
     facing 		int32_t 	not null,
+    strict 		bool_t 		not null default 1,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key (db_id, account_id, prod_id, b_date)
@@ -276,13 +280,13 @@ create trigger trig_updated_ts before update on comment_types for each row execu
 
 create table confirmation_types (
     db_id 		uid_t 		not null,
-    confirm_id 		uid_t 		not null,
+    confirmation_type_id uid_t 		not null,
     descr 		descr_t 	not null,
     target_type_ids 	uids_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, confirm_id)
+    primary key(db_id, confirmation_type_id)
 );
 
 create trigger trig_updated_ts before update on confirmation_types for each row execute procedure tf_updated_ts();
@@ -848,10 +852,11 @@ create table targets (
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
     image 		uid_t 		null,
+    b_offset 		int32_t 	null,
     author_id 		uid_t 		not null,
     myself 		bool_t 		not null default 0,
     hidden 		bool_t 		not null default 0,
-    attrs 		varchar(1024) 	null,
+    props 		hstore_t 	null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, target_id)
@@ -950,6 +955,7 @@ create table users (
     mobile 		phone_t 	null,
     email 		email_t 	null,
     area 		descr_t 	null,
+    props 		hstore_t 	null,
     "rules:wd_begin" 	time_t 		null,
     "rules:wd_end" 	time_t 		null,
     hidden		bool_t		not null default 0,
@@ -1064,7 +1070,7 @@ create table confirmations (
     user_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
     target_id 		uid_t 		not null,
-    confirm_id 		uid_t 		not null,
+    confirmation_type_id uid_t 		not null,
     doc_note 		note_t 		null,
     photos		uids_t		null,
     inserted_ts 	ts_auto_t 	not null,
@@ -1766,6 +1772,14 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
+create or replace function descr_in(arg text) returns descr_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
 create or replace function ean13_in(ar text array) returns ean13 array
 as $body$
 declare
@@ -1798,6 +1812,14 @@ create or replace function gps_in(arg text) returns gps_t as
 $body$
 begin
     return case when arg = '' then null else arg::gps_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function hstore_in(arg text) returns hstore_t as
+$body$
+begin
+    return case when arg = '' then null else arg::hstore_t end;
 end;
 $body$
 language plpgsql IMMUTABLE;

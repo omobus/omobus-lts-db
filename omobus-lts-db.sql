@@ -1,6 +1,7 @@
 /* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
 
 #ifdef PGSQL
+create extension hstore;
 create extension isn;
 #endif //PGSQL
 
@@ -54,6 +55,7 @@ create domain email_t as varchar(254) /*check(value is null or (char_length(valu
 create domain emails_t as varchar(254) array /*check(value is null or (char_length(value)>=4 and position('@' in value)>1))*/;
 create domain ftype_t as int2 default 0 not null check (value between 0 and 1);
 create domain gps_t as numeric(10,6);
+create domain hstore_t as hstore;
 create domain hostname_t as varchar(255);
 create domain int32_t as int4;
 create domain int64_t as int8;
@@ -96,6 +98,7 @@ execute sp_addtype email_t, 'varchar(254)'
 execute sp_addtype emails_t, 'varchar(4096)'
 execute sp_addtype ftype_t, 'smallint'
 execute sp_addtype gps_t, 'numeric(10,6)'
+execute sp_addtype hstore, 'varchar(1024)'
 execute sp_addtype hostname_t, 'varchar(255)'
 execute sp_addtype int32_t, 'int'
 execute sp_addtype int64_t, 'bigint'
@@ -159,6 +162,7 @@ create table accounts (
     attr_ids 		uids_t 		null,
     locked 		bool_t 		null default 0,
     approved 		bool_t 		null default 0,
+    props 		hstore_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -236,6 +240,7 @@ create table agreements2 (
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
     facing 		int32_t 	not null,
+    strict 		bool_t 		not null default 1,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key (db_id, account_id, prod_id, b_date)
@@ -1038,10 +1043,11 @@ create table targets (
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
     image 		uid_t 		null,
+    b_offset 		int32_t 	null,
     author_id 		uid_t 		not null,
     myself 		bool_t 		not null default 0,
     hidden 		bool_t 		not null default 0,
-    attrs 		varchar(1024) 	null,
+    props 		hstore_t 	null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, target_id)
@@ -1154,6 +1160,7 @@ create table users (
     mobile 		phone_t 	null,
     email 		email_t 	null,
     area 		descr_t 	null,
+    props 		hstore_t 	null,
     "rules:wd_begin" 	time_t 		null,
     "rules:wd_end" 	time_t 		null,
     hidden		bool_t		not null default 0,
@@ -2167,6 +2174,14 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
+create or replace function descr_in(arg text) returns descr_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
 create or replace function ean13_in(ar text array) returns ean13 array
 as $body$
 declare
@@ -2199,6 +2214,14 @@ create or replace function gps_in(arg text) returns gps_t as
 $body$
 begin
     return case when arg = '' then null else arg::gps_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function hstore_in(arg text) returns hstore_t as
+$body$
+begin
+    return case when arg = '' then null else arg::hstore_t end;
 end;
 $body$
 language plpgsql IMMUTABLE;
@@ -2280,6 +2303,13 @@ begin
 end
 go
 
+create function descr_in(@arg0 varchar(1024)) returns descr_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
 create function ean13_in(@arg0 varchar(280)) returns varchar(280)
 as
 begin
@@ -2295,6 +2325,13 @@ end
 go
 
 create function gps_in(@arg0 varchar(12)) returns gps_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function hstore_in(@arg0 varchar(1024)) returns hstore_t
 as
 begin
     return case when @arg0 = '' then null else @arg0 end

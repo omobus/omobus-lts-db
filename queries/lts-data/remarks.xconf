@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<remarks templ="%doc_id%;%status%;%remark_type_id%;%note%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from remarks 
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update remarks set status='%status%', remark_type_id=uid_in('%remark_type_id%'), note=note_in('%note%')
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into remarks (db_id, doc_id, status, remark_type_id, note) 
+    values ('%ErpCode%', '%doc_id%', '%status%', uid_in('%remark_type_id%'), note_in('%note%'))
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+#ifdef PGSQL
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+#endif //PGSQL
+#ifdef MSSQL
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+#endif //MSSQL
+  ]]>
+</end>
+</remarks>

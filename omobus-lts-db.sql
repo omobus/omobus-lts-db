@@ -250,6 +250,21 @@ create table agreements2 (
 create trigger trig_updated_ts before update on agreements2 for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
+create table asp_types (
+    db_id 		uid_t 		not null,
+    asp_type_id 	uid_t		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, asp_type_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on asp_types for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
 create table attributes (
     db_id 		uid_t 		not null,
     attr_id 		uid_t 		not null,
@@ -1002,6 +1017,21 @@ create table regions (
 create trigger trig_updated_ts before update on regions for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
+create table remark_types (
+    db_id 		uid_t 		not null,
+    remark_type_id 	uid_t		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, remark_type_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on remark_types for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
 create table retail_chains (
     db_id 		uid_t 		not null,
     rc_id		uid_t		not null,
@@ -1709,6 +1739,21 @@ create table reclamations (
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on reclamations for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table remarks (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    status 		varchar(8) 	not null,
+    remark_type_id 	uid_t 		null,
+    note 		note_t 		null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on remarks for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table revocations (

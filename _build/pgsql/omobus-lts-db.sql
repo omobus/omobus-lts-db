@@ -159,6 +159,19 @@ create table agreements2 (
 
 create trigger trig_updated_ts before update on agreements2 for each row execute procedure tf_updated_ts();
 
+create table asp_types (
+    db_id 		uid_t 		not null,
+    asp_type_id 	uid_t		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, asp_type_id)
+);
+
+create trigger trig_updated_ts before update on asp_types for each row execute procedure tf_updated_ts();
+
 create table attributes (
     db_id 		uid_t 		not null,
     attr_id 		uid_t 		not null,
@@ -815,6 +828,19 @@ create table regions (
 
 create trigger trig_updated_ts before update on regions for each row execute procedure tf_updated_ts();
 
+create table remark_types (
+    db_id 		uid_t 		not null,
+    remark_type_id 	uid_t		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, remark_type_id)
+);
+
+create trigger trig_updated_ts before update on remark_types for each row execute procedure tf_updated_ts();
+
 create table retail_chains (
     db_id 		uid_t 		not null,
     rc_id		uid_t		not null,
@@ -852,8 +878,7 @@ create table targets (
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
     image 		uid_t 		null,
-    b_offset 		int32_t 	null,
-    author_id 		uid_t 		not null,
+    author_id 		uid_t 		null,
     myself 		bool_t 		not null default 0,
     hidden 		bool_t 		not null default 0,
     props 		hstore_t 	null,
@@ -1454,6 +1479,19 @@ create table reclamations (
 
 create trigger trig_updated_ts before update on reclamations for each row execute procedure tf_updated_ts();
 
+create table remarks (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    status 		varchar(8) 	not null,
+    remark_type_id 	uid_t 		null,
+    note 		note_t 		null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+create trigger trig_updated_ts before update on remarks for each row execute procedure tf_updated_ts();
+
 create table revocations (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1889,5 +1927,5 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 
 /* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.25' where param_id='db:vstamp';
+update sysparams set param_value='3.4.26' where param_id='db:vstamp';
 

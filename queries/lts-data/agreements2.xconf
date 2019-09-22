@@ -57,7 +57,7 @@ delete from agreements2
     where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.#%uid%_agreements2)
 insert into agreements2 (db_id, account_id, prod_id, b_date, e_date, facing, "strict")
     select '%ErpCode%', account_id, prod_id, b_date, e_date, facing, "strict" from dbo.#%uid%_agreements2
-drop table from dbo.#%uid%_agreements2
+drop table dbo.#%uid%_agreements2
 
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
 #endif //MSSQL

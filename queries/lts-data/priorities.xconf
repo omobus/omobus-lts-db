@@ -21,8 +21,8 @@ create temporary table if not exists ".%uid%_priorities" (
 create table dbo.#%uid%_priorities (
     brand_id 		varchar(48) 	not null,
     b_date 		varchar(10) 	not null,
-    e_date 		varchar(10) 	not null
-    country_id		varchar(48)	not null,
+    e_date 		varchar(10) 	not null,
+    country_id		varchar(48)	not null
 )
 #endif //MSSQL
   ]]>
@@ -53,7 +53,7 @@ delete from priorities
     where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.#%uid%_priorities)
 insert into priorities (db_id, brand_id, b_date, e_date, country_id)
     select '%ErpCode%', brand_id, b_date, e_date, country_id from dbo.#%uid%_priorities
-drop table from dbo.#%uid%_priorities
+drop table dbo.#%uid%_priorities
 
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
 #endif //MSSQL

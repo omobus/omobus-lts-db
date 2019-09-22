@@ -48,7 +48,7 @@ execute sp_addtype email_t, 'varchar(254)'
 execute sp_addtype emails_t, 'varchar(4096)'
 execute sp_addtype ftype_t, 'smallint'
 execute sp_addtype gps_t, 'numeric(10,6)'
-execute sp_addtype hstore, 'varchar(1024)'
+execute sp_addtype hstore_t, 'varchar(1024)'
 execute sp_addtype hostname_t, 'varchar(255)'
 execute sp_addtype int32_t, 'int'
 execute sp_addtype int64_t, 'bigint'
@@ -1873,6 +1873,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.26' where param_id='db:vstamp';
+update sysparams set param_value='3.4.27' where param_id='db:vstamp';
 
 go

@@ -1,7 +1,7 @@
 # Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file.
 
 PACKAGE_NAME 	= omobus-lts-db
-PACKAGE_VERSION = 3.4.26
+PACKAGE_VERSION = 3.4.27
 COPYRIGHT 	= Copyright (c) 2006 - 2019 ak obs, ltd. <info@omobus.net>
 SUPPORT 	= Support and bug reports: <support@omobus.net>
 AUTHOR		= Author: Igor Artemov <i_artemov@ak-obs.ru>
@@ -53,9 +53,12 @@ mssql:
 	@$(SED) 's/array_length/dbo.array_length/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/bool_in/dbo.bool_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/currency_in/dbo.currency_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/date_in/dbo.date_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/datetime_in/dbo.datetime_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/descr_in/dbo.descr_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/ean13_in/dbo.ean13_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/ean13ar_in/dbo.ean13ar_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/hstore_in/dbo.hstore_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/gps_in/dbo.gps_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/int32_in/dbo.int32_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/note_in/dbo.note_in/g' _build/mssql/queries/lts-data/*.xconf

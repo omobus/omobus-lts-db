@@ -20,7 +20,7 @@ select count(*) exist from users
 </check_exist>
 <update>
   <![CDATA[
-update users set pids=uids_in('%pids%'), descr='%descr%', role='%role%', dep_ids=uids_in('%dep_ids%'), country_id=uid_in('%country_ids%'), distr_ids=uids_in('%distr_ids%'), agency_id=uid_in('%agency_id%'), mobile='%mobile%', email='%email%', area=descr_in('%area%'), executivehead_id=uid_in('%executivehead_id%'), props=hstore_in('%props%'), "rules:wd_begin"='%rules:wd_begin%', "rules:wd_end"='%rules:wd_end%', hidden=0
+update users set pids=uids_in('%pids%'), descr='%descr%', role='%role%', dep_ids=uids_in('%dep_ids%'), country_id=uid_in('%country_id%'), distr_ids=uids_in('%distr_ids%'), agency_id=uid_in('%agency_id%'), mobile='%mobile%', email='%email%', area=descr_in('%area%'), executivehead_id=uid_in('%executivehead_id%'), props=hstore_in('%props%'), "rules:wd_begin"='%rules:wd_begin%', "rules:wd_end"='%rules:wd_end%', hidden=0
     where db_id = '%ErpCode%' and user_id = '%user_id%'
   ]]>
 </update>

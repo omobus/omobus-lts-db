@@ -377,7 +377,6 @@ create table cities (
     ftype 		ftype_t 	not null,
     descr 		descr_t 	not null,
     country_id 		uid_t 		not null,
-    population 		int32_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

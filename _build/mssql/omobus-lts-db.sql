@@ -161,7 +161,7 @@ create table agreements2 (
     prod_id 		uid_t 		not null,
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
-    facing 		int32_t 	not null,
+    facing 		int32_t 	not null check(facing > 0),
     strict 		bool_t 		not null default 1,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -272,7 +272,6 @@ create table cities (
     ftype 		ftype_t 	not null,
     descr 		descr_t 	not null,
     country_id 		uid_t 		not null,
-    population 		int32_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -924,13 +923,14 @@ create table users (
     pids		uids_t		null,
     descr		descr_t		not null,
     role 		code_t 		null, -- check (role in ('merch','sr','mr','sv','ise','cde','asm','rsm') and role = lower(role)),
-    country_ids		countries_t 	null,
+    country_id 		country_t 	not null default 'RU',
     dep_ids		uids_t		null,
     distr_ids		uids_t		null,
     agency_id 		uid_t 		null,
     mobile 		phone_t 	null,
     email 		email_t 	null,
     area 		descr_t 	null,
+    executivehead_id 	uid_t 		null,
     props 		hstore_t 	null,
     "rules:wd_begin" 	time_t 		null,
     "rules:wd_end" 	time_t 		null,
@@ -1873,6 +1873,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.27' where param_id='db:vstamp';
+update sysparams set param_value='3.4.28' where param_id='db:vstamp';
 
 go

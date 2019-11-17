@@ -1362,7 +1362,7 @@ create table discards (
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
-    primary key(db_id, account_id, activity_type_id, route_date)
+    primary key(db_id, account_id, user_id, activity_type_id, route_date)
 );
 
 #ifdef PGSQL

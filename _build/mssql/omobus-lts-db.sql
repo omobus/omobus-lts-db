@@ -1081,7 +1081,7 @@ create table discards (
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
-    primary key(db_id, account_id, activity_type_id, route_date)
+    primary key(db_id, account_id, user_id, activity_type_id, route_date)
 );
 
 
@@ -1873,6 +1873,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.28' where param_id='db:vstamp';
+update sysparams set param_value='3.4.29' where param_id='db:vstamp';
 
 go

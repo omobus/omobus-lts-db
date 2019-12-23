@@ -839,11 +839,10 @@ create table pos_materials (
     db_id 		uid_t 		not null,
     posm_id 		uid_t 		not null,
     descr 		descr_t 	not null,
-    brand_ids 		uids_t 		null,
+    brand_ids 		uids_t 		not null,
     placement_ids 	uids_t 		null,
     chan_id 		uids_t 		null,
-    dep_id 		uid_t 		null,
-    country_id		country_t 	null,
+    country_id		country_t 	not null,
     b_date 		date_t 		null,
     e_date 		date_t 		null,
     hidden 		bool_t 		not null default 0,
@@ -877,7 +876,7 @@ create table priorities (
     e_date 		date_t 		not null,
     country_id 		uid_t 		not null,
     primary key (db_id, brand_id, b_date, country_id)
-)
+);
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on priorities for each row execute procedure tf_updated_ts();

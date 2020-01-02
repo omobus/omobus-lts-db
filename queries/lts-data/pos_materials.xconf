@@ -20,14 +20,14 @@ select count(*) exist from pos_materials
 </check_exist>
 <update>
   <![CDATA[
-update pos_materials set descr='%descr%', brand_ids=uids_in('%brand_ids%'), placement_ids=uids_in('%placement_ids%'), chan_ids=uids_in('%chan_ids%'), country_id=uid_in('%country_id%'), b_date=date_in('%b_date%'), e_date=date_in('%e_date%'), hidden=0 
+update pos_materials set descr='%descr%', brand_ids=uids_in('%brand_ids%'), placement_ids=uids_in('%placement_ids%'), chan_ids=uids_in('%chan_ids%'), country_id='%country_id%', b_date=date_in('%b_date%'), e_date=date_in('%e_date%'), hidden=0 
     where db_id = '%ErpCode%' and posm_id = '%posm_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into pos_materials (db_id, posm_id, descr, brand_ids, placement_ids, chan_ids, country_id, b_date, e_date, hidden) 
-    values ('%ErpCode%', '%posm_id%', '%descr%', uids_in('%brand_ids%'), uids_in('%placement_ids%'), uids_in('%chan_ids%'), uid_in('%country_id%'), date_in('%b_date%'), date_in('%e_date%'), 0)
+    values ('%ErpCode%', '%posm_id%', '%descr%', uids_in('%brand_ids%'), uids_in('%placement_ids%'), uids_in('%chan_ids%'), '%country_id%', date_in('%b_date%'), date_in('%e_date%'), 0)
   ]]>
 </insert>
 <end>

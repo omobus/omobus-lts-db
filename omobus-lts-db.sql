@@ -446,6 +446,7 @@ create table countries (
     db_id 		uid_t 		not null,
     country_id 		country_t 	not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

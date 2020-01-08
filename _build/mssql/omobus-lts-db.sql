@@ -329,6 +329,7 @@ create table countries (
     db_id 		uid_t 		not null,
     country_id 		country_t 	not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -644,11 +645,10 @@ create table pos_materials (
     db_id 		uid_t 		not null,
     posm_id 		uid_t 		not null,
     descr 		descr_t 	not null,
-    brand_ids 		uids_t 		null,
+    brand_ids 		uids_t 		not null,
     placement_ids 	uids_t 		null,
     chan_id 		uids_t 		null,
-    dep_id 		uid_t 		null,
-    country_id		country_t 	null,
+    country_id		country_t 	not null,
     b_date 		date_t 		null,
     e_date 		date_t 		null,
     hidden 		bool_t 		not null default 0,
@@ -676,7 +676,7 @@ create table priorities (
     e_date 		date_t 		not null,
     country_id 		uid_t 		not null,
     primary key (db_id, brand_id, b_date, country_id)
-)
+);
 
 
 create table products (
@@ -1873,6 +1873,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.29' where param_id='db:vstamp';
+update sysparams set param_value='3.4.30' where param_id='db:vstamp';
 
 go

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<countries templ="%country_id%;%descr%;">
+<countries templ="%country_id%;%descr%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from countries
 </check_exist>
 <update>
   <![CDATA[
-update countries set descr='%descr%', hidden=0
+update countries set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and country_id = '%country_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into countries (db_id, country_id, descr, hidden) 
-    values ('%ErpCode%', '%country_id%', '%descr%', 0)
+insert into countries (db_id, country_id, descr, row_no, hidden) 
+    values ('%ErpCode%', '%country_id%', '%descr%', int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

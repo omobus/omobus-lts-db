@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file.
+# Copyright (c) 2006 - 2020 omobus-lts-db authors, see the included COPYRIGHT file.
 
 # mssql: isql -I freetds.conf -S $srv -U $uname -P $passwd -D $dbname -i omobus-lts-db.mssql.sql
 

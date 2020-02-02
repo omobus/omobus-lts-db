@@ -20,7 +20,7 @@ create temporary table if not exists ".%uid%_my_routes" (
 );
 #endif //PGSQL
 #ifdef MSSQL
-create table dbo.#%uid%_my_routes (
+create table dbo.[#%uid%_my_routes] (
     user_id		varchar(48)	not null,
     account_id		varchar(48)	not null,
     activity_type_id	varchar(48)	not null,
@@ -38,7 +38,7 @@ create table dbo.#%uid%_my_routes (
 insert into ".%uid%_my_routes" (user_id, account_id, activity_type_id, p_date, row_no, duration) 
 #endif //PGSQL
 #ifdef MSSQL
-insert into dbo.#%uid%_my_routes (user_id, account_id, activity_type_id, p_date, row_no, duration)
+insert into dbo.[#%uid%_my_routes] (user_id, account_id, activity_type_id, p_date, row_no, duration)
 #endif //MSSQL
     values ('%user_id%', '%account_id%', '%activity_type_id%', '%p_date%', int32_in('%row_no%'), int32_in('%duration%'))
   ]]>
@@ -55,10 +55,10 @@ select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_h
 #endif //PGSQL
 #ifdef MSSQL
 delete from my_routes
-    where db_id = '%ErpCode%' and p_date >= (select min(p_date) from dbo.#%uid%_my_routes)
+    where db_id = '%ErpCode%' and p_date >= (select min(p_date) from dbo.[#%uid%_my_routes])
 insert into my_routes (db_id, user_id, account_id, activity_type_id, p_date, row_no, duration)
-    select '%ErpCode%', user_id, account_id, activity_type_id, p_date, row_no, duration from dbo.#%uid%_my_routes
-drop table dbo.#%uid%_my_routes
+    select '%ErpCode%', user_id, account_id, activity_type_id, p_date, row_no, duration from dbo.[#%uid%_my_routes]
+drop table dbo.[#%uid%_my_routes]
 
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
 #endif //MSSQL

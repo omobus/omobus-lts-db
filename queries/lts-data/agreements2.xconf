@@ -20,7 +20,7 @@ create temporary table if not exists ".%uid%_agreements2" (
 );
 #endif //PGSQL
 #ifdef MSSQL
-create table dbo.#%uid%_agreements2 (
+create table dbo.[#%uid%_agreements2] (
     account_id		varchar(48)	not null,
     prod_id 		varchar(48) 	not null,
     b_date 		varchar(10) 	not null,
@@ -37,7 +37,7 @@ create table dbo.#%uid%_agreements2 (
 insert into ".%uid%_agreements2" (account_id, prod_id, b_date, e_date, facing, "strict")
 #endif //PGSQL
 #ifdef MSSQL
-insert into dbo.#%uid%_agreements2 (account_id, prod_id, b_date, e_date, facing, "strict")
+insert into dbo.[#%uid%_agreements2] (account_id, prod_id, b_date, e_date, facing, "strict")
 #endif //MSSQL
     values ('%account_id%', '%prod_id%', '%b_date%', '%e_date%', 0%facing%, 0%strict%)
   ]]>
@@ -54,10 +54,10 @@ select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_h
 #endif //PGSQL
 #ifdef MSSQL
 delete from agreements2
-    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.#%uid%_agreements2)
+    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.[#%uid%_agreements2])
 insert into agreements2 (db_id, account_id, prod_id, b_date, e_date, facing, "strict")
-    select '%ErpCode%', account_id, prod_id, b_date, e_date, facing, "strict" from dbo.#%uid%_agreements2
-drop table dbo.#%uid%_agreements2
+    select '%ErpCode%', account_id, prod_id, b_date, e_date, facing, "strict" from dbo.[#%uid%_agreements2]
+drop table dbo.[#%uid%_agreements2]
 
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
 #endif //MSSQL

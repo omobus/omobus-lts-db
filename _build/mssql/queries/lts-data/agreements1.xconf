@@ -8,7 +8,7 @@ select count(*) from data_stream
 </verification>
 <begin>
   <![CDATA[
-create table dbo.#%uid%_agreements1 (
+create table dbo.[#%uid%_agreements1] (
     account_id		varchar(48)	not null,
     placement_id 	varchar(48) 	not null,
     posm_id 		varchar(48) 	not null,
@@ -20,17 +20,17 @@ create table dbo.#%uid%_agreements1 (
 </begin>
 <insert>
   <![CDATA[
-insert into dbo.#%uid%_agreements1 (account_id, placement_id, posm_id, b_date, e_date, "strict")
+insert into dbo.[#%uid%_agreements1] (account_id, placement_id, posm_id, b_date, e_date, "strict")
     values ('%account_id%', '%placement_id%', '%posm_id%', '%b_date%', '%e_date%', 0%strict%)
   ]]>
 </insert>
 <end>
   <![CDATA[
 delete from agreements1
-    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.#%uid%_agreements1)
+    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.[#%uid%_agreements1])
 insert into agreements1 (db_id, account_id, placement_id, posm_id, b_date, e_date, "strict")
-    select '%ErpCode%', account_id, placement_id, posm_id, b_date, e_date, "strict" from dbo.#%uid%_agreements1
-drop table dbo.#%uid%_agreements1
+    select '%ErpCode%', account_id, placement_id, posm_id, b_date, e_date, "strict" from dbo.[#%uid%_agreements1]
+drop table dbo.[#%uid%_agreements1]
 
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

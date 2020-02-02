@@ -8,7 +8,7 @@ select count(*) from data_stream
 </verification>
 <begin>
   <![CDATA[
-create table dbo.#%uid%_priorities (
+create table dbo.[#%uid%_priorities] (
     brand_id 		varchar(48) 	not null,
     b_date 		varchar(10) 	not null,
     e_date 		varchar(10) 	not null,
@@ -18,17 +18,17 @@ create table dbo.#%uid%_priorities (
 </begin>
 <insert>
   <![CDATA[
-insert into dbo.#%uid%_priorities (brand_id, b_date, e_date, country_id)
+insert into dbo.[#%uid%_priorities] (brand_id, b_date, e_date, country_id)
     values ('%brand_id%', '%b_date%', '%e_date%', '%country_id%')
   ]]>
 </insert>
 <end>
   <![CDATA[
 delete from priorities
-    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.#%uid%_priorities)
+    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.[#%uid%_priorities])
 insert into priorities (db_id, brand_id, b_date, e_date, country_id)
-    select '%ErpCode%', brand_id, b_date, e_date, country_id from dbo.#%uid%_priorities
-drop table dbo.#%uid%_priorities
+    select '%ErpCode%', brand_id, b_date, e_date, country_id from dbo.[#%uid%_priorities]
+drop table dbo.[#%uid%_priorities]
 
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>

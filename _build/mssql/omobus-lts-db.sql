@@ -1,4 +1,4 @@
-/* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
+/* Copyright (c) 2006 - 2020 omobus-lts-db authors, see the included COPYRIGHT file. */
 
 
 set QUOTED_IDENTIFIER on
@@ -572,7 +572,7 @@ create table packs (
     pack 		numeric_t 	not null default 1.0 check (pack >= 0.01),
     weight 		weight_t 	null,
     volume 		volume_t 	null,
-    precision 		int32_t 	null check (precision is null or (precision >= 0)),
+    "precision" 	int32_t 	null check ("precision" is null or ("precision" >= 0)),
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1671,8 +1671,8 @@ begin
 end
 go
 
-create function uids_unnest(@string uids_t)
-    returns @output table(ar_value uid_t)
+create function uids_unnest(@string varchar(2048))
+    returns @output table(ar_value varchar(48))
 begin
     declare @start int, @end int, @delimiter char(1)
     set @delimiter = ','
@@ -1871,8 +1871,8 @@ insert into sysparams(param_id, param_value, descr) values('db:id', 'LTS', 'Data
 insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Database version number.');
 
 go
-/* Copyright (c) 2006 - 2019 omobus-lts-db authors, see the included COPYRIGHT file. */
+/* Copyright (c) 2006 - 2020 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.30' where param_id='db:vstamp';
+update sysparams set param_value='3.4.31' where param_id='db:vstamp';
 
 go

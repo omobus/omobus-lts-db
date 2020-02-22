@@ -1217,6 +1217,48 @@ create table warehouses (
 create trigger trig_updated_ts before update on warehouses for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
+create table wish_days (
+    db_id 		uid_t 		not null,
+    wish_day_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+#ifdef PGSQL
+    days 		smallint[] 	not null default array[0,0,0,0,0,0,0] check (array_length(days,1)=7),
+#endif //PGSQL
+#ifdef MSSQL
+    days 		char(13) 	not null default '0,0,0,0,0,0,0',
+#endif //MSSQL
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, wish_day_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on wish_days for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table wish_weeks (
+    db_id 		uid_t 		not null,
+    wish_week_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+#ifdef PGSQL
+    weeks 		smallint[] 	not null default array[0,0,0,0] check (array_length(weeks,1)=4),
+#endif //PGSQL
+#ifdef MSSQL
+    weeks 		char(7) 	not null default '0,0,0,0',
+#endif //MSSQL
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, wish_week_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on wish_weeks for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
 #ifdef MSSQL
 go
 #endif //MSSQL
@@ -2018,6 +2060,26 @@ create index i_daily_user_works on user_works (user_id, fix_date);
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on user_works for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table wishes (
+    db_id 		uid_t 		not null,
+    account_id  	uid_t 		not null,
+    user_id		uid_t 		not null,
+    fix_dt		datetime_t 	not null,
+    wish_week_id 	uid_t 		not null,
+    wish_day_id 	uid_t 		not null,
+    note		note_t		null,
+    validator_id 	uid_t		null,
+    validated 		bool_t 		not null default 0,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, account_id, user_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on wishes for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 #ifdef MSSQL

@@ -14,7 +14,7 @@ select count(*) exist from discards
 </check_exist>
 <update>
   <![CDATA[
-update discards set user_id='%user_id%', fix_dt='%fix_dt%', activity_type_id='%activity_type_id%', route_date='%route_date%', discard_type_id='%discard_type_id%', note='%note%', validator_id='%validator_id%', validated=0%validated%, hidden=0%hidden%
+update discards set fix_dt='%fix_dt%', discard_type_id='%discard_type_id%', note='%note%', validator_id='%validator_id%', validated=0%validated%, hidden=0%hidden%
     where db_id = '%ErpCode%' and account_id = '%account_id%' and user_id = '%user_id%' and activity_type_id = '%activity_type_id%' and route_date = '%route_date%'
   ]]>
 </update>

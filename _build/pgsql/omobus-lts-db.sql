@@ -1004,6 +1004,34 @@ create table warehouses (
 
 create trigger trig_updated_ts before update on warehouses for each row execute procedure tf_updated_ts();
 
+create table wish_days (
+    db_id 		uid_t 		not null,
+    wish_day_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    days 		smallint[] 	not null default array[0,0,0,0,0,0,0] check (array_length(days,1)=7),
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, wish_day_id)
+);
+
+create trigger trig_updated_ts before update on wish_days for each row execute procedure tf_updated_ts();
+
+create table wish_weeks (
+    db_id 		uid_t 		not null,
+    wish_week_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    weeks 		smallint[] 	not null default array[0,0,0,0] check (array_length(weeks,1)=4),
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, wish_week_id)
+);
+
+create trigger trig_updated_ts before update on wish_weeks for each row execute procedure tf_updated_ts();
+
 
 
 -- **** proxy-db specific streams ****
@@ -1326,12 +1354,13 @@ create table dyn_stocks (
     fix_date		date_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
+    manuf_date 		date_t 		not null,
     stock 		int32_t 	not null,
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, fix_date, account_id, prod_id)
+    primary key(db_id, fix_date, account_id, prod_id, manuf_date)
 );
 
 create trigger trig_updated_ts before update on dyn_stocks for each row execute procedure tf_updated_ts();
@@ -1719,6 +1748,24 @@ create index i_daily_user_works on user_works (user_id, fix_date);
 
 create trigger trig_updated_ts before update on user_works for each row execute procedure tf_updated_ts();
 
+create table wishes (
+    db_id 		uid_t 		not null,
+    account_id  	uid_t 		not null,
+    user_id		uid_t 		not null,
+    fix_dt		datetime_t 	not null,
+    wish_week_id 	uid_t 		not null,
+    wish_day_id 	uid_t 		not null,
+    note		note_t		null,
+    validator_id 	uid_t		null,
+    validated 		bool_t 		not null default 0,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, account_id, user_id)
+);
+
+create trigger trig_updated_ts before update on wishes for each row execute procedure tf_updated_ts();
+
 
 
 -- **** system stream ****
@@ -1927,5 +1974,5 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 
 /* Copyright (c) 2006 - 2020 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.31' where param_id='db:vstamp';
+update sysparams set param_value='3.4.32' where param_id='db:vstamp';
 

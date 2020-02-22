@@ -125,5 +125,8 @@
 <xi:include href="../queries/lts-data/users.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/user_works.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/warehouses.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
+<xi:include href="../queries/lts-data/wishes.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
+<xi:include href="../queries/lts-data/wish_days.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
+<xi:include href="../queries/lts-data/wish_weeks.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <!--<xi:include href="../queries/lts-data/trig_after.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />-->
 </kernel>

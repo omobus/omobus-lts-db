@@ -20,34 +20,19 @@ select count(*) exist from wish_days
 </check_exist>
 <update>
   <![CDATA[
-#ifdef PGSQL
-update wish_days set descr='%descr%', days=string_to_array('%days%',',')::smallint[], row_no=int32_in('%row_no%'), hidden=0
-#endif //PGSQL
-#ifdef MSSQL
-update wish_days set descr='%descr%', days='%days%', row_no=int32_in('%row_no%'), hidden=0
-#endif //MSSQL
+update wish_days set descr='%descr%', days='%days%', row_no=dbo.int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and wish_day_id = '%wish_day_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into wish_days (db_id, wish_day_id, descr, days, row_no, hidden)
-#ifdef PGSQL
-    values ('%ErpCode%', '%wish_day_id%', '%descr%', string_to_array('%days%',',')::smallint[], int32_in('%row_no%'), 0)
-#endif //PGSQL
-#ifdef MSSQL
-    values ('%ErpCode%', '%wish_day_id%', '%descr%', '%days%', int32_in('%row_no%'), 0)
-#endif //MSSQL
+    values ('%ErpCode%', '%wish_day_id%', '%descr%', '%days%', dbo.int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>
   <![CDATA[
-#ifdef PGSQL
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
-#endif //PGSQL
-#ifdef MSSQL
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
-#endif //MSSQL
   ]]>
 </end>
 </wish_days>

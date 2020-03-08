@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<agreements1 templ="%account_id%;%placement_id%;%posm_id%;%b_date%;%e_date%;%strict%;">
+<agreements1 templ="%account_id%;%placement_id%;%posm_id%;%b_date%;%e_date%;%strict%;%cookie%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,22 +14,23 @@ create table dbo.[#%uid%_agreements1] (
     posm_id 		varchar(48) 	not null,
     b_date 		varchar(10) 	not null,
     e_date 		varchar(10) 	not null,
-    strict 		smallint 	not null
+    strict 		smallint 	not null,
+    cookie 		varchar(48) 	null
 )
   ]]>
 </begin>
 <insert>
   <![CDATA[
-insert into dbo.[#%uid%_agreements1] (account_id, placement_id, posm_id, b_date, e_date, "strict")
-    values ('%account_id%', '%placement_id%', '%posm_id%', '%b_date%', '%e_date%', 0%strict%)
+insert into dbo.[#%uid%_agreements1] (account_id, placement_id, posm_id, b_date, e_date, "strict", cookie)
+    values ('%account_id%', '%placement_id%', '%posm_id%', '%b_date%', '%e_date%', 0%strict%, dbo.uid_in('%cookie%'))
   ]]>
 </insert>
 <end>
   <![CDATA[
 delete from agreements1
     where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.[#%uid%_agreements1])
-insert into agreements1 (db_id, account_id, placement_id, posm_id, b_date, e_date, "strict")
-    select '%ErpCode%', account_id, placement_id, posm_id, b_date, e_date, "strict" from dbo.[#%uid%_agreements1]
+insert into agreements1 (db_id, account_id, placement_id, posm_id, b_date, e_date, "strict", cookie)
+    select '%ErpCode%', account_id, placement_id, posm_id, b_date, e_date, "strict", cookie from dbo.[#%uid%_agreements1]
 drop table dbo.[#%uid%_agreements1]
 
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'

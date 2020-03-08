@@ -137,6 +137,7 @@ create table agreements1 (
     b_date 		date_t 		not null,
     e_date 		date_t 		not null,
     strict 		bool_t 		not null default 1,
+    cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key (db_id, account_id, placement_id, posm_id, b_date)
@@ -1974,5 +1975,5 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 
 /* Copyright (c) 2006 - 2020 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.32' where param_id='db:vstamp';
+update sysparams set param_value='3.4.33' where param_id='db:vstamp';
 

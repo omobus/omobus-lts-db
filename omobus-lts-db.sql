@@ -1328,31 +1328,7 @@ create table comments (
 #ifdef PGSQL
 create trigger trig_updated_ts before update on comments for each row execute procedure tf_updated_ts();
 #endif //PGSQL
-/*
-create table conferences (
-    db_id 		uid_t 		not null,
-    doc_id 		uid_t 		not null,
-    user_id 		uid_t 		not null,
-    fix_dt 		datetime_t 	not null,
-    doc_note 		note_t 		null,
-    title 		descr_t 	not null,
-    b_date 		date_t 		not null,
-    e_date 		date_t 		not null,
-    ctheme_ids 		uids_t 		null,
-    participants 	int32_t 	null,
-    expenses 		currency_t 	null,
-    speakers 		descr_t 	null,
-    venue 		descr_t 	not null,
-    address 		address_t 	not null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts		ts_auto_t 	not null,
-    primary key(db_id, doc_id)
-);
 
-#ifdef PGSQL
-create trigger trig_updated_ts before update on conferences for each row execute procedure tf_updated_ts();
-#endif //PGSQL
-*/
 create table confirmations (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,

@@ -505,10 +505,8 @@ create trigger trig_updated_ts before update on discard_types for each row execu
 create table distributors (
     db_id 		uid_t 		not null,
     distr_id 		uid_t 		not null,
-    pid 		uid_t 		null,
-    ftype		ftype_t		not null default 0,
     descr 		descr_t 	not null,
-    country_id 		uid_t 		null,
+    country_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1035,10 +1033,9 @@ create trigger trig_updated_ts before update on remark_types for each row execut
 create table retail_chains (
     db_id 		uid_t 		not null,
     rc_id		uid_t		not null,
-    pid 		uid_t 		null,
     descr 		descr_t 	not null,
     ka_code		code_t		null,	/* Key Account: NKA, KA, ... */
-    country_id 		uid_t 		null,
+    country_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

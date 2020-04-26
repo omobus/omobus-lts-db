@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<training_materials templ="%tm_id%;%descr%;%brand_ids%;">
+<training_materials templ="%tm_id%;%descr%;%brand_ids%;%country_id%;%b_date%;%e_date%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from training_materials
 </check_exist>
 <update>
   <![CDATA[
-update training_materials set descr='%descr%', brand_ids=uids_in('%brand_ids%'), hidden=0 
+update training_materials set descr='%descr%', brand_ids=uids_in('%brand_ids%'), country_id='%country_id%', b_date=date_in('%b_date%'), e_date=date_in('%e_date%'), hidden=0 
     where db_id = '%ErpCode%' and tm_id = '%tm_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into training_materials (db_id, tm_id, descr, brand_ids, hidden) 
-    values ('%ErpCode%', '%tm_id%', '%descr%', uids_in('%brand_ids%'), 0)
+insert into training_materials (db_id, tm_id, descr, brand_ids, country_id, b_date, e_date, hidden) 
+    values ('%ErpCode%', '%tm_id%', '%descr%', uids_in('%brand_ids%'), '%country_id%', date_in('%b_date%'), date_in('%e_date%'), 0)
   ]]>
 </insert>
 <end>

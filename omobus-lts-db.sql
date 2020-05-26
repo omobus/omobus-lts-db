@@ -550,6 +550,21 @@ create table equipments (
 create trigger trig_updated_ts before update on equipments for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
+create table holidays (
+    db_id 		uid_t 		not null,
+    h_date 		date_t 		not null,
+    country_id 		country_t 	not null,
+    note 		descr_t 	not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, h_date, country_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on holidays for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
 create table job_titles (
     db_id 		uid_t 		not null,
     job_title_id 	uid_t 		not null,

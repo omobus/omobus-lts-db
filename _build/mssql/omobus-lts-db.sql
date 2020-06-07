@@ -376,10 +376,8 @@ create table discard_types (
 create table distributors (
     db_id 		uid_t 		not null,
     distr_id 		uid_t 		not null,
-    pid 		uid_t 		null,
-    ftype		ftype_t		not null default 0,
     descr 		descr_t 	not null,
-    country_id 		uid_t 		null,
+    country_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -804,10 +802,9 @@ create table remark_types (
 create table retail_chains (
     db_id 		uid_t 		not null,
     rc_id		uid_t		not null,
-    pid 		uid_t 		null,
     descr 		descr_t 	not null,
     ka_code		code_t		null,	/* Key Account: NKA, KA, ... */
-    country_id 		uid_t 		null,
+    country_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -887,6 +884,9 @@ create table training_materials (
     tm_id 		uid_t 		not null,
     descr 		descr_t 	not null,
     brand_ids 		uids_t 		null,
+    country_id 		country_t 	not null,
+    b_date 		date_t 		null,
+    e_date 		date_t 		null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1037,31 +1037,7 @@ create table comments (
     primary key(db_id, doc_id)
 );
 
-/*
-create table conferences (
-    db_id 		uid_t 		not null,
-    doc_id 		uid_t 		not null,
-    user_id 		uid_t 		not null,
-    fix_dt 		datetime_t 	not null,
-    doc_note 		note_t 		null,
-    title 		descr_t 	not null,
-    b_date 		date_t 		not null,
-    e_date 		date_t 		not null,
-    ctheme_ids 		uids_t 		null,
-    participants 	int32_t 	null,
-    expenses 		currency_t 	null,
-    speakers 		descr_t 	null,
-    venue 		descr_t 	not null,
-    address 		address_t 	not null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts		ts_auto_t 	not null,
-    primary key(db_id, doc_id)
-);
 
-#ifdef PGSQL
-create trigger trig_updated_ts before update on conferences for each row execute procedure tf_updated_ts();
-#endif //PGSQL
-*/
 create table confirmations (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1314,6 +1290,18 @@ create table dyn_testings (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, fix_date, account_id, contact_id, testing_criteria_id)
+);
+
+
+create table holidays (
+    db_id 		uid_t 		not null,
+    h_date 		date_t 		not null,
+    country_id 		country_t 	not null,
+    note 		descr_t 	not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, h_date, country_id)
 );
 
 
@@ -1918,6 +1906,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2020 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.4.33' where param_id='db:vstamp';
+update sysparams set param_value='3.5.0' where param_id='db:vstamp';
 
 go

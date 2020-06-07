@@ -15,7 +15,7 @@ select count(*) exist from wishes
 <update>
   <![CDATA[
 update wishes set fix_dt='%fix_dt%', wish_week_id='%wish_week_id%', wish_day_id='%wish_day_id%', note='%note%', validator_id='%validator_id%', validated=0%validated%, hidden=0%hidden%
-    where db_id = '%ErpCode%' and account_id = '%account_id%' and user_id = '%user_id%' and activity_type_id = '%activity_type_id%' and route_date = '%route_date%'
+    where db_id = '%ErpCode%' and account_id = '%account_id%' and user_id = '%user_id%'
   ]]>
 </update>
 <insert>

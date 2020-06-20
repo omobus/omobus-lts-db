@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<holidays templ="%h_date%;%country_id%;%note%;%hidden%;">
+<holidays templ="%h_date%;%country_id%;%note%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
+<begin>
+  <![CDATA[
+update holidays set hidden=1
+    where db_id = '%ErpCode%' and hidden = 0
+  ]]>
+</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from holidays 
@@ -14,14 +20,14 @@ select count(*) exist from holidays
 </check_exist>
 <update>
   <![CDATA[
-update holidays set note='%note%', hidden=0%hidden%
+update holidays set note='%note%', hidden=0
     where db_id = '%ErpCode%'and country_id = '%country_id%' and h_date = '%h_date%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into holidays (db_id, country_id, h_date, note, hidden) 
-    values ('%ErpCode%', '%country_id%', '%h_date%', '%note%', 0%hidden%)
+    values ('%ErpCode%', '%country_id%', '%h_date%', '%note%', 0)
   ]]>
 </insert>
 <end>

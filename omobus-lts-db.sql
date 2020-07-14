@@ -422,7 +422,7 @@ create table contacts (
     contact_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
     name 		descr_t 	not null,
-    surname 		descr_t 	not null,
+    surname 		descr_t 	null,
     patronymic 		descr_t 	null,
     job_title_id 	uid_t 		not null,
     phone 		phone_t 	null,

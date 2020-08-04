@@ -308,7 +308,7 @@ create table contacts (
     contact_id 		uid_t 		not null,
     account_id 		uid_t 		not null,
     name 		descr_t 	not null,
-    surname 		descr_t 	not null,
+    surname 		descr_t 	null,
     patronymic 		descr_t 	null,
     job_title_id 	uid_t 		not null,
     phone 		phone_t 	null,
@@ -1906,6 +1906,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2020 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.1' where param_id='db:vstamp';
+update sysparams set param_value='3.5.2' where param_id='db:vstamp';
 
 go

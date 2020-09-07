@@ -626,9 +626,10 @@ create table my_cities (
     db_id 		uid_t 		not null,
     user_id 		uid_t 		not null,
     city_id 		uid_t 		not null,
+    chan_id 		uid_t 		not null default '',
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, user_id, city_id)
+    primary key (db_id, user_id, city_id, chan_id)
 );
 
 #ifdef PGSQL
@@ -639,9 +640,10 @@ create table my_regions (
     db_id 		uid_t 		not null,
     user_id 		uid_t 		not null,
     region_id 		uid_t 		not null,
+    chan_id 		uid_t 		not null default '',
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, user_id, region_id)
+    primary key (db_id, user_id, region_id, chan_id)
 );
 
 #ifdef PGSQL

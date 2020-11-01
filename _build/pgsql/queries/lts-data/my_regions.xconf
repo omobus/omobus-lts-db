@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<my_regions templ="%user_id%;%region_id%;">
+<my_regions templ="%user_id%;%region_id%;%chan_id%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,8 +14,8 @@ delete from my_regions
 </begin>
 <insert>
   <![CDATA[
-insert into my_regions (db_id, user_id, region_id) 
-    values ('%ErpCode%', '%user_id%', '%region_id%')
+insert into my_regions (db_id, user_id, region_id, chan_id) 
+    values ('%ErpCode%', '%user_id%', '%region_id%', '%chan_id%')
   ]]>
 </insert>
 <end>

@@ -487,9 +487,10 @@ create table my_cities (
     db_id 		uid_t 		not null,
     user_id 		uid_t 		not null,
     city_id 		uid_t 		not null,
+    chan_id 		uid_t 		not null default '',
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, user_id, city_id)
+    primary key (db_id, user_id, city_id, chan_id)
 );
 
 create trigger trig_updated_ts before update on my_cities for each row execute procedure tf_updated_ts();
@@ -498,9 +499,10 @@ create table my_regions (
     db_id 		uid_t 		not null,
     user_id 		uid_t 		not null,
     region_id 		uid_t 		not null,
+    chan_id 		uid_t 		not null default '',
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, user_id, region_id)
+    primary key (db_id, user_id, region_id, chan_id)
 );
 
 create trigger trig_updated_ts before update on my_regions for each row execute procedure tf_updated_ts();
@@ -1964,5 +1966,5 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 
 /* Copyright (c) 2006 - 2020 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.2' where param_id='db:vstamp';
+update sysparams set param_value='3.5.3' where param_id='db:vstamp';
 

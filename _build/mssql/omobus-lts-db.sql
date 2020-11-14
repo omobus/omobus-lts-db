@@ -316,6 +316,7 @@ create table contacts (
     email 		email_t 	null,
     locked 		bool_t 		not null default 0,
     extra_info 		note_t 		null,
+    consent 		uid_t 		null, /* consent to the processing of personal data */
     author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -1908,6 +1909,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2020 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.3' where param_id='db:vstamp';
+update sysparams set param_value='3.5.4' where param_id='db:vstamp';
 
 go

@@ -425,6 +425,7 @@ create table contacts (
     surname 		descr_t 	null,
     patronymic 		descr_t 	null,
     job_title_id 	uid_t 		not null,
+    loyalty_level_id 	uid_t		null,
     phone 		phone_t 	null,
     mobile 		phone_t 	null,
     email 		email_t 	null,
@@ -578,6 +579,21 @@ create table kinds (
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on kinds for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table loyalty_levels (
+    db_id 		uid_t 		not null,
+    loyalty_level_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, loyalty_level_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on loyalty_levels for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table manufacturers (

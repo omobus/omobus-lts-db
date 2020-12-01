@@ -1376,6 +1376,7 @@ create table dyn_advt (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, placement_id, posm_id)
 );
 
@@ -1401,6 +1402,7 @@ create table dyn_audits (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, categ_id, audit_criteria_id)
 );
 
@@ -1419,6 +1421,7 @@ create table dyn_checkups (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, placement_id, prod_id)
 );
 
@@ -1437,6 +1440,7 @@ create table dyn_oos (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, prod_id)
 );
 
@@ -1455,6 +1459,7 @@ create table dyn_presences (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, prod_id)
 );
 
@@ -1474,6 +1479,7 @@ create table dyn_prices (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, prod_id)
 );
 
@@ -1492,6 +1498,7 @@ create table dyn_quests (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, qname_id, qrow_id)
 );
 
@@ -1514,6 +1521,7 @@ create table dyn_ratings (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, employee_id, rating_criteria_id)
 );
 
@@ -1534,6 +1542,7 @@ create table dyn_reviews (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, employee_id)
 );
 
@@ -1558,6 +1567,7 @@ create table dyn_shelfs (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, categ_id, brand_id)
 );
 
@@ -1576,6 +1586,7 @@ create table dyn_stocks (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, prod_id, manuf_date)
 );
 
@@ -1599,6 +1610,7 @@ create table dyn_testings (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, contact_id, testing_criteria_id)
 );
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dyn_quests templ="%fix_date%;%account_id%;%qname_id%;%qrow_id%;%value%;%fix_dt%;%user_id%;">
+<dyn_quests templ="%fix_date%;%account_id%;%qname_id%;%qrow_id%;%value%;%fix_dt%;%user_id%;%_isrecentdata%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from dyn_quests
 </check_exist>
 <update>
   <![CDATA[
-update dyn_quests set value='%value%', user_id='%user_id%', fix_dt='%fix_dt%'
+update dyn_quests set value='%value%', user_id='%user_id%', fix_dt='%fix_dt%', "_isRecentData"=int32_in('%_isrecentdata%')
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and qname_id = '%qname_id%' and qrow_id = '%qrow_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into dyn_quests (db_id, fix_date, account_id, qname_id, qrow_id, value, fix_dt, user_id)
-    values ('%ErpCode%', '%fix_date%', '%account_id%', '%qname_id%', '%qrow_id%', '%value%', '%fix_dt%', '%user_id%')
+insert into dyn_quests (db_id, fix_date, account_id, qname_id, qrow_id, value, fix_dt, user_id, "_isRecentData")
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%qname_id%', '%qrow_id%', '%value%', '%fix_dt%', '%user_id%', int32_in('%_isrecentdata%'))
   ]]>
 </insert>
 <end>

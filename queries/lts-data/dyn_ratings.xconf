@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dyn_ratings templ="%fix_date%;%account_id%;%employee_id%;%rating_criteria_id%;%rating_score_id%;%criteria_wf%;%score_wf%;%score%;%note%;%fix_dt%;%user_id%;">
+<dyn_ratings templ="%fix_date%;%account_id%;%employee_id%;%rating_criteria_id%;%rating_score_id%;%criteria_wf%;%score_wf%;%score%;%note%;%fix_dt%;%user_id%;%_isrecentdata%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from dyn_ratings
 </check_exist>
 <update>
   <![CDATA[
-update dyn_ratings set rating_score_id=uid_in('%rating_score_id%'), criteria_wf=%criteria_wf%, score_wf=wf_in('%score_wf%'), score=int32_in('%score%'), note=note_in('%note%'), user_id='%user_id%', fix_dt='%fix_dt%'
+update dyn_ratings set rating_score_id=uid_in('%rating_score_id%'), criteria_wf=%criteria_wf%, score_wf=wf_in('%score_wf%'), score=int32_in('%score%'), note=note_in('%note%'), user_id='%user_id%', fix_dt='%fix_dt%', "_isRecentData"=int32_in('%_isrecentdata%')
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and employee_id = '%employee_id%' and rating_criteria_id = '%rating_criteria_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into dyn_ratings (db_id, fix_date, account_id, employee_id, rating_criteria_id, rating_score_id, criteria_wf, score_wf, score, note, fix_dt, user_id)
-    values ('%ErpCode%', '%fix_date%', '%account_id%', '%employee_id%', '%rating_criteria_id%', uid_in('%rating_score_id%'), %criteria_wf%, wf_in('%score_wf%'), int32_in('%score%'), note_in('%note%'), '%fix_dt%', '%user_id%')
+insert into dyn_ratings (db_id, fix_date, account_id, employee_id, rating_criteria_id, rating_score_id, criteria_wf, score_wf, score, note, fix_dt, user_id, "_isRecentData")
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%employee_id%', '%rating_criteria_id%', uid_in('%rating_score_id%'), %criteria_wf%, wf_in('%score_wf%'), int32_in('%score%'), note_in('%note%'), '%fix_dt%', '%user_id%', int32_in('%_isrecentdata%'))
   ]]>
 </insert>
 <end>

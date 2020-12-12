@@ -312,6 +312,7 @@ create table contacts (
     surname 		descr_t 	null,
     patronymic 		descr_t 	null,
     job_title_id 	uid_t 		not null,
+    loyalty_level_id 	uid_t		null,
     phone 		phone_t 	null,
     mobile 		phone_t 	null,
     email 		email_t 	null,
@@ -446,6 +447,19 @@ create table kinds (
 );
 
 create trigger trig_updated_ts before update on kinds for each row execute procedure tf_updated_ts();
+
+create table loyalty_levels (
+    db_id 		uid_t 		not null,
+    loyalty_level_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, loyalty_level_id)
+);
+
+create trigger trig_updated_ts before update on loyalty_levels for each row execute procedure tf_updated_ts();
 
 create table manufacturers (
     db_id 		uid_t 		not null,
@@ -1008,34 +1022,6 @@ create table warehouses (
 
 create trigger trig_updated_ts before update on warehouses for each row execute procedure tf_updated_ts();
 
-create table wish_days (
-    db_id 		uid_t 		not null,
-    wish_day_id 	uid_t 		not null,
-    descr 		descr_t 	not null,
-    days 		smallint[] 	not null default array[0,0,0,0,0,0,0] check (array_length(days,1)=7),
-    row_no 		int32_t 	null, -- ordering
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, wish_day_id)
-);
-
-create trigger trig_updated_ts before update on wish_days for each row execute procedure tf_updated_ts();
-
-create table wish_weeks (
-    db_id 		uid_t 		not null,
-    wish_week_id 	uid_t 		not null,
-    descr 		descr_t 	not null,
-    weeks 		smallint[] 	not null default array[0,0,0,0] check (array_length(weeks,1)=4),
-    row_no 		int32_t 	null, -- ordering
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, wish_week_id)
-);
-
-create trigger trig_updated_ts before update on wish_weeks for each row execute procedure tf_updated_ts();
-
 
 
 -- **** proxy-db specific streams ****
@@ -1160,6 +1146,7 @@ create table dyn_advt (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, placement_id, posm_id)
 );
 
@@ -1183,6 +1170,7 @@ create table dyn_audits (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, categ_id, audit_criteria_id)
 );
 
@@ -1199,6 +1187,7 @@ create table dyn_checkups (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, placement_id, prod_id)
 );
 
@@ -1215,6 +1204,7 @@ create table dyn_oos (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, prod_id)
 );
 
@@ -1231,6 +1221,7 @@ create table dyn_presences (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, prod_id)
 );
 
@@ -1248,6 +1239,7 @@ create table dyn_prices (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, prod_id)
 );
 
@@ -1264,6 +1256,7 @@ create table dyn_quests (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, qname_id, qrow_id)
 );
 
@@ -1284,6 +1277,7 @@ create table dyn_ratings (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, employee_id, rating_criteria_id)
 );
 
@@ -1302,6 +1296,7 @@ create table dyn_reviews (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, employee_id)
 );
 
@@ -1324,6 +1319,7 @@ create table dyn_shelfs (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, categ_id, brand_id)
 );
 
@@ -1340,6 +1336,7 @@ create table dyn_stocks (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, prod_id, manuf_date)
 );
 
@@ -1361,6 +1358,7 @@ create table dyn_testings (
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
+    "_isRecentData"	bool_t 		null,
     primary key(db_id, fix_date, account_id, contact_id, testing_criteria_id)
 );
 
@@ -1746,8 +1744,8 @@ create table wishes (
     account_id  	uid_t 		not null,
     user_id		uid_t 		not null,
     fix_dt		datetime_t 	not null,
-    wish_week_id 	uid_t 		not null,
-    wish_day_id 	uid_t 		not null,
+    weeks 		smallint[] 	not null default array[0,0,0,0] check (array_length(weeks,1)=4),
+    days 		smallint[] 	not null default array[0,0,0,0,0,0,0] check (array_length(days,1)=7),
     note		note_t		null,
     validator_id 	uid_t		null,
     validated 		bool_t 		not null default 0,
@@ -1967,5 +1965,5 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 
 /* Copyright (c) 2006 - 2020 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.4' where param_id='db:vstamp';
+update sysparams set param_value='3.5.5' where param_id='db:vstamp';
 

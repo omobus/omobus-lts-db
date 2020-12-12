@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dyn_stocks templ="%fix_date%;%account_id%;%prod_id%;%manuf_date%;%stock%;%fix_dt%;%user_id%;">
+<dyn_stocks templ="%fix_date%;%account_id%;%prod_id%;%manuf_date%;%stock%;%fix_dt%;%user_id%;%_isrecentdata%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,7 +14,7 @@ select count(*) exist from dyn_stocks
 </check_exist>
 <update>
   <![CDATA[
-update dyn_stocks set stock=0%stock%, user_id='%user_id%', fix_dt='%fix_dt%'
+update dyn_stocks set stock=0%stock%, user_id='%user_id%', fix_dt='%fix_dt%', "_isRecentData"=dbo.int32_in('%_isrecentdata%')
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and prod_id = '%prod_id%' and manuf_date = '%manuf_date%'
   ]]>
 </update>
@@ -24,8 +24,8 @@ update dyn_stocks set stock=0%stock%, user_id='%user_id%', fix_dt='%fix_dt%'
 delete from dyn_stocks where db_id = '%ErpCode%' and account_id = '%account_id%' and prod_id = '%prod_id%' and fix_date = '%fix_date%'
     and (('%manuf_date%' = '' and manuf_date <> '') or ('%manuf_date%' <> '' and manuf_date = ''));
 /* } */
-insert into dyn_stocks (db_id, fix_date, account_id, prod_id, manuf_date, stock, fix_dt, user_id)
-    values ('%ErpCode%', '%fix_date%', '%account_id%', '%prod_id%', '%manuf_date%', 0%stock%, '%fix_dt%', '%user_id%')
+insert into dyn_stocks (db_id, fix_date, account_id, prod_id, manuf_date, stock, fix_dt, user_id, "_isRecentData")
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%prod_id%', '%manuf_date%', 0%stock%, '%fix_dt%', '%user_id%', dbo.int32_in('%_isrecentdata%'))
   ]]>
 </insert>
 <end>

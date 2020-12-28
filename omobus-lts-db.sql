@@ -1580,14 +1580,13 @@ create table dyn_stocks (
     fix_date		date_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
-    manuf_date 		date_t 		not null,
     stock 		int32_t 	not null,
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
-    primary key(db_id, fix_date, account_id, prod_id, manuf_date)
+    primary key(db_id, fix_date, account_id, prod_id)
 );
 
 #ifdef PGSQL

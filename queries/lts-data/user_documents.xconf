@@ -21,7 +21,7 @@ update user_documents set doc_id='%doc_id%'
 <insert>
   <![CDATA[
 insert into user_documents (db_id, act_id, user_id, w_cookie, fix_date, doc_type, doc_id, doc_no, duration, rows, fix_dt, latitude, longitude, satellite_dt, a_cookie, account_id, activity_type_id, employee_id) 
-    values ('%ErpCode%', '%act_id%', '%user_id%', '%w_cookie%', '%fix_date%', '%doc_type%', '%doc_id%', '%doc_no%', %duration%, 0%rows%, '%fix_dt%', '%latitude%', '%longitude%', '%satellite_dt%', '%a_cookie%', '%account_id%', '%activity_type_id%', uid_in('%employee_id%'))
+    values ('%ErpCode%', '%act_id%', '%user_id%', '%w_cookie%', '%fix_date%', '%doc_type%', '%doc_id%', '%doc_no%', %duration%, 0%rows%, '%fix_dt%', gps_in('%latitude%'), gps_in('%longitude%'), datetime_in('%satellite_dt%'), '%a_cookie%', '%account_id%', '%activity_type_id%', uid_in('%employee_id%'))
   ]]>
 </insert>
 <end>

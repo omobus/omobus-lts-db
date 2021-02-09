@@ -991,20 +991,6 @@ create table rating_scores (
 create trigger trig_updated_ts before update on rating_scores for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
-create table receipt_types (
-    db_id 		uid_t 		not null,
-    receipt_type_id 	uid_t 		not null,
-    descr 		descr_t 	not null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, receipt_type_id)
-);
-
-#ifdef PGSQL
-create trigger trig_updated_ts before update on receipt_types for each row execute procedure tf_updated_ts();
-#endif //PGSQL
-
 create table reclamation_types (
     db_id 		uid_t 		not null,
     reclamation_type_id uid_t 		not null,
@@ -1714,25 +1700,6 @@ create table presentations (
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on presentations for each row execute procedure tf_updated_ts();
-#endif //PGSQL
-
-create table receipts (
-    db_id 		uid_t 		not null,
-    doc_id 		uid_t 		not null,
-    fix_dt 		datetime_t 	not null,
-    distr_id		uid_t 		not null,
-    user_id 		uid_t 		not null,
-    account_id 		uid_t 		not null,
-    receipt_type_id 	uid_t 		null,
-    amount 		numeric_t 	not null,
-    doc_note 		note_t 		null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts		ts_auto_t 	not null,
-    primary key(db_id, doc_id)
-);
-
-#ifdef PGSQL
-create trigger trig_updated_ts before update on receipts for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table reclamations (

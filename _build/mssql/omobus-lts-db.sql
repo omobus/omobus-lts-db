@@ -769,17 +769,6 @@ create table rating_scores (
 );
 
 
-create table receipt_types (
-    db_id 		uid_t 		not null,
-    receipt_type_id 	uid_t 		not null,
-    descr 		descr_t 	not null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, receipt_type_id)
-);
-
-
 create table reclamation_types (
     db_id 		uid_t 		not null,
     reclamation_type_id uid_t 		not null,
@@ -867,31 +856,6 @@ create table target_types (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, target_type_id)
-);
-
-
-create table testing_criterias (
-    db_id 		uid_t 		not null,
-    testing_criteria_id uid_t 		not null,
-    descr 		descr_t 	not null,
-    row_no 		int32_t 	null, -- ordering,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, testing_criteria_id)
-);
-
-
-create table testing_scores (
-    db_id 		uid_t 		not null,
-    testing_score_id 	uid_t 		not null,
-    descr 		descr_t 	not null,
-    score 		int32_t 	not null /*check(score >= 0)*/,
-    row_no 		int32_t 	null, -- ordering,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, testing_score_id)
 );
 
 
@@ -1273,27 +1237,6 @@ create table dyn_stocks (
 );
 
 
-create table dyn_testings (
-    db_id 		uid_t 		not null,
-    fix_date		date_t 		not null,
-    account_id 		uid_t 		not null,
-    contact_id 		uid_t 		not null,
-    testing_criteria_id uid_t 		not null,
-    testing_score_id 	uid_t 		null,
-    criteria_wf 	wf_t 		not null check(criteria_wf between 0.01 and 1.00),
-    score_wf 		wf_t 		null check(score_wf between 0.00 and 1.00),
-    score 		int32_t 	null check (score >= 0),
-    note 		note_t 		null,
-    sla 		numeric(6,5) 	not null check(sla between 0.0 and 1.0),
-    fix_dt		datetime_t 	not null,
-    user_id 		uid_t 		not null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts		ts_auto_t 	not null,
-    "_isRecentData"	bool_t 		null,
-    primary key(db_id, fix_date, account_id, contact_id, testing_criteria_id)
-);
-
-
 create table holidays (
     db_id 		uid_t 		not null,
     h_date 		date_t 		not null,
@@ -1375,22 +1318,6 @@ create table presentations (
     tm_ids 		uids_t 		null,
     doc_note 		note_t 		null,
     photos		uids_t		null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts		ts_auto_t 	not null,
-    primary key(db_id, doc_id)
-);
-
-
-create table receipts (
-    db_id 		uid_t 		not null,
-    doc_id 		uid_t 		not null,
-    fix_dt 		datetime_t 	not null,
-    distr_id		uid_t 		not null,
-    user_id 		uid_t 		not null,
-    account_id 		uid_t 		not null,
-    receipt_type_id 	uid_t 		null,
-    amount 		numeric_t 	not null,
-    doc_note 		note_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1907,6 +1834,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.6' where param_id='db:vstamp';
+update sysparams set param_value='3.5.7' where param_id='db:vstamp';
 
 go

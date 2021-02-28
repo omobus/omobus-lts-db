@@ -1039,7 +1039,7 @@ create table retail_chains (
     db_id 		uid_t 		not null,
     rc_id		uid_t		not null,
     descr 		descr_t 	not null,
-    ka_code		code_t		null,	/* Key Account: NKA, KA, ... */
+    ka_type		code_t		null,	/* Key Account: NKA, KA, ... */
     country_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,

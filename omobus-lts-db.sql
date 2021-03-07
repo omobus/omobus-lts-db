@@ -316,7 +316,6 @@ create table brands (
     brand_id 		uid_t 		not null,
     descr 		descr_t 	not null,
     manuf_id 		uid_t 		not null,
-    dep_id		uid_t		null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -918,6 +917,7 @@ create table products (
     promo 		bool_t 		null,
     barcodes 		ean13s_t 	null,
     country_ids 	countries_t 	null,
+    dep_ids 		uids_t 		null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,

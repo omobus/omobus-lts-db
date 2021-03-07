@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<brands templ="%brand_id%;%descr%;%manuf_id%;%dep_id%;%row_no%;">
+<brands templ="%brand_id%;%descr%;%manuf_id%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from brands
 </check_exist>
 <update>
   <![CDATA[
-update brands set descr='%descr%', manuf_id='%manuf_id%', dep_id=uid_in('%dep_id%'), row_no=int32_in('%row_no%'), hidden=0
+update brands set descr='%descr%', manuf_id='%manuf_id%', row_no=int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and brand_id = '%brand_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into brands (db_id, brand_id, descr, manuf_id, dep_id, row_no, hidden) 
-    values ('%ErpCode%', '%brand_id%', '%descr%', '%manuf_id%', uid_in('%dep_id%'), int32_in('%row_no%'), 0)
+insert into brands (db_id, brand_id, descr, manuf_id, row_no, hidden) 
+    values ('%ErpCode%', '%brand_id%', '%descr%', '%manuf_id%', int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

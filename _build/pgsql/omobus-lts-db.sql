@@ -217,7 +217,6 @@ create table brands (
     brand_id 		uid_t 		not null,
     descr 		descr_t 	not null,
     manuf_id 		uid_t 		not null,
-    dep_id		uid_t		null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -743,6 +742,7 @@ create table products (
     promo 		bool_t 		null,
     barcodes 		ean13s_t 	null,
     country_ids 	countries_t 	null,
+    dep_ids 		uids_t 		null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -848,7 +848,7 @@ create table retail_chains (
     db_id 		uid_t 		not null,
     rc_id		uid_t		not null,
     descr 		descr_t 	not null,
-    ka_code		code_t		null,	/* Key Account: NKA, KA, ... */
+    ka_type		code_t		null,	/* Key Account: NKA, KA, ... */
     country_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -1886,5 +1886,5 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.7' where param_id='db:vstamp';
+update sysparams set param_value='3.5.8' where param_id='db:vstamp';
 

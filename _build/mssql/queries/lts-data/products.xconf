@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<products templ="%prod_id%;%pid%;%ftype%;%code%;%descr%;%kind_id%;%brand_id%;%categ_id%;%shelf_life_id%;%art%;%obsolete%;%novelty%;%promo%;%barcodes%;%country_ids%;%row_no%;">
+<products templ="%prod_id%;%pid%;%ftype%;%code%;%descr%;%kind_id%;%brand_id%;%categ_id%;%shelf_life_id%;%art%;%obsolete%;%novelty%;%promo%;%barcodes%;%country_ids%;%dep_ids%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from products
 </check_exist>
 <update>
   <![CDATA[
-update products set pid=dbo.uid_in('%pid%'), ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life_id=dbo.uid_in('%shelf_life_id%'), kind_id=dbo.uid_in('%kind_id%'), brand_id=dbo.uid_in('%brand_id%'), categ_id=dbo.uid_in('%categ_id%'), obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, barcodes=dbo.ean13ar_in('%barcodes%'), country_ids=dbo.uids_in('%country_ids%'), row_no=dbo.int32_in('%row_no%'), hidden=0
+update products set pid=dbo.uid_in('%pid%'), ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life_id=dbo.uid_in('%shelf_life_id%'), kind_id=dbo.uid_in('%kind_id%'), brand_id=dbo.uid_in('%brand_id%'), categ_id=dbo.uid_in('%categ_id%'), obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, barcodes=dbo.ean13ar_in('%barcodes%'), country_ids=dbo.uids_in('%country_ids%'), dep_ids=dbo.uids_in('%dep_ids%'), row_no=dbo.int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and prod_id = '%prod_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[ 
-insert into products (db_id, pid, prod_id, ftype, code, art, descr, kind_id, shelf_life_id, brand_id, categ_id, obsolete, novelty, promo, barcodes, country_ids, row_no, hidden)
-    values ('%ErpCode%', dbo.uid_in('%pid%'), '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', dbo.uid_in('%kind_id%'), dbo.uid_in('%shelf_life_id%'), dbo.uid_in('%brand_id%'), dbo.uid_in('%categ_id%'), 0%obsolete%, 0%novelty%, 0%promo%, dbo.ean13ar_in('%barcodes%'), dbo.uids_in('%country_ids%'), dbo.int32_in('%row_no%'), 0)
+insert into products (db_id, pid, prod_id, ftype, code, art, descr, kind_id, shelf_life_id, brand_id, categ_id, obsolete, novelty, promo, barcodes, country_ids, dep_ids, row_no, hidden)
+    values ('%ErpCode%', dbo.uid_in('%pid%'), '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', dbo.uid_in('%kind_id%'), dbo.uid_in('%shelf_life_id%'), dbo.uid_in('%brand_id%'), dbo.uid_in('%categ_id%'), 0%obsolete%, 0%novelty%, 0%promo%, dbo.ean13ar_in('%barcodes%'), dbo.uids_in('%country_ids%'), dbo.uids_in('%dep_ids%'), dbo.int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

@@ -1610,6 +1610,7 @@ create table photos (
     account_id		uid_t		not null,
     placement_id	uid_t		not null,
     brand_id		uid_t		null,
+    asp_type_id 	uid_t		null,
     photo_type_id	uid_t		null,
     photo		uid_t		not null,
     doc_note		note_t		null,

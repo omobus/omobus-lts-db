@@ -406,6 +406,7 @@ create table equipments (
     equipment_type_id 	uid_t 		not null,
     ownership_type_id 	uid_t 		null,
     extra_info 		note_t 		null,
+    author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -663,8 +664,10 @@ create table pos_materials (
     placement_ids 	uids_t 		null,
     chan_id 		uids_t 		null,
     country_id		country_t 	not null,
+    dep_ids 		uids_t 		null,
     b_date 		date_t 		null,
     e_date 		date_t 		null,
+    author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -865,8 +868,10 @@ create table training_materials (
     descr 		descr_t 	not null,
     brand_ids 		uids_t 		null,
     country_id 		country_t 	not null,
+    dep_ids 		uids_t 		null,
     b_date 		date_t 		null,
     e_date 		date_t 		null,
+    author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1293,6 +1298,7 @@ create table photos (
     account_id		uid_t		not null,
     placement_id	uid_t		not null,
     brand_id		uid_t		null,
+    asp_type_id 	uid_t		null,
     photo_type_id	uid_t		null,
     photo		uid_t		not null,
     doc_note		note_t		null,
@@ -1834,6 +1840,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.8' where param_id='db:vstamp';
+update sysparams set param_value='3.5.9' where param_id='db:vstamp';
 
 go

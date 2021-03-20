@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<equipments templ="%equipment_id%;%account_id%;%serial_number%;%equipment_type_id%;%ownership_type_id%;%extra_info%;">
+<equipments templ="%equipment_id%;%account_id%;%serial_number%;%equipment_type_id%;%ownership_type_id%;%extra_info%;%author_id%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from equipments
 </check_exist>
 <update>
   <![CDATA[
-update equipments set account_id=dbo.uid_in('%account_id%'), serial_number='%serial_number%', equipment_type_id='%equipment_type_id%', ownership_type_id='%ownership_type_id%', extra_info=dbo.note_in('%extra_info%'), hidden=0
+update equipments set account_id=dbo.uid_in('%account_id%'), serial_number='%serial_number%', equipment_type_id='%equipment_type_id%', ownership_type_id='%ownership_type_id%', extra_info=dbo.note_in('%extra_info%'), author_id='%author_id%', hidden=0
     where db_id = '%ErpCode%' and equipment_id = '%equipment_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into equipments (db_id, equipment_id, account_id, serial_number, equipment_type_id, ownership_type_id, extra_info, hidden) 
-    values ('%ErpCode%', '%equipment_id%', dbo.uid_in('%account_id%'), '%serial_number%', '%equipment_type_id%', '%ownership_type_id%', dbo.note_in('%extra_info%'), 0)
+insert into equipments (db_id, equipment_id, account_id, serial_number, equipment_type_id, ownership_type_id, extra_info, author_id, hidden) 
+    values ('%ErpCode%', '%equipment_id%', dbo.uid_in('%account_id%'), '%serial_number%', '%equipment_type_id%', '%ownership_type_id%', dbo.note_in('%extra_info%'), '%author_id%', 0)
   ]]>
 </insert>
 <end>

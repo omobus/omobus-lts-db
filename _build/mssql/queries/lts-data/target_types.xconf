@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<target_types templ="%target_type_id%;%descr%;">
+<target_types templ="%target_type_id%;%descr%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from target_types
 </check_exist>
 <update>
   <![CDATA[
-update target_types set descr='%descr%', hidden=0 
+update target_types set descr='%descr%', row_no=dbo.int32_in('%row_no%'), hidden=0 
     where db_id = '%ErpCode%' and target_type_id = '%target_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into target_types (db_id, target_type_id, descr, hidden) 
-    values ('%ErpCode%', '%target_type_id%', '%descr%', 0)
+insert into target_types (db_id, target_type_id, descr row_no, hidden) 
+    values ('%ErpCode%', '%target_type_id%', '%descr%', dbo.int32_in('%row_no%'), 0)
   ]]>
 </insert>
 <end>

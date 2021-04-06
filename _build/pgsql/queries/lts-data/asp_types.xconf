@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<asp_types templ="%asp_type_id%;%descr%;%row_no%;">
+<asp_types templ="%asp_type_id%;%descr%;%row_no%;%props%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from asp_types
 </check_exist>
 <update>
   <![CDATA[
-update asp_types set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
+update asp_types set descr='%descr%', row_no=int32_in('%row_no%'), props=hstore_in('%props%'), hidden=0
     where db_id = '%ErpCode%' and asp_type_id = '%asp_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into asp_types (db_id, asp_type_id, descr, row_no, hidden) 
-    values ('%ErpCode%', '%asp_type_id%', '%descr%', int32_in('%row_no%'), 0)
+insert into asp_types (db_id, asp_type_id, descr, row_no, props, hidden) 
+    values ('%ErpCode%', '%asp_type_id%', '%descr%', int32_in('%row_no%'), hstore_in('%props%'), 0)
   ]]>
 </insert>
 <end>

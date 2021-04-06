@@ -165,6 +165,7 @@ create table asp_types (
     asp_type_id 	uid_t		not null,
     descr 		descr_t 	not null,
     row_no 		int32_t 	null, -- ordering
+    props 		hstore_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -289,6 +290,21 @@ create table comment_types (
 );
 
 create trigger trig_updated_ts before update on comment_types for each row execute procedure tf_updated_ts();
+
+create table confirmation_types (
+    db_id 		uid_t 		not null,
+    confirmation_type_id uid_t		not null,
+    descr 		descr_t 	not null,
+    succeeded 		bool_t 		null,
+    row_no 		int32_t 	null, -- ordering
+    props 		hstore_t 	null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, confirmation_type_id)
+);
+
+create trigger trig_updated_ts before update on confirmation_types for each row execute procedure tf_updated_ts();
 
 create table confirmation_types (
     db_id 		uid_t 		not null,
@@ -898,6 +914,7 @@ create table target_types (
     db_id 		uid_t 		not null,
     target_type_id 	uid_t 		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1892,5 +1909,5 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.9' where param_id='db:vstamp';
+update sysparams set param_value='3.5.10' where param_id='db:vstamp';
 

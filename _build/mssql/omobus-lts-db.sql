@@ -48,7 +48,7 @@ execute sp_addtype email_t, 'varchar(254)'
 execute sp_addtype emails_t, 'varchar(4096)'
 execute sp_addtype ftype_t, 'smallint'
 execute sp_addtype gps_t, 'numeric(10,6)'
-execute sp_addtype hstore_t, 'varchar(1024)'
+execute sp_addtype hstore_t, 'varchar(4096)'
 execute sp_addtype hostname_t, 'varchar(255)'
 execute sp_addtype int32_t, 'int'
 execute sp_addtype int64_t, 'bigint'
@@ -175,6 +175,7 @@ create table asp_types (
     asp_type_id 	uid_t		not null,
     descr 		descr_t 	not null,
     row_no 		int32_t 	null, -- ordering
+    props 		hstore_t 	null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -287,6 +288,20 @@ create table comment_types (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, comment_type_id)
+);
+
+
+create table confirmation_types (
+    db_id 		uid_t 		not null,
+    confirmation_type_id uid_t		not null,
+    descr 		descr_t 	not null,
+    succeeded 		bool_t 		null,
+    row_no 		int32_t 	null, -- ordering
+    props 		hstore_t 	null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, confirmation_type_id)
 );
 
 
@@ -855,6 +870,7 @@ create table target_types (
     db_id 		uid_t 		not null,
     target_type_id 	uid_t 		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1840,6 +1856,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.9' where param_id='db:vstamp';
+update sysparams set param_value='3.5.10' where param_id='db:vstamp';
 
 go

@@ -271,6 +271,7 @@ create table attributes (
     db_id 		uid_t 		not null,
     attr_id 		uid_t 		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -669,6 +670,19 @@ create table my_cities (
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on my_cities for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table my_habitats (
+    db_id 		uid_t 		not null,
+    user_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, user_id, account_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on my_habitats for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table my_regions (

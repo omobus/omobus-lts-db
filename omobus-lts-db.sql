@@ -982,7 +982,10 @@ create table quest_rows (
     db_id 		uid_t 		not null,
     qname_id 		uid_t 		not null,
     qrow_id 		uid_t 		not null,
+    pid 		uid_t 		null,
+    ftype 		bool_t 		not null,
     descr 		descr_t 	not null,
+    qtype 		varchar(7) 	null,
     country_ids 	countries_t 	null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,

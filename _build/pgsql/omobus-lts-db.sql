@@ -178,6 +178,7 @@ create table attributes (
     db_id 		uid_t 		not null,
     attr_id 		uid_t 		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -526,6 +527,17 @@ create table my_cities (
 
 create trigger trig_updated_ts before update on my_cities for each row execute procedure tf_updated_ts();
 
+create table my_habitats (
+    db_id 		uid_t 		not null,
+    user_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, user_id, account_id)
+);
+
+create trigger trig_updated_ts before update on my_habitats for each row execute procedure tf_updated_ts();
+
 create table my_regions (
     db_id 		uid_t 		not null,
     user_id 		uid_t 		not null,
@@ -787,7 +799,10 @@ create table quest_rows (
     db_id 		uid_t 		not null,
     qname_id 		uid_t 		not null,
     qrow_id 		uid_t 		not null,
+    pid 		uid_t 		null,
+    ftype 		bool_t 		not null,
     descr 		descr_t 	not null,
+    qtype 		varchar(7) 	null,
     country_ids 	countries_t 	null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
@@ -1909,5 +1924,5 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.10' where param_id='db:vstamp';
+update sysparams set param_value='3.5.11' where param_id='db:vstamp';
 

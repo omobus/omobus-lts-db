@@ -26,7 +26,7 @@ update target_types set descr='%descr%', row_no=dbo.int32_in('%row_no%'), hidden
 </update>
 <insert>
   <![CDATA[
-insert into target_types (db_id, target_type_id, descr row_no, hidden) 
+insert into target_types (db_id, target_type_id, descr, row_no, hidden) 
     values ('%ErpCode%', '%target_type_id%', '%descr%', dbo.int32_in('%row_no%'), 0)
   ]]>
 </insert>

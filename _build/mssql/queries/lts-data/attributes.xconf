@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<attributes templ="%attr_id%;%descr%;">
+<attributes templ="%attr_id%;%descr%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from attributes
 </check_exist>
 <update>
   <![CDATA[
-update attributes set descr='%descr%', hidden=0
+update attributes set descr='%descr%', row_no=dbo.int32_in('%row_no%'), hidden=0
     where db_id = '%ErpCode%' and attr_id = '%attr_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into attributes (db_id, attr_id, descr)
-    values ('%ErpCode%', '%attr_id%', '%descr%')
+insert into attributes (db_id, attr_id, descr, row_no)
+    values ('%ErpCode%', '%attr_id%', '%descr%', dbo.int32_in('%row_no%'))
   ]]>
 </insert>
 <end>

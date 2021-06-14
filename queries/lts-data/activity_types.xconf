@@ -20,7 +20,7 @@ select count(*) exist from activity_types
 </check_exist>
 <update>
   <![CDATA[
-update activity_types set descr='%descr%', strict=0%strict%, joint=0%joint%', hidden=0
+update activity_types set descr='%descr%', strict=0%strict%, joint=0%joint%, hidden=0
     where db_id = '%ErpCode%' and activity_type_id = '%activity_type_id%'
   ]]>
 </update>

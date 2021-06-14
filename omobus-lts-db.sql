@@ -178,6 +178,7 @@ create table activity_types (
     activity_type_id 	uid_t 		not null,
     descr 		descr_t 	not null,
     strict 		bool_t 		not null default 0, /* sets to 1 (true) for direct visits to the accounts */
+    joint 		bool_t 		not null default 0, /* sets to 1 (true) for joint visits to the accounts */
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,

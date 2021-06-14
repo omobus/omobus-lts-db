@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<activity_types templ="%activity_type_id%;%descr%;%strict%;">
+<activity_types templ="%activity_type_id%;%descr%;%strict%;%joint%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -20,14 +20,14 @@ select count(*) exist from activity_types
 </check_exist>
 <update>
   <![CDATA[
-update activity_types set descr='%descr%', strict=0%strict%, hidden=0
+update activity_types set descr='%descr%', strict=0%strict%, joint=0%joint%', hidden=0
     where db_id = '%ErpCode%' and activity_type_id = '%activity_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into activity_types (db_id, activity_type_id, descr, strict, hidden) 
-    values ('%ErpCode%', '%activity_type_id%', '%descr%', 0%strict%, 0)
+insert into activity_types (db_id, activity_type_id, descr, strict, joint, hidden) 
+    values ('%ErpCode%', '%activity_type_id%', '%descr%', 0%strict%, 0%joint%, 0)
   ]]>
 </insert>
 <end>

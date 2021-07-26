@@ -450,7 +450,6 @@ create table contacts (
     email 		email_t 	null,
     locked 		bool_t 		not null default 0,
     extra_info 		note_t 		null,
-    consent 		uid_t 		null, /* consent to the processing of personal data */
     author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,

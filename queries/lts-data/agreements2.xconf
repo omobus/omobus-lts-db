@@ -1,64 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<agreements2 templ="%account_id%;%prod_id%;%b_date%;%e_date%;%facing%;%strict%;">
+<agreements2 templ="%slice_date%;%account_id%;%prod_id%;%facing%;%strict%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
+<check_exist>
   <![CDATA[
-#ifdef PGSQL
-create temporary table if not exists ".%uid%_agreements2" (
-    account_id		uid_t		not null,
-    prod_id 		uid_t 		not null,
-    b_date 		date_t 		not null,
-    e_date 		date_t 		not null,
-    facing 		int32_t 	not null,
-    strict 		bool_t 		not null,
-    primary key (account_id, prod_id, b_date)
-);
-#endif //PGSQL
-#ifdef MSSQL
-create table dbo.[#%uid%_agreements2] (
-    account_id		varchar(48)	not null,
-    prod_id 		varchar(48) 	not null,
-    b_date 		varchar(10) 	not null,
-    e_date 		varchar(10) 	not null,
-    facing 		int 		not null,
-    strict 		smallint 	not null
-)
-#endif //MSSQL
+select count(*) exist from agreements2
+    where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
   ]]>
-</begin>
+</check_exist>
+<update>
+  <![CDATA[
+update agreements2 set facing=0%facing%, "strict"=0%strict%
+    where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
+  ]]>
+</update>
 <insert>
   <![CDATA[
-#ifdef PGSQL
-insert into ".%uid%_agreements2" (account_id, prod_id, b_date, e_date, facing, "strict")
-#endif //PGSQL
-#ifdef MSSQL
-insert into dbo.[#%uid%_agreements2] (account_id, prod_id, b_date, e_date, facing, "strict")
-#endif //MSSQL
-    values ('%account_id%', '%prod_id%', '%b_date%', '%e_date%', 0%facing%, 0%strict%)
+insert into agreements2 (db_id, slice_date, account_id, prod_id, facing, "strict")
+    values ('%ErpCode%', '%slice_date%', '%account_id%', '%prod_id%', 0%facing%, 0%strict%)
   ]]>
 </insert>
 <end>
   <![CDATA[
 #ifdef PGSQL
-delete from agreements2
-    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from ".%uid%_agreements2");
-insert into agreements2 (db_id, account_id, prod_id, b_date, e_date, facing, "strict")
-    select '%ErpCode%', account_id, prod_id, b_date, e_date, facing, "strict" from ".%uid%_agreements2";
-
 select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
 #endif //PGSQL
 #ifdef MSSQL
-delete from agreements2
-    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.[#%uid%_agreements2])
-insert into agreements2 (db_id, account_id, prod_id, b_date, e_date, facing, "strict")
-    select '%ErpCode%', account_id, prod_id, b_date, e_date, facing, "strict" from dbo.[#%uid%_agreements2]
-drop table dbo.[#%uid%_agreements2]
-
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
 #endif //MSSQL
   ]]>

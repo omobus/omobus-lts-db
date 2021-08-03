@@ -219,16 +219,15 @@ create trigger trig_updated_ts before update on agencies for each row execute pr
 
 create table agreements1 (
     db_id 		uid_t 		not null,
+    slice_date 		date_t 		not null,
     account_id		uid_t		not null,
     placement_id 	uid_t 		not null,
     posm_id 		uid_t 		not null,
-    b_date 		date_t 		not null,
-    e_date 		date_t 		not null,
     strict 		bool_t 		not null default 1,
     cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, placement_id, posm_id, b_date)
+    primary key (db_id, slice_date, account_id, placement_id, posm_id)
 );
 
 #ifdef PGSQL
@@ -237,15 +236,14 @@ create trigger trig_updated_ts before update on agreements1 for each row execute
 
 create table agreements2 (
     db_id 		uid_t 		not null,
+    slice_date 		date_t 		not null,
     account_id		uid_t		not null,
     prod_id 		uid_t 		not null,
-    b_date 		date_t 		not null,
-    e_date 		date_t 		not null,
     facing 		int32_t 	not null check(facing > 0),
     strict 		bool_t 		not null default 1,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, prod_id, b_date)
+    primary key (db_id, slice_date, account_id, prod_id)
 );
 
 #ifdef PGSQL
@@ -632,13 +630,14 @@ create trigger trig_updated_ts before update on manufacturers for each row execu
 
 create table matrices (
     db_id 		uid_t 		not null,
+    slice_date 		date_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
     placement_ids 	uids_t 		null,
     row_no 		int32_t 	null, -- ordering
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, prod_id)
+    primary key (db_id, slice_date, account_id, prod_id)
 );
 
 #ifdef PGSQL

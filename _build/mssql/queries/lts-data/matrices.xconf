@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<matrices templ="%account_id%;%prod_id%;%placement_ids%;%row_no%;">
+<matrices templ="%slice_date%;%account_id%;%prod_id%;%placement_ids%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
+<check_exist>
   <![CDATA[
-delete from matrices
-    where db_id = '%ErpCode%'
+select count(*) exist from matrices
+    where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
   ]]>
-</begin>
+</check_exist>
+<update>
+  <![CDATA[
+update matrices set placement_ids=dbo.uids_in('%placement_ids%'), row_no=dbo.int32_in('%row_no%')
+    where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
+  ]]>
+</update>
 <insert>
   <![CDATA[
-insert into matrices (db_id, account_id, prod_id, placement_ids, row_no) 
-    values ('%ErpCode%', '%account_id%', '%prod_id%', dbo.uids_in('%placement_ids%'), dbo.int32_in('%row_no%'))
+insert into matrices (db_id, slice_date, account_id, prod_id, placement_ids, row_no)
+    values ('%ErpCode%', '%slice_date%', '%account_id%', '%prod_id%', dbo.uids_in('%placement_ids%'), dbo.int32_in('%row_no%'))
   ]]>
 </insert>
 <end>

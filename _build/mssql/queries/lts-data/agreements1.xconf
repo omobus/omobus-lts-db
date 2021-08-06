@@ -1,38 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<agreements1 templ="%account_id%;%placement_id%;%posm_id%;%b_date%;%e_date%;%strict%;%cookie%;">
+<agreements1 templ="%slice_date%;%account_id%;%placement_id%;%posm_id%;%strict%;%cookie%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
+<check_exist>
   <![CDATA[
-create table dbo.[#%uid%_agreements1] (
-    account_id		varchar(48)	not null,
-    placement_id 	varchar(48) 	not null,
-    posm_id 		varchar(48) 	not null,
-    b_date 		varchar(10) 	not null,
-    e_date 		varchar(10) 	not null,
-    strict 		smallint 	not null,
-    cookie 		varchar(48) 	null
-)
+select count(*) exist from agreements1
+    where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and placement_id = '%placement_id%' and posm_id = '%posm_id%'
   ]]>
-</begin>
+</check_exist>
+<update>
+  <![CDATA[
+update agreements1 set "strict"=0%strict%, cookie=dbo.uid_in('%cookie%')
+    where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and placement_id = '%placement_id%' and posm_id = '%posm_id%'
+  ]]>
+</update>
 <insert>
   <![CDATA[
-insert into dbo.[#%uid%_agreements1] (account_id, placement_id, posm_id, b_date, e_date, "strict", cookie)
-    values ('%account_id%', '%placement_id%', '%posm_id%', '%b_date%', '%e_date%', 0%strict%, dbo.uid_in('%cookie%'))
+insert into agreements1 (db_id, slice_date, account_id, placement_id, posm_id, "strict", cookie)
+    values ('%ErpCode%', '%slice_date%', '%account_id%', '%placement_id%', '%posm_id%', 0%strict%, dbo.uid_in('%cookie%'))
   ]]>
 </insert>
 <end>
   <![CDATA[
-delete from agreements1
-    where db_id = '%ErpCode%' and b_date >= (select min(b_date) from dbo.[#%uid%_agreements1])
-insert into agreements1 (db_id, account_id, placement_id, posm_id, b_date, e_date, "strict", cookie)
-    select '%ErpCode%', account_id, placement_id, posm_id, b_date, e_date, "strict", cookie from dbo.[#%uid%_agreements1]
-drop table dbo.[#%uid%_agreements1]
-
 exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>

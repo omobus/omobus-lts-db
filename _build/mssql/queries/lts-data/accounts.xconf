@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<accounts templ="%account_id%;%pid%;%code%;%ftype%;%descr%;%address%;%region_id%;%city_id%;%rc_id%;%chan_id%;%poten_id%;%cash_register%;%latitude%;%longitude%;%attr_ids%;%locked%;%approved%;%props%;">
+<accounts templ="%account_id%;%pid%;%code%;%ftype%;%descr%;%address%;%region_id%;%city_id%;%rc_id%;%chan_id%;%poten_id%;%cash_register%;%latitude%;%longitude%;%phone%;%attr_ids%;%locked%;%approved%;%props%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update accounts set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from accounts 
@@ -20,14 +14,14 @@ select count(*) exist from accounts
 </check_exist>
 <update>
   <![CDATA[
-update accounts set pid=dbo.uid_in('%pid%'), code='%code%', ftype=0%ftype%, descr='%descr%', address='%address%', region_id=dbo.uid_in('%region_id%'), city_id=dbo.uid_in('%city_id%'), rc_id=dbo.uid_in('%rc_id%'), chan_id=dbo.uid_in('%chan_id%'), poten_id=dbo.uid_in('%poten_id%'), cash_register=dbo.int32_in('%cash_register%'), latitude=dbo.gps_in('%latitude%'), longitude=dbo.gps_in('%longitude%'), attr_ids=dbo.uids_in('%attr_ids%'), locked=0%locked%, approved=0%approved%, props=dbo.hstore_in('%props%'), hidden=0
+update accounts set pid=dbo.uid_in('%pid%'), code='%code%', ftype=0%ftype%, descr='%descr%', address='%address%', region_id=dbo.uid_in('%region_id%'), city_id=dbo.uid_in('%city_id%'), rc_id=dbo.uid_in('%rc_id%'), chan_id=dbo.uid_in('%chan_id%'), poten_id=dbo.uid_in('%poten_id%'), cash_register=dbo.int32_in('%cash_register%'), latitude=dbo.gps_in('%latitude%'), longitude=dbo.gps_in('%longitude%'), phone='%phone%', attr_ids=dbo.uids_in('%attr_ids%'), locked=0%locked%, approved=0%approved%, props=dbo.hstore_in('%props%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and account_id = '%account_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into accounts(db_id, pid, account_id, code, ftype, descr, address, region_id, city_id, rc_id, chan_id, poten_id, cash_register, latitude, longitude, attr_ids, locked, approved, props, hidden)
-    values('%ErpCode%', dbo.uid_in('%pid%'), '%account_id%', '%code%', 0%ftype%, '%descr%', '%address%', dbo.uid_in('%region_id%'), dbo.uid_in('%city_id%'), dbo.uid_in('%rc_id%'), dbo.uid_in('%chan_id%'), dbo.uid_in('%poten_id%'), dbo.int32_in('%cash_register%'), dbo.gps_in('%latitude%'), dbo.gps_in('%longitude%'), dbo.uids_in('%attr_ids%'), 0%locked%, 0%approved%, dbo.hstore_in('%props%'), 0)
+insert into accounts(db_id, pid, account_id, code, ftype, descr, address, region_id, city_id, rc_id, chan_id, poten_id, cash_register, latitude, longitude, phone, attr_ids, locked, approved, props, hidden)
+    values('%ErpCode%', dbo.uid_in('%pid%'), '%account_id%', '%code%', 0%ftype%, '%descr%', '%address%', dbo.uid_in('%region_id%'), dbo.uid_in('%city_id%'), dbo.uid_in('%rc_id%'), dbo.uid_in('%chan_id%'), dbo.uid_in('%poten_id%'), dbo.int32_in('%cash_register%'), dbo.gps_in('%latitude%'), dbo.gps_in('%longitude%'), '%phone%', dbo.uids_in('%attr_ids%'), 0%locked%, 0%approved%, dbo.hstore_in('%props%'), 0%hidden%)
   ]]>
 </insert>
 <end>

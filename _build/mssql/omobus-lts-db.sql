@@ -96,6 +96,7 @@ create table accounts (
     cash_register 	int32_t 	null,
     latitude 		gps_t 		null,
     longitude 		gps_t 		null,
+    phone 		phone_t 	null,
     attr_ids 		uids_t 		null,
     locked 		bool_t 		null default 0,
     approved 		bool_t 		null default 0,
@@ -112,6 +113,7 @@ create table activity_types (
     activity_type_id 	uid_t 		not null,
     descr 		descr_t 	not null,
     strict 		bool_t 		not null default 0, /* sets to 1 (true) for direct visits to the accounts */
+    joint 		bool_t 		not null default 0, /* sets to 1 (true) for joint visits to the accounts */
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -143,30 +145,28 @@ create table agencies (
 
 create table agreements1 (
     db_id 		uid_t 		not null,
+    slice_date 		date_t 		not null,
     account_id		uid_t		not null,
     placement_id 	uid_t 		not null,
     posm_id 		uid_t 		not null,
-    b_date 		date_t 		not null,
-    e_date 		date_t 		not null,
     strict 		bool_t 		not null default 1,
     cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, placement_id, posm_id, b_date)
+    primary key (db_id, slice_date, account_id, placement_id, posm_id)
 );
 
 
 create table agreements2 (
     db_id 		uid_t 		not null,
+    slice_date 		date_t 		not null,
     account_id		uid_t		not null,
     prod_id 		uid_t 		not null,
-    b_date 		date_t 		not null,
-    e_date 		date_t 		not null,
     facing 		int32_t 	not null check(facing > 0),
     strict 		bool_t 		not null default 1,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, prod_id, b_date)
+    primary key (db_id, slice_date, account_id, prod_id)
 );
 
 
@@ -327,12 +327,10 @@ create table contacts (
     patronymic 		descr_t 	null,
     job_title_id 	uid_t 		not null,
     loyalty_level_id 	uid_t		null,
-    phone 		phone_t 	null,
     mobile 		phone_t 	null,
     email 		email_t 	null,
     locked 		bool_t 		not null default 0,
     extra_info 		note_t 		null,
-    consent 		uid_t 		null, /* consent to the processing of personal data */
     author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -479,13 +477,14 @@ create table manufacturers (
 
 create table matrices (
     db_id 		uid_t 		not null,
+    slice_date 		date_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
     placement_ids 	uids_t 		null,
     row_no 		int32_t 	null, -- ordering
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
-    primary key (db_id, account_id, prod_id)
+    primary key (db_id, slice_date, account_id, prod_id)
 );
 
 
@@ -981,7 +980,6 @@ create table additions (
     fix_dt		datetime_t 	not null,
     account 		descr_t 	null,
     address 		address_t 	null,
-    legal_address 	address_t 	null,
     number 		code_t 		null,
     addition_type_id 	uid_t 		null,
     note 		note_t 		null,
@@ -1870,6 +1868,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.11' where param_id='db:vstamp';
+update sysparams set param_value='3.5.12' where param_id='db:vstamp';
 
 go

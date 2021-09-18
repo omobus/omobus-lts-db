@@ -737,6 +737,7 @@ create table products (
     novelty 		bool_t 		null,
     promo 		bool_t 		null,
     barcodes 		ean13s_t 	null,
+    units 		int32_t 	not null default 1 check(units > 0),
     country_ids 	countries_t 	null,
     dep_ids 		uids_t 		null,
     row_no 		int32_t 	null, -- ordering
@@ -1084,6 +1085,7 @@ create table dyn_advt (
     qty 		int32_t 	not null check (qty >= 0),
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
@@ -1107,6 +1109,7 @@ create table dyn_audits (
     photos		uids_t		null,
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
@@ -1123,6 +1126,7 @@ create table dyn_checkups (
     exist 		int32_t 	not null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
@@ -1139,6 +1143,7 @@ create table dyn_oos (
     note 		note_t 		null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
@@ -1155,6 +1160,7 @@ create table dyn_presences (
     stock 		int32_t 	not null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
@@ -1172,6 +1178,7 @@ create table dyn_prices (
     rrp 		currency_t 	null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
@@ -1188,6 +1195,7 @@ create table dyn_quests (
     "value" 		varchar(64) 	not null,
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
@@ -1208,6 +1216,7 @@ create table dyn_ratings (
     note 		note_t 		null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
@@ -1226,6 +1235,7 @@ create table dyn_reviews (
     note2 		note_t 		null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
@@ -1248,6 +1258,7 @@ create table dyn_shelfs (
     soa_target 		wf_t 		null check(soa_target between 0.01 and 1.00),
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
@@ -1263,6 +1274,7 @@ create table dyn_stocks (
     stock 		int32_t 	not null,
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
@@ -1868,6 +1880,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.12' where param_id='db:vstamp';
+update sysparams set param_value='3.5.13' where param_id='db:vstamp';
 
 go

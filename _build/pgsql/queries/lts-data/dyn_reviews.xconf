@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dyn_reviews templ="%fix_date%;%employee_id%;%sla%;%assessment%;%note0%;%note1%;%note2%;%fix_dt%;%user_id%;%_isrecentdata%;">
+<dyn_reviews templ="%fix_date%;%employee_id%;%sla%;%assessment%;%note0%;%note1%;%note2%;%fix_dt%;%user_id%;%doc_id%;%_isrecentdata%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from dyn_reviews
 </check_exist>
 <update>
   <![CDATA[
-update dyn_reviews set sla=%sla%, assessment=%assessment%, note0=note_in('%note0%'), note1=note_in('%note1%'), note2=note_in('%note2%'), user_id='%user_id%', fix_dt='%fix_dt%', "_isRecentData"=int32_in('%_isrecentdata%')
+update dyn_reviews set sla=%sla%, assessment=%assessment%, note0=note_in('%note0%'), note1=note_in('%note1%'), note2=note_in('%note2%'), user_id='%user_id%', doc_id='%doc_id%', fix_dt='%fix_dt%', "_isRecentData"=int32_in('%_isrecentdata%')
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and employee_id = '%employee_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into dyn_reviews (db_id, fix_date, employee_id, sla, assessment, note0, note1, note2, fix_dt, user_id, "_isRecentData")
-    values ('%ErpCode%', '%fix_date%', '%employee_id%', %sla%, %assessment%, note_in('%note0%'), note_in('%note1%'), note_in('%note2%'), '%fix_dt%', '%user_id%', int32_in('%_isrecentdata%'))
+insert into dyn_reviews (db_id, fix_date, employee_id, sla, assessment, note0, note1, note2, fix_dt, user_id, doc_id, "_isRecentData")
+    values ('%ErpCode%', '%fix_date%', '%employee_id%', %sla%, %assessment%, note_in('%note0%'), note_in('%note1%'), note_in('%note2%'), '%fix_dt%', '%user_id%', '%doc_id%', int32_in('%_isrecentdata%'))
   ]]>
 </insert>
 <end>

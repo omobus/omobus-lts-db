@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dyn_shelfs templ="%fix_date%;%account_id%;%categ_id%;%brand_id%;%facing%;%assortment%;%sos%;%soa%;%photos%;%sos_target%;%soa_target%;%fix_dt%;%user_id%;%_isrecentdata%;">
+<dyn_shelfs templ="%fix_date%;%account_id%;%categ_id%;%brand_id%;%facing%;%assortment%;%sos%;%soa%;%photos%;%sos_target%;%soa_target%;%fix_dt%;%user_id%;%doc_id%;%_isrecentdata%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from dyn_shelfs
 </check_exist>
 <update>
   <![CDATA[
-update dyn_shelfs set facing=int32_in('%facing%'), assortment=int32_in('%assortment%'), user_id='%user_id%', fix_dt='%fix_dt%', sos_target=wf_in('%sos_target%'), soa_target=wf_in('%soa_target%'), sos=case when '%sos%'='' then null else 0%sos% end, soa=case when '%soa%'='' then null else 0%soa% end, photos=uids_in('%photos%'), "_isRecentData"=int32_in('%_isrecentdata%')
+update dyn_shelfs set facing=int32_in('%facing%'), assortment=int32_in('%assortment%'), user_id='%user_id%', doc_id='%doc_id%', fix_dt='%fix_dt%', sos_target=wf_in('%sos_target%'), soa_target=wf_in('%soa_target%'), sos=case when '%sos%'='' then null else 0%sos% end, soa=case when '%soa%'='' then null else 0%soa% end, photos=uids_in('%photos%'), "_isRecentData"=int32_in('%_isrecentdata%')
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and categ_id = '%categ_id%' and brand_id = '%brand_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into dyn_shelfs (db_id, fix_date, account_id, categ_id, brand_id, facing, assortment, fix_dt, user_id, sos_target, soa_target, sos, soa, photos, "_isRecentData")
-    values ('%ErpCode%', '%fix_date%', '%account_id%', '%categ_id%', '%brand_id%', int32_in('%facing%'), int32_in('%assortment%'), '%fix_dt%', '%user_id%', wf_in('%sos_target%'), wf_in('%soa_target%'), case when '%sos%'='' then null else 0%sos% end, case when '%soa%'='' then null else 0%soa% end, uids_in('%photos%'), int32_in('%_isrecentdata%'))
+insert into dyn_shelfs (db_id, fix_date, account_id, categ_id, brand_id, facing, assortment, sos_target, soa_target, sos, soa, photos, fix_dt, user_id, doc_id, "_isRecentData")
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%categ_id%', '%brand_id%', int32_in('%facing%'), int32_in('%assortment%'), wf_in('%sos_target%'), wf_in('%soa_target%'), case when '%sos%'='' then null else 0%sos% end, case when '%soa%'='' then null else 0%soa% end, uids_in('%photos%'), '%fix_dt%', '%user_id%', '%doc_id%', int32_in('%_isrecentdata%'))
   ]]>
 </insert>
 <end>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dyn_audits templ="%fix_date%;%account_id%;%categ_id%;%audit_criteria_id%;%audit_score_id%;%criteria_wf%;%score_wf%;%score%;%note%;%wf%;%sla%;%photos%;%fix_dt%;%user_id%;%_isrecentdata%;">
+<dyn_audits templ="%fix_date%;%account_id%;%categ_id%;%audit_criteria_id%;%audit_score_id%;%criteria_wf%;%score_wf%;%score%;%note%;%wf%;%sla%;%photos%;%fix_dt%;%user_id%;%doc_id%;%_isrecentdata%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from dyn_audits
 </check_exist>
 <update>
   <![CDATA[
-update dyn_audits set audit_score_id=dbo.uid_in('%audit_score_id%'), criteria_wf=%criteria_wf%, score_wf=dbo.wf_in('%score_wf%'), score=dbo.int32_in('%score%'), note=dbo.note_in('%note%'), user_id='%user_id%', fix_dt='%fix_dt%', photos=dbo.uids_in('%photos%'), "_isRecentData"=dbo.int32_in('%_isrecentdata%')
+update dyn_audits set audit_score_id=dbo.uid_in('%audit_score_id%'), criteria_wf=%criteria_wf%, score_wf=dbo.wf_in('%score_wf%'), score=dbo.int32_in('%score%'), note=dbo.note_in('%note%'), user_id='%user_id%', doc_id='%doc_id%', fix_dt='%fix_dt%', photos=dbo.uids_in('%photos%'), "_isRecentData"=dbo.int32_in('%_isrecentdata%')
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and categ_id = '%categ_id%' and audit_criteria_id = '%audit_criteria_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into dyn_audits (db_id, fix_date, account_id, categ_id, audit_criteria_id, audit_score_id, criteria_wf, score_wf, score, note, wf, sla, photos, fix_dt, user_id, "_isRecentData")
-    values ('%ErpCode%', '%fix_date%', '%account_id%', '%categ_id%', '%audit_criteria_id%', dbo.uid_in('%audit_score_id%'), %criteria_wf%, dbo.wf_in('%score_wf%'), dbo.int32_in('%score%'), dbo.note_in('%note%'), %wf%, %sla%, dbo.uids_in('%photos%'), '%fix_dt%', '%user_id%', dbo.int32_in('%_isrecentdata%'))
+insert into dyn_audits (db_id, fix_date, account_id, categ_id, audit_criteria_id, audit_score_id, criteria_wf, score_wf, score, note, wf, sla, photos, fix_dt, user_id, doc_id, "_isRecentData")
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%categ_id%', '%audit_criteria_id%', dbo.uid_in('%audit_score_id%'), %criteria_wf%, dbo.wf_in('%score_wf%'), dbo.int32_in('%score%'), dbo.note_in('%note%'), %wf%, %sla%, dbo.uids_in('%photos%'), '%fix_dt%', '%user_id%', '%doc_id%', dbo.int32_in('%_isrecentdata%'))
   ]]>
 </insert>
 <end>

@@ -443,6 +443,7 @@ create table contacts (
     surname 		descr_t 	null,
     patronymic 		descr_t 	null,
     job_title_id 	uid_t 		not null,
+    spec_id 		uid_t 		null,
     loyalty_level_id 	uid_t		null,
     mobile 		phone_t 	null,
     email 		email_t 	null,
@@ -1102,6 +1103,20 @@ create table shelf_lifes (
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on shelf_lifes for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table specializations (
+    db_id 		uid_t 		not null,
+    spec_id 		uid_t 		not null,
+    descr 		descr_t 	not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, spec_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on specializations for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table targets (

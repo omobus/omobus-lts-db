@@ -107,6 +107,7 @@
 <xi:include href="../queries/lts-data/retail_chains.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/revocations.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/shelf_lifes.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
+<xi:include href="../queries/lts-data/specializations.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/target_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/targets.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/thumbnails.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />

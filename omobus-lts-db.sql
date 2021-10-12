@@ -1886,6 +1886,9 @@ create table user_activities (
     employee_id 	uid_t 		null,
     extra_info 		note_t 		null,
     docs 		int32_t 	null,
+    zstatus 		varchar(8) 	null check(zstatus in ('accepted','rejected') and zstatus = lower(zstatus)),
+    znote 		note_t 		null,
+    zauthor_id 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key (db_id, user_id, account_id, activity_type_id, w_cookie, a_cookie)

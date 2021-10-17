@@ -1487,8 +1487,9 @@ create table dyn_prices (
     fix_date		date_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
-    price 		currency_t 	not null,
-    promo 		bool_t 		not null,
+    price 		currency_t 	null,
+    promo 		currency_t 	null,
+    discount 		bool_t 		not null,
     rrp 		currency_t 	null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
@@ -1496,7 +1497,8 @@ create table dyn_prices (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
-    primary key(db_id, fix_date, account_id, prod_id)
+    primary key(db_id, fix_date, account_id, prod_id),
+    check(price is not null or promo is not null)
 );
 
 #ifdef PGSQL

@@ -251,6 +251,22 @@ create table agreements2 (
 create trigger trig_updated_ts before update on agreements2 for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
+create table agreements3 (
+    db_id 		uid_t 		not null,
+    slice_date 		date_t 		not null,
+    account_id		uid_t		not null,
+    prod_id 		uid_t 		not null,
+    stock 		int32_t 	not null check(stock > 0),
+    strict 		bool_t 		not null default 1,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, slice_date, account_id, prod_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on agreements3 for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
 create table asp_types (
     db_id 		uid_t 		not null,
     asp_type_id 	uid_t		not null,

@@ -170,6 +170,19 @@ create table agreements2 (
 );
 
 
+create table agreements3 (
+    db_id 		uid_t 		not null,
+    slice_date 		date_t 		not null,
+    account_id		uid_t		not null,
+    prod_id 		uid_t 		not null,
+    stock 		int32_t 	not null check(stock > 0),
+    strict 		bool_t 		not null default 1,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, slice_date, account_id, prod_id)
+);
+
+
 create table asp_types (
     db_id 		uid_t 		not null,
     asp_type_id 	uid_t		not null,
@@ -326,6 +339,7 @@ create table contacts (
     surname 		descr_t 	null,
     patronymic 		descr_t 	null,
     job_title_id 	uid_t 		not null,
+    spec_id 		uid_t 		null,
     loyalty_level_id 	uid_t		null,
     mobile 		phone_t 	null,
     email 		email_t 	null,
@@ -861,6 +875,17 @@ create table shelf_lifes (
 );
 
 
+create table specializations (
+    db_id 		uid_t 		not null,
+    spec_id 		uid_t 		not null,
+    descr 		descr_t 	not null,
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, spec_id)
+);
+
+
 create table targets (
     db_id 		uid_t 		not null,
     target_id 		uid_t 		not null,
@@ -1173,8 +1198,9 @@ create table dyn_prices (
     fix_date		date_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
-    price 		currency_t 	not null,
-    promo 		bool_t 		not null,
+    price 		currency_t 	null,
+    promo 		currency_t 	null,
+    discount 		bool_t 		not null,
     rrp 		currency_t 	null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
@@ -1182,7 +1208,8 @@ create table dyn_prices (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
-    primary key(db_id, fix_date, account_id, prod_id)
+    primary key(db_id, fix_date, account_id, prod_id),
+    check(price is not null or promo is not null)
 );
 
 
@@ -1498,6 +1525,9 @@ create table user_activities (
     employee_id 	uid_t 		null,
     extra_info 		note_t 		null,
     docs 		int32_t 	null,
+    zstatus 		varchar(8) 	null check(zstatus in ('accepted','rejected') and zstatus = lower(zstatus)),
+    znote 		note_t 		null,
+    zauthor_id 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key (db_id, user_id, account_id, activity_type_id, w_cookie, a_cookie)
@@ -1880,6 +1910,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.13' where param_id='db:vstamp';
+update sysparams set param_value='3.5.14' where param_id='db:vstamp';
 
 go

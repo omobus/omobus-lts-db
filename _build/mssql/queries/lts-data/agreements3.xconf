@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<agreements3 templ="%slice_date%;%account_id%;%prod_id%;%stock%;%strict%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from agreements3
+    where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
+  ]]>
+</check_exist>
+<!--
+<update>
+  <![CDATA[
+update agreements3 set stock=0%stock%, "strict"=0%strict%
+    where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
+  ]]>
+</update>
+-->
+<insert>
+  <![CDATA[
+insert into agreements3 (db_id, slice_date, account_id, prod_id, stock, "strict")
+    values ('%ErpCode%', '%slice_date%', '%account_id%', '%prod_id%', 0%stock%, 0%strict%)
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+  ]]>
+</end>
+</agreements3>

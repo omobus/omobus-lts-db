@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dyn_prices templ="%fix_date%;%account_id%;%prod_id%;%price%;%promo%;%rrp%;%fix_dt%;%user_id%;%doc_id%;%_isrecentdata%;">
+<dyn_prices templ="%fix_date%;%account_id%;%prod_id%;%price%;%promo%;%discount%;%rrp%;%fix_dt%;%user_id%;%doc_id%;%_isrecentdata%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from dyn_prices
 </check_exist>
 <update>
   <![CDATA[
-update dyn_prices set price=0%price%, promo=0%promo%, rrp=currency_in('%rrp%'), user_id='%user_id%', doc_id='%doc_id%', fix_dt='%fix_dt%', "_isRecentData"=int32_in('%_isrecentdata%')
+update dyn_prices set price=currency_in('%price%'), promo=currency_in('%promo%'), discount=0%discount%, rrp=currency_in('%rrp%'), user_id='%user_id%', doc_id='%doc_id%', fix_dt='%fix_dt%', "_isRecentData"=int32_in('%_isrecentdata%')
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into dyn_prices (db_id, fix_date, account_id, prod_id, price, promo, rrp, fix_dt, user_id, doc_id, "_isRecentData")
-    values ('%ErpCode%', '%fix_date%', '%account_id%', '%prod_id%', 0%price%, 0%promo%, currency_in('%rrp%'), '%fix_dt%', '%user_id%', '%doc_id%', int32_in('%_isrecentdata%'))
+insert into dyn_prices (db_id, fix_date, account_id, prod_id, price, promo, discount, rrp, fix_dt, user_id, doc_id, "_isRecentData")
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%prod_id%', currency_in('%price%'), currency_in('%promo%'), 0%discount%, currency_in('%rrp%'), '%fix_dt%', '%user_id%', '%doc_id%', int32_in('%_isrecentdata%'))
   ]]>
 </insert>
 <end>

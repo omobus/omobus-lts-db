@@ -156,10 +156,12 @@ create table accounts (
     rc_id 		uid_t		null, 		/* -> retail_chains */
     chan_id 		uid_t 		null,
     poten_id 		uid_t 		null,
-    cash_register 	int32_t 	null,
     latitude 		gps_t 		null,
     longitude 		gps_t 		null,
     phone 		phone_t 	null,
+    workplaces 		int32_t 	null check(workplaces > 0),
+    team 		int32_t 	null check(team > 0),
+    interaction_type_id uid_t 		null,
     attr_ids 		uids_t 		null,
     locked 		bool_t 		null default 0,
     approved 		bool_t 		null default 0,
@@ -584,6 +586,36 @@ create table equipments (
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on equipments for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table influence_levels (
+    db_id 		uid_t 		not null,
+    influence_level_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, influence_level_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on influence_levels for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table interaction_types (
+    db_id 		uid_t 		not null,
+    interaction_type_id uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, interaction_type_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on interaction_types for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table job_titles (
@@ -1282,8 +1314,12 @@ create table additions (
     addition_type_id 	uid_t 		null,
     note 		note_t 		null,
     chan_id 		uid_t 		null,
-    photos 		uids_t 		null,
+    phone 		phone_t 	null,
+    workplaces 		int32_t 	null check(workplaces > 0),
+    team 		int32_t 	null check(team > 0),
+    interaction_type_id uid_t 		null,
     attr_ids 		uids_t 		null,
+    photos 		uids_t 		null,
     account_id 		uid_t 		not null,
     validator_id 	uid_t		null,
     validated 		bool_t 		not null default 0,
@@ -1647,6 +1683,25 @@ create table holidays (
 create trigger trig_updated_ts before update on holidays for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
+create table locations (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    fix_dt 		datetime_t 	not null,
+    user_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
+    latitude 		gps_t 		not null,
+    longitude 		gps_t 		not null,
+    accuracy 		double_t 	not null,
+    dist 		double_t 	null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on locations for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
 create table orders (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1730,6 +1785,28 @@ create table presentations (
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on presentations for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table profiles (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    fix_dt 		datetime_t 	not null,
+    user_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
+    chan_id 		uid_t 		null,
+    poten_id 		uid_t 		null,
+    phone 		phone_t 	null,
+    workplaces 		int32_t 	null check(workplaces > 0),
+    team 		int32_t 	null check(team > 0),
+    interaction_type_id uid_t 		null,
+    attr_ids 		uids_t 		null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on profiles for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table reclamations (
@@ -2339,6 +2416,15 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
+create or replace function phone_in(arg text) returns note_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+
 create or replace function uid_in(arg text) returns uid_t as
 $body$
 begin
@@ -2443,6 +2529,13 @@ end
 go
 
 create function note_in(@arg0 uid_t) returns note_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function phone_in(@arg0 phone_t) returns uid_t
 as
 begin
     return case when @arg0 = '' then null else @arg0 end

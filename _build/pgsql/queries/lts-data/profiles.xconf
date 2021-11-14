@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<profiles templ="%doc_id%;%fix_dt%;%user_id%;%account_id%;%chan_id%;%poten_id%;%phone%;%workplaces%;%team%;%interaction_type_id%;%attr_ids%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from profiles 
+    where db_id = '%ErpCode%' and doc_id = '%doc_id%'
+  ]]>
+</check_exist>
+<insert>
+  <![CDATA[
+insert into profiles (db_id, doc_id, fix_dt, user_id, account_id, chan_id, poten_id, phone, workplaces, team, interaction_type_id, attr_ids) 
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', uid_in('%chan_id%'), uid_in('%poten_id%'), phone_in('%phone%'), int32_in('%workplaces%'), int32_in('%team%'), uid_in('%interaction_type_id%'), uids_in('%attr_ids%'))
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+  ]]>
+</end>
+</profiles>

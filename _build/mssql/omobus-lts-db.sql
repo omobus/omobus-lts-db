@@ -93,10 +93,12 @@ create table accounts (
     rc_id 		uid_t		null, 		/* -> retail_chains */
     chan_id 		uid_t 		null,
     poten_id 		uid_t 		null,
-    cash_register 	int32_t 	null,
     latitude 		gps_t 		null,
     longitude 		gps_t 		null,
     phone 		phone_t 	null,
+    workplaces 		int32_t 	null check(workplaces > 0),
+    team 		int32_t 	null check(team > 0),
+    interaction_type_id uid_t 		null,
     attr_ids 		uids_t 		null,
     locked 		bool_t 		null default 0,
     approved 		bool_t 		null default 0,
@@ -294,6 +296,18 @@ create table cities (
 );
 
 
+create table cohorts (
+    db_id 		uid_t 		not null,
+    cohort_id 		uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, cohort_id)
+);
+
+
 create table comment_types (
     db_id 		uid_t 		not null,
     comment_type_id 	uid_t 		not null,
@@ -340,7 +354,11 @@ create table contacts (
     patronymic 		descr_t 	null,
     job_title_id 	uid_t 		not null,
     spec_id 		uid_t 		null,
+    cohort_id 		uid_t		null,
     loyalty_level_id 	uid_t		null,
+    influence_level_id 	uid_t		null,
+    intensity_level_id 	uid_t		null,
+    start_year 		int32_t 	null,
     mobile 		phone_t 	null,
     email 		email_t 	null,
     locked 		bool_t 		not null default 0,
@@ -439,6 +457,42 @@ create table equipments (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, equipment_id)
+);
+
+
+create table influence_levels (
+    db_id 		uid_t 		not null,
+    influence_level_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, influence_level_id)
+);
+
+
+create table intensity_levels (
+    db_id 		uid_t 		not null,
+    intensity_level_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, intensity_level_id)
+);
+
+
+create table interaction_types (
+    db_id 		uid_t 		not null,
+    interaction_type_id uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, interaction_type_id)
 );
 
 
@@ -1010,8 +1064,12 @@ create table additions (
     addition_type_id 	uid_t 		null,
     note 		note_t 		null,
     chan_id 		uid_t 		null,
-    photos 		uids_t 		null,
+    phone 		phone_t 	null,
+    workplaces 		int32_t 	null check(workplaces > 0),
+    team 		int32_t 	null check(team > 0),
+    interaction_type_id uid_t 		null,
     attr_ids 		uids_t 		null,
+    photos 		uids_t 		null,
     account_id 		uid_t 		not null,
     validator_id 	uid_t		null,
     validated 		bool_t 		not null default 0,
@@ -1321,6 +1379,22 @@ create table holidays (
 );
 
 
+create table locations (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    fix_dt 		datetime_t 	not null,
+    user_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
+    latitude 		gps_t 		not null,
+    longitude 		gps_t 		not null,
+    accuracy 		double_t 	not null,
+    dist 		double_t 	null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+
 create table orders (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1391,6 +1465,25 @@ create table presentations (
     tm_ids 		uids_t 		null,
     doc_note 		note_t 		null,
     photos		uids_t		null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+
+create table profiles (
+    db_id 		uid_t 		not null,
+    doc_id 		uid_t 		not null,
+    fix_dt 		datetime_t 	not null,
+    user_id 		uid_t 		not null,
+    account_id 		uid_t 		not null,
+    chan_id 		uid_t 		null,
+    poten_id 		uid_t 		null,
+    phone 		phone_t 	null,
+    workplaces 		int32_t 	null check(workplaces > 0),
+    team 		int32_t 	null check(team > 0),
+    interaction_type_id uid_t 		null,
+    attr_ids 		uids_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key(db_id, doc_id)
@@ -1865,6 +1958,13 @@ begin
 end
 go
 
+create function phone_in(@arg0 phone_t) returns uid_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
 create function uid_in(@arg0 uid_t) returns uid_t
 as
 begin
@@ -1910,6 +2010,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.14' where param_id='db:vstamp';
+update sysparams set param_value='3.5.15' where param_id='db:vstamp';
 
 go

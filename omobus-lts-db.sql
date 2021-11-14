@@ -407,6 +407,21 @@ create table cities (
 create trigger trig_updated_ts before update on cities for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
+create table cohorts (
+    db_id 		uid_t 		not null,
+    cohort_id 		uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, cohort_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on cohorts for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
 create table comment_types (
     db_id 		uid_t 		not null,
     comment_type_id 	uid_t 		not null,
@@ -462,7 +477,11 @@ create table contacts (
     patronymic 		descr_t 	null,
     job_title_id 	uid_t 		not null,
     spec_id 		uid_t 		null,
+    cohort_id 		uid_t		null,
     loyalty_level_id 	uid_t		null,
+    influence_level_id 	uid_t		null,
+    intensity_level_id 	uid_t		null,
+    start_year 		int32_t 	null,
     mobile 		phone_t 	null,
     email 		email_t 	null,
     locked 		bool_t 		not null default 0,
@@ -601,6 +620,21 @@ create table influence_levels (
 
 #ifdef PGSQL
 create trigger trig_updated_ts before update on influence_levels for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
+create table intensity_levels (
+    db_id 		uid_t 		not null,
+    intensity_level_id 	uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, intensity_level_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on intensity_levels for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
 create table interaction_types (

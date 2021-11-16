@@ -2390,6 +2390,14 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
+create or replace function double_in(arg text) returns double_t as
+$body$
+begin
+    return case when arg = '' then null else arg::double_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
 create or replace function ean13_in(ar text array) returns ean13 array
 as $body$
 declare
@@ -2450,7 +2458,7 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
-create or replace function phone_in(arg text) returns note_t as
+create or replace function phone_in(arg text) returns phone_t as
 $body$
 begin
     return case when arg = '' then null else arg end;
@@ -2527,6 +2535,13 @@ begin
 end
 go
 
+create function double_in(@arg0 varchar(20)) returns double_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
 create function ean13_in(@arg0 varchar(280)) returns varchar(280)
 as
 begin
@@ -2569,7 +2584,7 @@ begin
 end
 go
 
-create function phone_in(@arg0 phone_t) returns uid_t
+create function phone_in(@arg0 phone_t) returns phone_t
 as
 begin
     return case when @arg0 = '' then null else @arg0 end

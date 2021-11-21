@@ -1916,6 +1916,13 @@ begin
 end
 go
 
+create function double_in(@arg0 varchar(20)) returns double_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
 create function ean13_in(@arg0 varchar(280)) returns varchar(280)
 as
 begin
@@ -1958,7 +1965,7 @@ begin
 end
 go
 
-create function phone_in(@arg0 phone_t) returns uid_t
+create function phone_in(@arg0 phone_t) returns phone_t
 as
 begin
     return case when @arg0 = '' then null else @arg0 end
@@ -2010,6 +2017,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.15' where param_id='db:vstamp';
+update sysparams set param_value='3.5.16' where param_id='db:vstamp';
 
 go

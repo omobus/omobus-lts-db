@@ -1956,6 +1956,14 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
+create or replace function double_in(arg text) returns double_t as
+$body$
+begin
+    return case when arg = '' then null else arg::double_t end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
 create or replace function ean13_in(ar text array) returns ean13 array
 as $body$
 declare
@@ -2016,7 +2024,7 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
-create or replace function phone_in(arg text) returns note_t as
+create or replace function phone_in(arg text) returns phone_t as
 $body$
 begin
     return case when arg = '' then null else arg end;
@@ -2074,5 +2082,5 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 
 /* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.15' where param_id='db:vstamp';
+update sysparams set param_value='3.5.16' where param_id='db:vstamp';
 

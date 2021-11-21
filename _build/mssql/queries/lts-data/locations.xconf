@@ -15,7 +15,7 @@ select count(*) exist from locations
 <insert>
   <![CDATA[
 insert into locations (db_id, doc_id, fix_dt, user_id, account_id, latitude, longitude, accuracy, dist) 
-    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', %latitude%, %longitude%, %accuracy%, dbo.int32_in('%dist%'))
+    values ('%ErpCode%', '%doc_id%', '%fix_dt%', '%user_id%', '%account_id%', %latitude%, %longitude%, %accuracy%, dbo.double_in('%dist%'))
   ]]>
 </insert>
 <end>

@@ -1047,10 +1047,28 @@ create table products (
 create trigger trig_updated_ts before update on products for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
+create table quest_items (
+    db_id 		uid_t 		not null,
+    qname_id 		uid_t 		not null,
+    qrow_id 		uid_t 		not null,
+    qitem_id 		uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, qname_id, qrow_id, qitem_id)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on quest_items for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
 create table quest_names (
     db_id 		uid_t 		not null,
     qname_id 		uid_t 		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1068,8 +1086,9 @@ create table quest_rows (
     pid 		uid_t 		null,
     ftype 		bool_t 		not null,
     descr 		descr_t 	not null,
-    qtype 		varchar(7) 	null,
+    qtype 		varchar(10) 	null,
     country_ids 	countries_t 	null,
+    dep_ids 		uids_t 		null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,

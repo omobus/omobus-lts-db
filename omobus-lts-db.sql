@@ -727,6 +727,21 @@ create table matrices (
 create trigger trig_updated_ts before update on matrices for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
+create table mileages (
+    db_id 		uid_t 		not null,
+    user_id 		uid_t 		not null,
+    fix_date 		date_t 		not null,
+    total 		int32_t 	not null,
+    route 		int32_t 	null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, user_id, fix_date)
+);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on mileages for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
 create table my_accounts (
     db_id 		uid_t 		not null,
     user_id 		uid_t 		not null,
@@ -1616,7 +1631,7 @@ create table dyn_quests (
     account_id 		uid_t 		not null,
     qname_id 		uid_t 		not null,
     qrow_id 		uid_t		not null,
-    "value" 		varchar(64) 	not null,
+    "value" 		note_t 		not null,
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -2034,6 +2049,7 @@ create table user_activities (
     employee_id 	uid_t 		null,
     extra_info 		note_t 		null,
     docs 		int32_t 	null,
+    mileage 		int32_t 	null,
     zstatus 		varchar(8) 	null check(zstatus in ('accepted','rejected') and zstatus = lower(zstatus)),
     znote 		note_t 		null,
     zauthor_id 		uid_t 		null,

@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<quest_rows templ="%qname_id%;%qrow_id%;%pid%;%ftype%;%descr%;%qtype%;%country_ids%;%dep_ids%;%row_no%;">
+<quest_rows templ="%qname_id%;%qrow_id%;%pid%;%ftype%;%descr%;%qtype%;%country_ids%;%dep_ids%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update quest_rows set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from quest_rows 
@@ -20,14 +14,14 @@ select count(*) exist from quest_rows
 </check_exist>
 <update>
   <![CDATA[
-update quest_rows set pid=uids_in('%pid%'), ftype=0%ftype%, descr='%descr%', qtype='%qtype%', country_ids=uids_in('%country_ids%'), dep_ids=uids_in('%dep_ids%'), row_no=int32_in('%row_no%'), hidden=0
+update quest_rows set pid=uids_in('%pid%'), ftype=0%ftype%, descr='%descr%', qtype='%qtype%', country_ids=uids_in('%country_ids%'), dep_ids=uids_in('%dep_ids%'), row_no=int32_in('%row_no%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and qname_id='%qname_id%' and qrow_id = '%qrow_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into quest_rows (db_id, qname_id, qrow_id, pid, ftype, descr, qtype, country_ids, dep_ids, row_no, hidden) 
-    values ('%ErpCode%', '%qname_id%', '%qrow_id%', uids_in('%pid%'), 0%ftype%, '%descr%', '%qtype%', uids_in('%country_ids%'), uids_in('%dep_ids%'), int32_in('%row_no%'), 0)
+    values ('%ErpCode%', '%qname_id%', '%qrow_id%', uids_in('%pid%'), 0%ftype%, '%descr%', '%qtype%', uids_in('%country_ids%'), uids_in('%dep_ids%'), int32_in('%row_no%'), 0%hidden%)
   ]]>
 </insert>
 <end>

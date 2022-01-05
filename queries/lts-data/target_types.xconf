@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<target_types templ="%target_type_id%;%descr%;%row_no%;">
+<target_types templ="%target_type_id%;%descr%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update target_types set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from target_types 
@@ -20,14 +14,14 @@ select count(*) exist from target_types
 </check_exist>
 <update>
   <![CDATA[
-update target_types set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0 
+update target_types set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and target_type_id = '%target_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into target_types (db_id, target_type_id, descr, row_no, hidden) 
-    values ('%ErpCode%', '%target_type_id%', '%descr%', int32_in('%row_no%'), 0)
+    values ('%ErpCode%', '%target_type_id%', '%descr%', int32_in('%row_no%'), 0%hidden%)
   ]]>
 </insert>
 <end>

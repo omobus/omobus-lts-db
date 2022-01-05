@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<asp_types templ="%asp_type_id%;%descr%;%row_no%;%props%;">
+<asp_types templ="%asp_type_id%;%descr%;%row_no%;%props%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update asp_types set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from asp_types 
@@ -20,14 +14,14 @@ select count(*) exist from asp_types
 </check_exist>
 <update>
   <![CDATA[
-update asp_types set descr='%descr%', row_no=int32_in('%row_no%'), props=hstore_in('%props%'), hidden=0
+update asp_types set descr='%descr%', row_no=int32_in('%row_no%'), props=hstore_in('%props%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and asp_type_id = '%asp_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into asp_types (db_id, asp_type_id, descr, row_no, props, hidden) 
-    values ('%ErpCode%', '%asp_type_id%', '%descr%', int32_in('%row_no%'), hstore_in('%props%'), 0)
+    values ('%ErpCode%', '%asp_type_id%', '%descr%', int32_in('%row_no%'), hstore_in('%props%'), 0%hidden%)
   ]]>
 </insert>
 <end>

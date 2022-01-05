@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<comment_types templ="%comment_type_id%;%descr%;">
+<comment_types templ="%comment_type_id%;%descr%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update comment_types set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from comment_types 
@@ -20,14 +14,14 @@ select count(*) exist from comment_types
 </check_exist>
 <update>
   <![CDATA[
-update comment_types set descr='%descr%', hidden=0
+update comment_types set descr='%descr%', hidden=0%hidden%
     where db_id = '%ErpCode%' and comment_type_id = '%comment_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into comment_types (db_id, comment_type_id, descr, hidden) 
-    values ('%ErpCode%', '%comment_type_id%', '%descr%', 0)
+    values ('%ErpCode%', '%comment_type_id%', '%descr%', 0%hidden%)
   ]]>
 </insert>
 <end>

@@ -1,4 +1,4 @@
-/* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
+/* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
 #ifdef PGSQL
 create extension hstore;

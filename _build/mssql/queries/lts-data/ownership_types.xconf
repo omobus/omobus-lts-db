@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ownership_types templ="%ownership_type_id%;%descr%;%row_no%;">
+<ownership_types templ="%ownership_type_id%;%descr%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update ownership_types set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from ownership_types 
@@ -20,14 +14,14 @@ select count(*) exist from ownership_types
 </check_exist>
 <update>
   <![CDATA[
-update ownership_types set descr='%descr%', row_no=dbo.int32_in('%row_no%'), hidden=0
+update ownership_types set descr='%descr%', row_no=dbo.int32_in('%row_no%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and ownership_type_id = '%ownership_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into ownership_types (db_id, ownership_type_id, descr, row_no, hidden) 
-    values ('%ErpCode%', '%ownership_type_id%', '%descr%', dbo.int32_in('%row_no%'), 0)
+    values ('%ErpCode%', '%ownership_type_id%', '%descr%', dbo.int32_in('%row_no%'), 0%hidden%)
   ]]>
 </insert>
 <end>

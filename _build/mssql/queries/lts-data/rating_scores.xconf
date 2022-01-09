@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rating_scores templ="%rating_score_id%;%descr%;%score%;%row_no%;">
+<rating_scores templ="%rating_score_id%;%descr%;%score%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update rating_scores set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from rating_scores 
@@ -20,14 +14,14 @@ select count(*) exist from rating_scores
 </check_exist>
 <update>
   <![CDATA[
-update rating_scores set descr='%descr%', score=%score%, row_no=dbo.int32_in('%row_no%'), hidden=0
+update rating_scores set descr='%descr%', score=%score%, row_no=dbo.int32_in('%row_no%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and rating_score_id = '%rating_score_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into rating_scores (db_id, rating_score_id, descr, score, row_no, hidden) 
-    values ('%ErpCode%', '%rating_score_id%', '%descr%', %score%, dbo.int32_in('%row_no%'), 0)
+    values ('%ErpCode%', '%rating_score_id%', '%descr%', %score%, dbo.int32_in('%row_no%'), 0%hidden%)
   ]]>
 </insert>
 <end>

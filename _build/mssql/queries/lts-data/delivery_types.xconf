@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<delivery_types templ="%delivery_type_id%;%descr%;%row_no%;">
+<delivery_types templ="%delivery_type_id%;%descr%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update delivery_types set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from delivery_types 
@@ -20,14 +14,14 @@ select count(*) exist from delivery_types
 </check_exist>
 <update>
   <![CDATA[
-update delivery_types set descr='%descr%', row_no=dbo.int32_in('%row_no%'), hidden=0
+update delivery_types set descr='%descr%', row_no=dbo.int32_in('%row_no%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and delivery_type_id = '%delivery_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into delivery_types (db_id, delivery_type_id, descr, row_no, hidden) 
-    values ('%ErpCode%', '%delivery_type_id%', '%descr%', dbo.int32_in('%row_no%'), 0)
+    values ('%ErpCode%', '%delivery_type_id%', '%descr%', dbo.int32_in('%row_no%'), 0%hidden%)
   ]]>
 </insert>
 <end>

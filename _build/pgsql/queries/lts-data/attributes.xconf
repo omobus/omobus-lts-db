@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<attributes templ="%attr_id%;%descr%;%row_no%;">
+<attributes templ="%attr_id%;%descr%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update attributes set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from attributes
@@ -20,14 +14,14 @@ select count(*) exist from attributes
 </check_exist>
 <update>
   <![CDATA[
-update attributes set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
+update attributes set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and attr_id = '%attr_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into attributes (db_id, attr_id, descr, row_no)
-    values ('%ErpCode%', '%attr_id%', '%descr%', int32_in('%row_no%'))
+insert into attributes (db_id, attr_id, descr, row_no, hidden)
+    values ('%ErpCode%', '%attr_id%', '%descr%', int32_in('%row_no%'), 0%hidden%)
   ]]>
 </insert>
 <end>

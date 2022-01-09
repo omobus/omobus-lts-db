@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<audit_criterias templ="%audit_criteria_id%;%descr%;%row_no%;">
+<audit_criterias templ="%audit_criteria_id%;%descr%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update audit_criterias set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from audit_criterias 
@@ -20,14 +14,14 @@ select count(*) exist from audit_criterias
 </check_exist>
 <update>
   <![CDATA[
-update audit_criterias set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
+update audit_criterias set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and audit_criteria_id = '%audit_criteria_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into audit_criterias (db_id, audit_criteria_id, descr, row_no, hidden) 
-    values ('%ErpCode%', '%audit_criteria_id%', '%descr%', int32_in('%row_no%'), 0)
+    values ('%ErpCode%', '%audit_criteria_id%', '%descr%', int32_in('%row_no%'), 0%hidden%)
   ]]>
 </insert>
 <end>

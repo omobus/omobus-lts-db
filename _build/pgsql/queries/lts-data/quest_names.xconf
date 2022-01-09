@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<quest_names templ="%qname_id%;%descr%;">
+<quest_names templ="%qname_id%;%descr%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update quest_names set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from quest_names 
@@ -20,14 +14,14 @@ select count(*) exist from quest_names
 </check_exist>
 <update>
   <![CDATA[
-update quest_names set descr='%descr%', hidden=0
+update quest_names set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and qname_id = '%qname_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into quest_names (db_id, qname_id, descr, hidden) 
-    values ('%ErpCode%', '%qname_id%', '%descr%', 0)
+insert into quest_names (db_id, qname_id, descr, row_no, hidden) 
+    values ('%ErpCode%', '%qname_id%', '%descr%', int32_in('%row_no%'), 0%hidden%)
   ]]>
 </insert>
 <end>

@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<unsched_types templ="%unsched_type_id%;%descr%;%row_no%;">
+<unsched_types templ="%unsched_type_id%;%descr%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update unsched_types set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from unsched_types 
@@ -20,14 +14,14 @@ select count(*) exist from unsched_types
 </check_exist>
 <update>
   <![CDATA[
-update unsched_types set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0
+update unsched_types set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and unsched_type_id = '%unsched_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into unsched_types (db_id, unsched_type_id, descr, row_no, hidden) 
-    values ('%ErpCode%', '%unsched_type_id%', '%descr%', int32_in('%row_no%'), 0)
+    values ('%ErpCode%', '%unsched_type_id%', '%descr%', int32_in('%row_no%'), 0%hidden%)
   ]]>
 </insert>
 <end>

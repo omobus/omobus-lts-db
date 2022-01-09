@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<regions templ="%region_id%;%descr%;%country_id%;">
+<regions templ="%region_id%;%descr%;%country_id%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update regions set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from regions 
@@ -20,14 +14,14 @@ select count(*) exist from regions
 </check_exist>
 <update>
   <![CDATA[
-update regions set descr='%descr%', country_id='%country_id%', hidden=0
+update regions set descr='%descr%', country_id='%country_id%', hidden=0%hidden%
     where db_id = '%ErpCode%' and region_id = '%region_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into regions (db_id, region_id, descr, country_id, hidden) 
-    values ('%ErpCode%', '%region_id%', '%descr%', '%country_id%', 0)
+    values ('%ErpCode%', '%region_id%', '%descr%', '%country_id%', 0%hidden%)
   ]]>
 </insert>
 <end>

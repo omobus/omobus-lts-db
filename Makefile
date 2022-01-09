@@ -1,8 +1,8 @@
-# Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file.
+# Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file.
 
 PACKAGE_NAME 	= omobus-lts-db
-PACKAGE_VERSION = 3.5.16
-COPYRIGHT 	= Copyright (c) 2006 - 2021 ak obs, ltd. <info@omobus.net>
+PACKAGE_VERSION = 3.5.17
+COPYRIGHT 	= Copyright (c) 2006 - 2022 ak obs, ltd. <info@omobus.net>
 SUPPORT 	= Support and bug reports: <support@omobus.net>
 AUTHOR		= Author: Igor Artemov <i_artemov@ak-obs.ru>
 BUGREPORT	= support@omobus.net

@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<payment_methods templ="%payment_method_id%;%descr%;%encashment%;%row_no%;">
+<payment_methods templ="%payment_method_id%;%descr%;%encashment%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update payment_methods set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from payment_methods 
@@ -20,14 +14,14 @@ select count(*) exist from payment_methods
 </check_exist>
 <update>
   <![CDATA[
-update payment_methods set descr='%descr%', encashment=bool_in('%encashment%'), row_no=int32_in('%row_no%'), hidden=0 
+update payment_methods set descr='%descr%', encashment=bool_in('%encashment%'), row_no=int32_in('%row_no%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and payment_method_id = '%payment_method_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into payment_methods (db_id, payment_method_id, descr, encashment, row_no, hidden) 
-    values ('%ErpCode%', '%payment_method_id%', '%descr%', bool_in('%encashment%'), int32_in('%row_no%'), 0)
+    values ('%ErpCode%', '%payment_method_id%', '%descr%', bool_in('%encashment%'), int32_in('%row_no%'), 0%hidden%)
   ]]>
 </insert>
 <end>

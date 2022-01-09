@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<packs templ="%pack_id%;%prod_id%;%descr%;%pack%;%weight%;%volume%;%precision%;">
+<packs templ="%pack_id%;%prod_id%;%descr%;%pack%;%weight%;%volume%;%precision%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update packs set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from packs 
@@ -20,14 +14,14 @@ select count(*) exist from packs
 </check_exist>
 <update>
   <![CDATA[
-update packs set descr='%descr%', pack=%pack%, weight=0%weight%, volume=0%volume%, "precision"=0%precision%, hidden=0
+update packs set descr='%descr%', pack=%pack%, weight=0%weight%, volume=0%volume%, "precision"=0%precision%, hidden=0%hidden%
     where db_id = '%ErpCode%' and pack_id = '%pack_id%' and prod_id = '%prod_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into packs (db_id, pack_id, prod_id, descr, pack, weight, volume, "precision", hidden) 
-    values ('%ErpCode%', '%pack_id%', '%prod_id%', '%descr%', 0%pack%, 0%weight%, 0%volume%, 0%precision%, 0)
+    values ('%ErpCode%', '%pack_id%', '%prod_id%', '%descr%', 0%pack%, 0%weight%, 0%volume%, 0%precision%, 0%hidden%)
   ]]>
 </insert>
 <end>

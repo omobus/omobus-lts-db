@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mileages templ="%user_id%;%fix_date%;%total%;%route%;">
+<verification>
+  <![CDATA[
+select count(*) from data_stream
+    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+  ]]>
+</verification>
+<check_exist>
+  <![CDATA[
+select count(*) exist from mileages 
+    where db_id = '%ErpCode%' and user_id = '%user_id%' and fix_date = '%fix_date%'
+  ]]>
+</check_exist>
+<update>
+  <![CDATA[
+update mileages set total=int32_in('%total%'), route=int32_in('%route%')
+    where db_id = '%ErpCode%' and user_id = '%user_id%' and fix_date = '%fix_date%'
+  ]]>
+</update>
+<insert>
+  <![CDATA[
+insert into mileages (db_id, user_id, fix_date, total, route)
+    values ('%ErpCode%', '%user_id%', '%fix_date%', int32_in('%total%'), int32_in('%route%'))
+  ]]>
+</insert>
+<end>
+  <![CDATA[
+select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+  ]]>
+</end>
+</mileages>

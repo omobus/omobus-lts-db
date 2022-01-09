@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<specializations templ="%spec_id%;%descr%;">
+<specializations templ="%spec_id%;%descr%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
     where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
   ]]>
 </verification>
-<begin>
-  <![CDATA[
-update specializations set hidden=1
-    where db_id = '%ErpCode%' and hidden = 0
-  ]]>
-</begin>
 <check_exist>
   <![CDATA[
 select count(*) exist from specializations 
@@ -20,14 +14,14 @@ select count(*) exist from specializations
 </check_exist>
 <update>
   <![CDATA[
-update specializations set descr='%descr%', hidden=0
+update specializations set descr='%descr%', hidden=0%hidden%
     where db_id = '%ErpCode%' and spec_id = '%spec_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into specializations (db_id, spec_id, descr, hidden) 
-    values ('%ErpCode%', '%spec_id%', '%descr%', 0)
+    values ('%ErpCode%', '%spec_id%', '%descr%', 0%hidden%)
   ]]>
 </insert>
 <end>

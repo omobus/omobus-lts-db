@@ -1,4 +1,4 @@
-/* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
+/* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
 create extension hstore;
 create extension isn;
@@ -576,6 +576,19 @@ create table matrices (
 
 create trigger trig_updated_ts before update on matrices for each row execute procedure tf_updated_ts();
 
+create table mileages (
+    db_id 		uid_t 		not null,
+    user_id 		uid_t 		not null,
+    fix_date 		date_t 		not null,
+    total 		int32_t 	not null,
+    route 		int32_t 	null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key (db_id, user_id, fix_date)
+);
+
+create trigger trig_updated_ts before update on mileages for each row execute procedure tf_updated_ts();
+
 create table my_accounts (
     db_id 		uid_t 		not null,
     user_id 		uid_t 		not null,
@@ -856,10 +869,26 @@ create table products (
 
 create trigger trig_updated_ts before update on products for each row execute procedure tf_updated_ts();
 
+create table quest_items (
+    db_id 		uid_t 		not null,
+    qname_id 		uid_t 		not null,
+    qrow_id 		uid_t 		not null,
+    qitem_id 		uid_t 		not null,
+    descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
+    hidden 		bool_t 		not null default 0,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts 		ts_auto_t 	not null,
+    primary key(db_id, qname_id, qrow_id, qitem_id)
+);
+
+create trigger trig_updated_ts before update on quest_items for each row execute procedure tf_updated_ts();
+
 create table quest_names (
     db_id 		uid_t 		not null,
     qname_id 		uid_t 		not null,
     descr 		descr_t 	not null,
+    row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -875,8 +904,9 @@ create table quest_rows (
     pid 		uid_t 		null,
     ftype 		bool_t 		not null,
     descr 		descr_t 	not null,
-    qtype 		varchar(7) 	null,
+    qtype 		varchar(10) 	null,
     country_ids 	countries_t 	null,
+    dep_ids 		uids_t 		null,
     row_no 		int32_t 	null, -- ordering
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -1345,7 +1375,7 @@ create table dyn_quests (
     account_id 		uid_t 		not null,
     qname_id 		uid_t 		not null,
     qrow_id 		uid_t		not null,
-    "value" 		varchar(64) 	not null,
+    "value" 		note_t 		not null,
     fix_dt 		datetime_t 	not null,
     user_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1711,6 +1741,7 @@ create table user_activities (
     employee_id 	uid_t 		null,
     extra_info 		note_t 		null,
     docs 		int32_t 	null,
+    mileage 		int32_t 	null,
     zstatus 		varchar(8) 	null check(zstatus in ('accepted','rejected') and zstatus = lower(zstatus)),
     znote 		note_t 		null,
     zauthor_id 		uid_t 		null,
@@ -2080,7 +2111,7 @@ insert into sysparams(param_id, param_value, descr) values('db:created_ts', curr
 insert into sysparams(param_id, param_value, descr) values('db:id', 'LTS', 'Database unique ID.');
 insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Database version number.');
 
-/* Copyright (c) 2006 - 2021 omobus-lts-db authors, see the included COPYRIGHT file. */
+/* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.16' where param_id='db:vstamp';
+update sysparams set param_value='3.5.17' where param_id='db:vstamp';
 

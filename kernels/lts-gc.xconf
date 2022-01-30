@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kernel module="kern_tasks">
+<gc ontimeout="no" onsemaphore="yes">
+  <![CDATA[
+do $$
+declare
+    keep_alive int;
+    gc_date date_t;
+    f int;
+begin
+    select param_value::int from sysparams where param_id='gc:keep_alive'
+	into keep_alive;
+    raise notice 'GC: keep_alive = % years.', keep_alive;
+
+    if keep_alive is null then
+	raise notice 'GC: [gc:keep_alive] parameter does not exist';
+	raise exception 'GC not allowed !!!';
+    elsif keep_alive < 3 then
+	keep_alive := 3;
+	raise notice 'GC: keep_alive value is to small, new value sets to % years.', keep_alive;
+	raise notice 'GC: keep_alive = % years.', keep_alive;
+    end if;
+
+    gc_date := format('%s-01-01', (extract(year from current_timestamp) - keep_alive)::text);
+    raise notice 'GC: cleanups data before %.', gc_date;
+
+    /* Calculates deleted photos: */
+    create temp table ".gcPhotos" as 
+	select unnest(photos) photo from additions where left(fix_dt,10) < gc_date
+	    union
+	select photo from comments where left(fix_dt,10) < gc_date
+	    union
+	select unnest(photos) photo from confirmations where left(fix_dt,10) < gc_date
+	    union
+	select photo from deletions where left(fix_dt,10) < gc_date
+	    union
+	select unnest(photos) photo from dyn_audits where left(fix_dt,10) < gc_date
+	    union
+	select unnest(photos) photo from dyn_shelfs where left(fix_dt,10) < gc_date
+	    union
+	select photo from photos where left(fix_dt,10) < gc_date
+	    union
+	select unnest(photos) photo from presentations where left(fix_dt,10) < gc_date
+	    union
+	select image from targets where b_date < gc_date
+	    union
+	select unnest(photos) photo from trainings where left(fix_dt,10) < gc_date
+	;
+    select count(*) from ".gcPhotos"
+	into f;
+    raise notice 'GC: % photo(-s) are scheduled to be deleted.', f;
+
+    delete from blob_stream where blob_id in (
+	select photo from thumbnails where updated_ts::date_t < gc_date or ref_id in (select photo from ".gcPhotos")
+	    union
+	select thumb from thumbnails where updated_ts::date_t < gc_date or ref_id in (select photo from ".gcPhotos")
+    );
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [blob_stream] % row(-s) deleted.', f;
+    end if;
+
+    delete from thumbnails where updated_ts::date_t < gc_date or ref_id in (select photo from ".gcPhotos");
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [thumbnails] % row(-s) deleted.', f;
+    end if;
+
+    delete from data_stream where updated_ts::date_t < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [data_stream] % row(-s) deleted.', f;
+    end if;
+
+    delete from additions where left(fix_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [additions] % row(-s) deleted.', f;
+    end if;
+
+    delete from agreements1 where slice_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [agreements1] % row(-s) deleted.', f;
+    end if;
+
+    delete from agreements2 where slice_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [agreements2] % row(-s) deleted.', f;
+    end if;
+
+    delete from agreements3 where slice_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [agreements3] % row(-s) deleted.', f;
+    end if;
+
+    delete from "comments" where left(fix_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [comments] % row(-s) deleted.', f;
+    end if;
+
+    delete from confirmations where left(fix_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [confirmations] % row(-s) deleted.', f;
+    end if;
+
+    delete from deletions where left(fix_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [deletions] % row(-s) deleted.', f;
+    end if;
+
+    delete from discards where left(fix_dt,10) < gc_date and route_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [discards] % row(-s) deleted.', f;
+    end if;
+
+    delete from dyn_advt where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [dyn_advt] % row(-s) deleted.', f;
+    end if;
+
+    delete from dyn_audits where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [dyn_audits] % row(-s) deleted.', f;
+    end if;
+
+    delete from dyn_checkups where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [dyn_checkups] % row(-s) deleted.', f;
+    end if;
+
+    delete from dyn_oos where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [dyn_oos] % row(-s) deleted.', f;
+    end if;
+
+    delete from dyn_presences where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [dyn_presences] % row(-s) deleted.', f;
+    end if;
+
+    delete from dyn_prices where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [dyn_prices] % row(-s) deleted.', f;
+    end if;
+
+    delete from dyn_quests where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [dyn_quests] % row(-s) deleted.', f;
+    end if;
+
+    delete from dyn_ratings where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [dyn_ratings] % row(-s) deleted.', f;
+    end if;
+
+    delete from dyn_reviews where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [dyn_reviews] % row(-s) deleted.', f;
+    end if;
+
+    delete from dyn_shelfs where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [dyn_shelfs] % row(-s) deleted.', f;
+    end if;
+
+    delete from dyn_stocks where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [dyn_stocks] % row(-s) deleted.', f;
+    end if;
+
+    delete from holidays where h_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [holidays] % row(-s) deleted.', f;
+    end if;
+
+    delete from matrices where slice_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [matrices] % row(-s) deleted.', f;
+    end if;
+
+    delete from my_routes where p_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [my_routes] % row(-s) deleted.', f;
+    end if;
+
+    delete from orders where left(fix_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [orders] % row(-s) deleted.', f;
+    end if;
+
+    delete from photos where left(fix_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [photos] % row(-s) deleted.', f;
+    end if;
+
+    delete from presentations where left(fix_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [presentations] % row(-s) deleted.', f;
+    end if;
+
+    delete from priorities where b_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [priorities] % row(-s) deleted.', f;
+    end if;
+
+    delete from reclamations where left(fix_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [reclamations] % row(-s) deleted.', f;
+    end if;
+
+    delete from remarks where updated_ts::date_t < gc_date and doc_id not in (select doc_id from user_documents);
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [remarks] % row(-s) deleted.', f;
+    end if;
+
+    delete from revocations where updated_ts::date_t < gc_date and doc_id not in (select doc_id from user_documents);
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [revocations] % row(-s) deleted.', f;
+    end if;
+
+    delete from targets where b_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [targets] % row(-s) deleted.', f;
+    end if;
+
+    delete from trainings where left(fix_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [trainings] % row(-s) deleted.', f;
+    end if;
+
+    delete from unsched where left(fix_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [unsched] % row(-s) deleted.', f;
+    end if;
+
+    delete from user_activities where fix_date < gc_date and left(e_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [user_activities] % row(-s) deleted.', f;
+    end if;
+
+    delete from user_documents where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [user_documents] % row(-s) deleted.', f;
+    end if;
+
+    delete from user_locations where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [user_locations] % row(-s) deleted.', f;
+    end if;
+
+    delete from user_reports where fix_date < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [user_reports] % row(-s) deleted.', f;
+    end if;
+
+    delete from user_works where fix_date < gc_date and left(e_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [user_works] % row(-s) deleted.', f;
+    end if;
+
+    delete from wishes where left(fix_dt,10) < gc_date;
+    GET DIAGNOSTICS f = ROW_COUNT;
+    if f > 0 then
+	raise notice 'GC: [wishes] % row(-s) deleted.', f;
+    end if;
+
+    raise notice 'deleted rows before %.', gc_date;
+end;
+$$;
+  ]]>
+</gc>
+</kernel>

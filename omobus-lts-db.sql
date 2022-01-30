@@ -2672,6 +2672,77 @@ insert into sysparams(param_id, param_value, descr) values('db:created_ts', curr
 insert into sysparams(param_id, param_value, descr) values('db:id', 'LTS', 'Database unique ID.');
 insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Database version number.');
 
+#ifdef PGSQL
+create or replace function orphanLO() returns setof blob_t
+as $body$
+declare
+    b blob_t;
+    schem name;
+    rel name;
+    attr name;
+    categ char;
+begin
+    /*
+     * Don't get fooled by any non-system catalogs
+     */
+--    set search_path = pg_catalog;
+
+    /*
+     * First we create and populate the LO temp table
+     */
+    create temp table  ".vacuumLO" as select oid as lo from pg_largeobject_metadata;
+
+    /*
+     * Analyze the temp table so that planner will generate decent plans for
+     * the DELETEs below.
+     */
+    analyze  ".vacuumLO";
+
+    /*
+     * Now find any candidate tables that have columns of type oid.
+     *
+     * NOTE: we ignore system tables and temp tables by the expedient of
+     * rejecting tables in schemas named 'pg_*'.  In particular, the temp
+     * table formed above is ignored, and pg_largeobject will be too. If
+     * either of these were scanned, obviously we'd end up with nothing to
+     * delete...
+     *
+     * NOTE: the system oid column is ignored, as it has attnum < 1. This
+     * shouldn't matter for correctness, but it saves time.
+     */
+    for schem, rel, attr, categ in
+    select s.nspname, c.relname, a.attname, t.typcategory from pg_class c, pg_attribute a, pg_namespace s, pg_type t
+        where a.attnum > 0 and not a.attisdropped
+	and a.attrelid = c.oid
+	and a.atttypid = t.oid
+	and c.relnamespace = s.oid
+	and t.typname in ('oid', 'lo', 'blob_t', 'blobs_t')
+	and c.relkind in ('r', 'm')
+	and s.nspname !~ '^pg_'
+    loop
+    if( categ = 'A' ) then /* array */
+        execute 'DELETE FROM  ".vacuumLO" WHERE lo IN (SELECT unnest("' || attr || '") FROM ' || schem || '."' || rel || '" WHERE "' || attr || '" is not null);';
+    else
+        execute 'DELETE FROM  ".vacuumLO" WHERE lo IN (SELECT "' || attr ||'" FROM ' || schem || '."' || rel || '" WHERE "' || attr || '" is not null);';
+    end if;
+    end loop;
+
+    /*
+     * Now, those entries remaining in  ".vacuumLO" are orphans.
+     */
+    for b in select lo from ".vacuumLO"
+    loop
+    return next b;
+    end loop;
+
+    /*
+     * Drop temporary table.
+     */
+    drop table if exists ".vacuumLO";
+end;
+$body$ language plpgsql;
+#endif //PGSQL
+
 #ifdef MSSQL
 go
 #endif //MSSQL

@@ -1836,6 +1836,30 @@ create index i_year_photos2 on photos(db_id, fix_year, account_id);
 create trigger trig_updated_ts before update on photos for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
+create table posms (
+    db_id 		uid_t 		not null,
+    doc_id		uid_t		not null,
+    fix_dt		datetime_t	not null,
+    user_id		uid_t		not null,
+    account_id		uid_t		not null,
+    placement_id	uid_t		not null,
+    posm_id		uid_t		not null,
+    photo		uid_t		not null,
+    doc_note		note_t		null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    fix_year 		int32_t 	not null,
+    fix_month 		int32_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+create index i_year_posms1 on posms(db_id, fix_year);
+create index i_year_posms2 on posms(db_id, fix_year, account_id);
+
+#ifdef PGSQL
+create trigger trig_updated_ts before update on posms for each row execute procedure tf_updated_ts();
+#endif //PGSQL
+
 create table presentations (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,

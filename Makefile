@@ -1,7 +1,7 @@
 # Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file.
 
 PACKAGE_NAME 	= omobus-lts-db
-PACKAGE_VERSION = 3.5.17
+PACKAGE_VERSION = 3.5.18
 COPYRIGHT 	= Copyright (c) 2006 - 2022 ak obs, ltd. <info@omobus.net>
 SUPPORT 	= Support and bug reports: <support@omobus.net>
 AUTHOR		= Author: Igor Artemov <i_artemov@ak-obs.ru>
@@ -44,9 +44,11 @@ mssql:
 	@$(PP) -U PGSQL -D MSSQL $(PACKAGE_NAME).sql > _build/mssql/$(PACKAGE_NAME).sql; true
 	@$(PP) -U PGSQL -D MSSQL version.sql >> _build/mssql/$(PACKAGE_NAME).sql; true
 	@echo "Compiled SQL script for the Microsoft SQL Server."
-	@$(CP) *.xconf _build/mssql/
+	@$(CP) lts-data.xconf _build/mssql/
+	@$(CP) lts-health.xconf _build/mssql/
 	@$(CP) -r connections/ _build/mssql/
-	@$(CP) -r kernels/ _build/mssql/
+	@$(CP) -r kernels/lts-data.xconf _build/mssql/
+	@$(CP) -r kernels/lts-health.xconf _build/mssql/
 	@$(CP) -r queries/ _build/mssql/
 	@$(CP) -r transactions/ _build/mssql/
 	@$(SED) 's/string_to_array/dbo.string_to_array/g' _build/mssql/queries/lts-data/*.xconf

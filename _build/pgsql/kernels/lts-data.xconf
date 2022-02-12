@@ -7,7 +7,7 @@
     ldap.base="ou=lts-db,dc=omobus,dc=local" 
     ldap.filter="(&amp;(objectClass=omobusMaintainPoint)(exchangeStatus=enabled))"
     Xldap.tls="yes"
-    ftp.host="192.168.83.6"
+    ftp.host="192.168.83.250"
     ftp.port="21021"
     ftp.path="data/"
     ftp.connect_timeout="20"
@@ -98,6 +98,7 @@
 <xi:include href="../queries/lts-data/photo_types.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/placements.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/pos_materials.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
+<xi:include href="../queries/lts-data/posms.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/potentials.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/priorities.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />
 <xi:include href="../queries/lts-data/products.xconf" xmlns:xi="http://www.w3.org/2003/XInclude" />

@@ -1483,6 +1483,27 @@ create index i_year_photos1 on photos(db_id, fix_year);
 create index i_year_photos2 on photos(db_id, fix_year, account_id);
 
 
+create table posms (
+    db_id 		uid_t 		not null,
+    doc_id		uid_t		not null,
+    fix_dt		datetime_t	not null,
+    user_id		uid_t		not null,
+    account_id		uid_t		not null,
+    placement_id	uid_t		not null,
+    posm_id		uid_t		not null,
+    photo		uid_t		not null,
+    doc_note		note_t		null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    fix_year 		int32_t 	not null,
+    fix_month 		int32_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+create index i_year_posms1 on posms(db_id, fix_year);
+create index i_year_posms2 on posms(db_id, fix_year, account_id);
+
+
 create table presentations (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -2043,9 +2064,10 @@ insert into sysparams(param_id, param_value, descr) values('db:created_ts', curr
 insert into sysparams(param_id, param_value, descr) values('db:id', 'LTS', 'Database unique ID.');
 insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Database version number.');
 
+
 go
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.17' where param_id='db:vstamp';
+update sysparams set param_value='3.5.18' where param_id='db:vstamp';
 
 go

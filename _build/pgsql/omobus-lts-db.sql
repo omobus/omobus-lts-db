@@ -1562,6 +1562,28 @@ create index i_year_photos2 on photos(db_id, fix_year, account_id);
 
 create trigger trig_updated_ts before update on photos for each row execute procedure tf_updated_ts();
 
+create table posms (
+    db_id 		uid_t 		not null,
+    doc_id		uid_t		not null,
+    fix_dt		datetime_t	not null,
+    user_id		uid_t		not null,
+    account_id		uid_t		not null,
+    placement_id	uid_t		not null,
+    posm_id		uid_t		not null,
+    photo		uid_t		not null,
+    doc_note		note_t		null,
+    inserted_ts 	ts_auto_t 	not null,
+    updated_ts		ts_auto_t 	not null,
+    fix_year 		int32_t 	not null,
+    fix_month 		int32_t 	not null,
+    primary key(db_id, doc_id)
+);
+
+create index i_year_posms1 on posms(db_id, fix_year);
+create index i_year_posms2 on posms(db_id, fix_year, account_id);
+
+create trigger trig_updated_ts before update on posms for each row execute procedure tf_updated_ts();
+
 create table presentations (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -2111,7 +2133,76 @@ insert into sysparams(param_id, param_value, descr) values('db:created_ts', curr
 insert into sysparams(param_id, param_value, descr) values('db:id', 'LTS', 'Database unique ID.');
 insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Database version number.');
 
+create or replace function orphanLO() returns setof blob_t
+as $body$
+declare
+    b blob_t;
+    schem name;
+    rel name;
+    attr name;
+    categ char;
+begin
+    /*
+     * Don't get fooled by any non-system catalogs
+     */
+--    set search_path = pg_catalog;
+
+    /*
+     * First we create and populate the LO temp table
+     */
+    create temp table  ".vacuumLO" as select oid as lo from pg_largeobject_metadata;
+
+    /*
+     * Analyze the temp table so that planner will generate decent plans for
+     * the DELETEs below.
+     */
+    analyze  ".vacuumLO";
+
+    /*
+     * Now find any candidate tables that have columns of type oid.
+     *
+     * NOTE: we ignore system tables and temp tables by the expedient of
+     * rejecting tables in schemas named 'pg_*'.  In particular, the temp
+     * table formed above is ignored, and pg_largeobject will be too. If
+     * either of these were scanned, obviously we'd end up with nothing to
+     * delete...
+     *
+     * NOTE: the system oid column is ignored, as it has attnum < 1. This
+     * shouldn't matter for correctness, but it saves time.
+     */
+    for schem, rel, attr, categ in
+    select s.nspname, c.relname, a.attname, t.typcategory from pg_class c, pg_attribute a, pg_namespace s, pg_type t
+        where a.attnum > 0 and not a.attisdropped
+	and a.attrelid = c.oid
+	and a.atttypid = t.oid
+	and c.relnamespace = s.oid
+	and t.typname in ('oid', 'lo', 'blob_t', 'blobs_t')
+	and c.relkind in ('r', 'm')
+	and s.nspname !~ '^pg_'
+    loop
+    if( categ = 'A' ) then /* array */
+        execute 'DELETE FROM  ".vacuumLO" WHERE lo IN (SELECT unnest("' || attr || '") FROM ' || schem || '."' || rel || '" WHERE "' || attr || '" is not null);';
+    else
+        execute 'DELETE FROM  ".vacuumLO" WHERE lo IN (SELECT "' || attr ||'" FROM ' || schem || '."' || rel || '" WHERE "' || attr || '" is not null);';
+    end if;
+    end loop;
+
+    /*
+     * Now, those entries remaining in  ".vacuumLO" are orphans.
+     */
+    for b in select lo from ".vacuumLO"
+    loop
+    return next b;
+    end loop;
+
+    /*
+     * Drop temporary table.
+     */
+    drop table if exists ".vacuumLO";
+end;
+$body$ language plpgsql;
+
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.17' where param_id='db:vstamp';
+update sysparams set param_value='3.5.18' where param_id='db:vstamp';
 

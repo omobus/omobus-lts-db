@@ -2697,7 +2697,32 @@ insert into sysparams(param_id, param_value, descr) values('db:id', 'LTS', 'Data
 insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Database version number.');
 
 #ifdef PGSQL
-create or replace function orphanLO() returns setof blob_t
+create or replace function year(arg timestamp with time zone) returns int as
+$body$
+begin
+    return extract(year from arg);
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function year(arg timestamp) returns int as
+$body$
+begin
+    return extract(year from arg);
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function year(arg date) returns int as
+$body$
+begin
+    return extract(year from arg);
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function orphanLO() 
+    returns setof blob_t
 as $body$
 declare
     b blob_t;

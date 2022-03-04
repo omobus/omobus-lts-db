@@ -34,7 +34,6 @@ go
 
 #ifdef PGSQL
 create domain address_t as varchar(256);
-create domain art_t as varchar(24);
 create domain blob_t as OID;
 create domain bool_t as int2 check (value is null or (value between 0 and 1));
 create domain code_t as varchar(24);
@@ -77,7 +76,6 @@ create domain wf_t as numeric(3,2);
 #endif //PGSQL
 #ifdef MSSQL
 execute sp_addtype address_t, 'varchar(256)'
-execute sp_addtype art_t, 'varchar(24)'
 execute sp_addtype blob_t, 'varchar(32)'
 execute sp_addtype bool_t, 'smallint'
 execute sp_addtype code_t, 'varchar(24)'
@@ -1043,7 +1041,6 @@ create table products (
     shelf_life_id 	uid_t 		null,
     code 		code_t 		null,
     descr 		descr_t 	not null,
-    art 		art_t 		null,
     obsolete 		bool_t 		null,
     novelty 		bool_t 		null,
     promo 		bool_t 		null,

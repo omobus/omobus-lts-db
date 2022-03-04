@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<products templ="%prod_id%;%pid%;%ftype%;%code%;%descr%;%kind_id%;%brand_id%;%categ_id%;%shelf_life_id%;%art%;%obsolete%;%novelty%;%promo%;%barcodes%;%units%;%country_ids%;%dep_ids%;%row_no%;%hidden%;">
+<products templ="%prod_id%;%pid%;%ftype%;%code%;%descr%;%kind_id%;%brand_id%;%categ_id%;%shelf_life_id%;%obsolete%;%novelty%;%promo%;%barcodes%;%units%;%country_ids%;%dep_ids%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from products
 </check_exist>
 <update>
   <![CDATA[
-update products set pid=uid_in('%pid%'), ftype=0%ftype%, code='%code%', art='%art%', descr='%descr%', shelf_life_id=uid_in('%shelf_life_id%'), kind_id=uid_in('%kind_id%'), brand_id=uid_in('%brand_id%'), categ_id=uid_in('%categ_id%'), obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, barcodes=ean13ar_in('%barcodes%'), units=%units%, country_ids=uids_in('%country_ids%'), dep_ids=uids_in('%dep_ids%'), row_no=int32_in('%row_no%'), hidden=0%hidden%
+update products set pid=uid_in('%pid%'), ftype=0%ftype%, code='%code%', descr='%descr%', shelf_life_id=uid_in('%shelf_life_id%'), kind_id=uid_in('%kind_id%'), brand_id=uid_in('%brand_id%'), categ_id=uid_in('%categ_id%'), obsolete=0%obsolete%, novelty=0%novelty%, promo=0%promo%, barcodes=ean13ar_in('%barcodes%'), units=%units%, country_ids=uids_in('%country_ids%'), dep_ids=uids_in('%dep_ids%'), row_no=int32_in('%row_no%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and prod_id = '%prod_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[ 
-insert into products (db_id, pid, prod_id, ftype, code, art, descr, kind_id, shelf_life_id, brand_id, categ_id, obsolete, novelty, promo, barcodes, units, country_ids, dep_ids, row_no, hidden)
-    values ('%ErpCode%', uid_in('%pid%'), '%prod_id%', %ftype%, '%code%', '%art%', '%descr%', uid_in('%kind_id%'), uid_in('%shelf_life_id%'), uid_in('%brand_id%'), uid_in('%categ_id%'), 0%obsolete%, 0%novelty%, 0%promo%, ean13ar_in('%barcodes%'), %units%, uids_in('%country_ids%'), uids_in('%dep_ids%'), int32_in('%row_no%'), 0%hidden%)
+insert into products (db_id, pid, prod_id, ftype, code, descr, kind_id, shelf_life_id, brand_id, categ_id, obsolete, novelty, promo, barcodes, units, country_ids, dep_ids, row_no, hidden)
+    values ('%ErpCode%', uid_in('%pid%'), '%prod_id%', %ftype%, '%code%', '%descr%', uid_in('%kind_id%'), uid_in('%shelf_life_id%'), uid_in('%brand_id%'), uid_in('%categ_id%'), 0%obsolete%, 0%novelty%, 0%promo%, ean13ar_in('%barcodes%'), %units%, uids_in('%country_ids%'), uids_in('%dep_ids%'), int32_in('%row_no%'), 0%hidden%)
   ]]>
 </insert>
 <end>

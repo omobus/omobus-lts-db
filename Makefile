@@ -1,7 +1,7 @@
 # Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file.
 
 PACKAGE_NAME 	= omobus-lts-db
-PACKAGE_VERSION = 3.5.18
+PACKAGE_VERSION = 3.5.19
 COPYRIGHT 	= Copyright (c) 2006 - 2022 ak obs, ltd. <info@omobus.net>
 SUPPORT 	= Support and bug reports: <support@omobus.net>
 AUTHOR		= Author: Igor Artemov <i_artemov@ak-obs.ru>
@@ -47,8 +47,9 @@ mssql:
 	@$(CP) lts-data.xconf _build/mssql/
 	@$(CP) lts-health.xconf _build/mssql/
 	@$(CP) -r connections/ _build/mssql/
-	@$(CP) -r kernels/lts-data.xconf _build/mssql/
-	@$(CP) -r kernels/lts-health.xconf _build/mssql/
+	@$(MKDIR) _build/mssql/kernels/
+	@$(CP) -r kernels/lts-data.xconf _build/mssql/kernels/
+	@$(CP) -r kernels/lts-health.xconf _build/mssql/kernels/
 	@$(CP) -r queries/ _build/mssql/
 	@$(CP) -r transactions/ _build/mssql/
 	@$(SED) 's/string_to_array/dbo.string_to_array/g' _build/mssql/queries/lts-data/*.xconf

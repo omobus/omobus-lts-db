@@ -27,7 +27,6 @@ go
 -- **** domains ****
 
 execute sp_addtype address_t, 'varchar(256)'
-execute sp_addtype art_t, 'varchar(24)'
 execute sp_addtype blob_t, 'varchar(32)'
 execute sp_addtype bool_t, 'smallint'
 execute sp_addtype code_t, 'varchar(24)'
@@ -812,7 +811,6 @@ create table products (
     shelf_life_id 	uid_t 		null,
     code 		code_t 		null,
     descr 		descr_t 	not null,
-    art 		art_t 		null,
     obsolete 		bool_t 		null,
     novelty 		bool_t 		null,
     promo 		bool_t 		null,
@@ -2068,6 +2066,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.18' where param_id='db:vstamp';
+update sysparams set param_value='3.5.19' where param_id='db:vstamp';
 
 go

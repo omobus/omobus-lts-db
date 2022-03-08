@@ -8,7 +8,6 @@ create extension isn;
 -- **** domains ****
 
 create domain address_t as varchar(256);
-create domain art_t as varchar(24);
 create domain blob_t as OID;
 create domain bool_t as int2 check (value is null or (value between 0 and 1));
 create domain code_t as varchar(24);
@@ -852,7 +851,6 @@ create table products (
     shelf_life_id 	uid_t 		null,
     code 		code_t 		null,
     descr 		descr_t 	not null,
-    art 		art_t 		null,
     obsolete 		bool_t 		null,
     novelty 		bool_t 		null,
     promo 		bool_t 		null,
@@ -2133,7 +2131,32 @@ insert into sysparams(param_id, param_value, descr) values('db:created_ts', curr
 insert into sysparams(param_id, param_value, descr) values('db:id', 'LTS', 'Database unique ID.');
 insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Database version number.');
 
-create or replace function orphanLO() returns setof blob_t
+create or replace function year(arg timestamp with time zone) returns int as
+$body$
+begin
+    return extract(year from arg);
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function year(arg timestamp) returns int as
+$body$
+begin
+    return extract(year from arg);
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function year(arg date) returns int as
+$body$
+begin
+    return extract(year from arg);
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function orphanLO() 
+    returns setof blob_t
 as $body$
 declare
     b blob_t;
@@ -2204,5 +2227,5 @@ $body$ language plpgsql;
 
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.18' where param_id='db:vstamp';
+update sysparams set param_value='3.5.19' where param_id='db:vstamp';
 

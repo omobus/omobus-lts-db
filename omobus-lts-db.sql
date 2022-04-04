@@ -1375,7 +1375,7 @@ create table additions (
     fix_dt		datetime_t 	not null,
     account 		descr_t 	null,
     address 		address_t 	null,
-    number 		code_t 		null,
+    tax_number 		code_t 		null,
     addition_type_id 	uid_t 		null,
     note 		note_t 		null,
     chan_id 		uid_t 		null,

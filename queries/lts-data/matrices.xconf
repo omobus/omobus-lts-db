@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<matrices templ="%slice_date%;%account_id%;%prod_id%;%placement_ids%;%row_no%;">
+<matrices templ="%slice_date%;%account_id%;%prod_id%;%row_no%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -12,18 +12,10 @@ select count(*) exist from matrices
     where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
   ]]>
 </check_exist>
-<!--
-<update>
-  <![CDATA[
-update matrices set placement_ids=uids_in('%placement_ids%'), row_no=int32_in('%row_no%')
-    where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
-  ]]>
-</update>
--->
 <insert>
   <![CDATA[
-insert into matrices (db_id, slice_date, account_id, prod_id, placement_ids, row_no)
-    values ('%ErpCode%', '%slice_date%', '%account_id%', '%prod_id%', uids_in('%placement_ids%'), int32_in('%row_no%'))
+insert into matrices (db_id, slice_date, account_id, prod_id, row_no)
+    values ('%ErpCode%', '%slice_date%', '%account_id%', '%prod_id%', int32_in('%row_no%'))
   ]]>
 </insert>
 <end>

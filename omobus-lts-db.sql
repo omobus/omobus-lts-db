@@ -714,7 +714,6 @@ create table matrices (
     slice_date 		date_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
-    placement_ids 	uids_t 		null,
     row_no 		int32_t 	null, -- ordering
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1543,7 +1542,6 @@ create table dyn_checkups (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
     account_id 		uid_t 		not null,
-    placement_id 	uid_t 		not null,
     prod_id 		uid_t 		not null,
     exist 		int32_t 	not null,
     fix_dt		datetime_t 	not null,
@@ -1552,7 +1550,7 @@ create table dyn_checkups (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
-    primary key(db_id, fix_date, account_id, placement_id, prod_id)
+    primary key(db_id, fix_date, account_id, prod_id)
 );
 
 #ifdef PGSQL

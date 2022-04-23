@@ -12,14 +12,6 @@ select count(*) exist from agreements2
     where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
   ]]>
 </check_exist>
-<!--
-<update>
-  <![CDATA[
-update agreements2 set facing=0%facing%, "strict"=0%strict%
-    where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
-  ]]>
-</update>
--->
 <insert>
   <![CDATA[
 insert into agreements2 (db_id, slice_date, account_id, prod_id, facing, "strict")

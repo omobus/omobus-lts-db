@@ -438,7 +438,7 @@ create table confirmation_types (
     db_id 		uid_t 		not null,
     confirmation_type_id uid_t		not null,
     descr 		descr_t 	not null,
-    succeeded 		bool_t 		null,
+    succeeded 		varchar(6) 	null check(succeeded in ('yes','no','partly')),
     row_no 		int32_t 	null, -- ordering
     props 		hstore_t 	null,
     hidden 		bool_t 		not null default 0,

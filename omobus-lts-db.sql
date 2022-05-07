@@ -1605,6 +1605,7 @@ create table dyn_prices (
     price 		currency_t 	null,
     promo 		currency_t 	null,
     discount 		bool_t 		not null,
+    note 		note_t 		null,
     rrp 		currency_t 	null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,

@@ -14,14 +14,14 @@ select count(*) exist from confirmation_types
 </check_exist>
 <update>
   <![CDATA[
-update confirmation_types set descr='%descr%', succeeded=dbo.bool_in('%succeeded%'), row_no=dbo.int32_in('%row_no%'), props=dbo.hstore_in('%props%'), hidden=0%hidden%
+update confirmation_types set descr='%descr%', succeeded=dbo.uid_in('%succeeded%'), row_no=dbo.int32_in('%row_no%'), props=dbo.hstore_in('%props%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and confirmation_type_id = '%confirmation_type_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into confirmation_types (db_id, confirmation_type_id, descr, succeeded, row_no, props, hidden) 
-    values ('%ErpCode%', '%confirmation_type_id%', '%descr%', dbo.bool_in('%succeeded%'), dbo.int32_in('%row_no%'), dbo.hstore_in('%props%'), 0%hidden%)
+    values ('%ErpCode%', '%confirmation_type_id%', '%descr%', dbo.uid_in('%succeeded%'), dbo.int32_in('%row_no%'), dbo.hstore_in('%props%'), 0%hidden%)
   ]]>
 </insert>
 <end>

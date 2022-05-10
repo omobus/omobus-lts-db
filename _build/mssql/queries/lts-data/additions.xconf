@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<additions templ="%doc_id%;%fix_dt%;%user_id%;%account%;%address%;%number%;%addition_type_id%;%note%;%chan_id%;%phone%;%workplaces%;%team%;%interaction_type_id%;%attr_ids%;%photos%;%account_id%;%validator_id%;%validated%;%hidden%;%geo_address%;">
+<additions templ="%doc_id%;%fix_dt%;%user_id%;%account%;%address%;%tax_number%;%addition_type_id%;%note%;%chan_id%;%phone%;%workplaces%;%team%;%interaction_type_id%;%attr_ids%;%photos%;%account_id%;%validator_id%;%validated%;%hidden%;%geo_address%;">
 <verification>
   <![CDATA[
 select count(*) from data_stream
@@ -14,14 +14,14 @@ select count(*) exist from additions
 </check_exist>
 <update>
   <![CDATA[
-update additions set user_id='%user_id%', fix_dt='%fix_dt%', account='%account%', address='%address%', number='%number%', addition_type_id=dbo.uid_in('%addition_type_id%'), note=dbo.note_in('%note%'), chan_id=dbo.uid_in('%chan_id%'), phone=dbo.phone_in('%phone%'), workplaces=dbo.int32_in('%workplaces%'), team=dbo.int32_in('%team%'), interaction_type_id=dbo.uid_in('%interaction_type_id%'), attr_ids=dbo.uids_in('%attr_ids%'), photos=dbo.uids_in('%photos%'), account_id='%account_id%', validator_id=dbo.uid_in('%validator_id%'), validated=0%validated%, hidden=0%hidden%, geo_address='%geo_address%'
+update additions set user_id='%user_id%', fix_dt='%fix_dt%', account='%account%', address='%address%', tax_number='%tax_number%', addition_type_id=dbo.uid_in('%addition_type_id%'), note=dbo.note_in('%note%'), chan_id=dbo.uid_in('%chan_id%'), phone=dbo.phone_in('%phone%'), workplaces=dbo.int32_in('%workplaces%'), team=dbo.int32_in('%team%'), interaction_type_id=dbo.uid_in('%interaction_type_id%'), attr_ids=dbo.uids_in('%attr_ids%'), photos=dbo.uids_in('%photos%'), account_id='%account_id%', validator_id=dbo.uid_in('%validator_id%'), validated=0%validated%, hidden=0%hidden%, geo_address='%geo_address%'
     where db_id = '%ErpCode%' and doc_id = '%doc_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into additions (db_id, doc_id, user_id, fix_dt, account, address, number, addition_type_id, note, chan_id, phone, workplaces, team, interaction_type_id, attr_ids, photos, account_id, validator_id, validated, hidden, geo_address) 
-    values ('%ErpCode%', '%doc_id%', '%user_id%', '%fix_dt%', '%account%', '%address%', '%number%', dbo.uid_in('%addition_type_id%'), dbo.note_in('%note%'), dbo.uid_in('%chan_id%'), dbo.phone_in('%phone%'), dbo.int32_in('%workplaces%'), dbo.int32_in('%team%'), dbo.uid_in('%interaction_type_id%'), dbo.uids_in('%attr_ids%'), dbo.uids_in('%photos%'), '%account_id%', dbo.uid_in('%validator_id%'), 0%validated%, 0%hidden%, '%geo_address%')
+insert into additions (db_id, doc_id, user_id, fix_dt, account, address, tax_number, addition_type_id, note, chan_id, phone, workplaces, team, interaction_type_id, attr_ids, photos, account_id, validator_id, validated, hidden, geo_address) 
+    values ('%ErpCode%', '%doc_id%', '%user_id%', '%fix_dt%', '%account%', '%address%', '%tax_number%', dbo.uid_in('%addition_type_id%'), dbo.note_in('%note%'), dbo.uid_in('%chan_id%'), dbo.phone_in('%phone%'), dbo.int32_in('%workplaces%'), dbo.int32_in('%team%'), dbo.uid_in('%interaction_type_id%'), dbo.uids_in('%attr_ids%'), dbo.uids_in('%photos%'), '%account_id%', dbo.uid_in('%validator_id%'), 0%validated%, 0%hidden%, '%geo_address%')
   ]]>
 </insert>
 <end>

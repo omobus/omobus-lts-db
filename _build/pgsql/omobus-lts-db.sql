@@ -324,7 +324,7 @@ create table confirmation_types (
     db_id 		uid_t 		not null,
     confirmation_type_id uid_t		not null,
     descr 		descr_t 	not null,
-    succeeded 		bool_t 		null,
+    succeeded 		varchar(6) 	null check(succeeded in ('yes','no','partly')),
     row_no 		int32_t 	null, -- ordering
     props 		hstore_t 	null,
     hidden 		bool_t 		not null default 0,
@@ -566,7 +566,6 @@ create table matrices (
     slice_date 		date_t 		not null,
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
-    placement_ids 	uids_t 		null,
     row_no 		int32_t 	null, -- ordering
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1144,7 +1143,7 @@ create table additions (
     fix_dt		datetime_t 	not null,
     account 		descr_t 	null,
     address 		address_t 	null,
-    number 		code_t 		null,
+    tax_number 		code_t 		null,
     addition_type_id 	uid_t 		null,
     note 		note_t 		null,
     chan_id 		uid_t 		null,
@@ -1296,7 +1295,6 @@ create table dyn_checkups (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
     account_id 		uid_t 		not null,
-    placement_id 	uid_t 		not null,
     prod_id 		uid_t 		not null,
     exist 		int32_t 	not null,
     fix_dt		datetime_t 	not null,
@@ -1305,7 +1303,7 @@ create table dyn_checkups (
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     "_isRecentData"	bool_t 		null,
-    primary key(db_id, fix_date, account_id, placement_id, prod_id)
+    primary key(db_id, fix_date, account_id, prod_id)
 );
 
 create trigger trig_updated_ts before update on dyn_checkups for each row execute procedure tf_updated_ts();
@@ -1354,6 +1352,7 @@ create table dyn_prices (
     price 		currency_t 	null,
     promo 		currency_t 	null,
     discount 		bool_t 		not null,
+    note 		note_t 		null,
     rrp 		currency_t 	null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
@@ -1765,6 +1764,7 @@ create table user_activities (
     zstatus 		varchar(8) 	null check(zstatus in ('accepted','rejected') and zstatus = lower(zstatus)),
     znote 		note_t 		null,
     zauthor_id 		uid_t 		null,
+    zreq_dt 		datetime_t 	null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
     primary key (db_id, user_id, account_id, activity_type_id, w_cookie, a_cookie)
@@ -2227,5 +2227,5 @@ $body$ language plpgsql;
 
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.19' where param_id='db:vstamp';
+update sysparams set param_value='3.5.20' where param_id='db:vstamp';
 

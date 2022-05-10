@@ -12,14 +12,6 @@ select count(*) exist from agreements1
     where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and placement_id = '%placement_id%' and posm_id = '%posm_id%'
   ]]>
 </check_exist>
-<!--
-<update>
-  <![CDATA[
-update agreements1 set "strict"=0%strict%, cookie=dbo.uid_in('%cookie%')
-    where db_id = '%ErpCode%' and slice_date = '%slice_date%' and account_id = '%account_id%' and placement_id = '%placement_id%' and posm_id = '%posm_id%'
-  ]]>
-</update>
--->
 <insert>
   <![CDATA[
 insert into agreements1 (db_id, slice_date, account_id, placement_id, posm_id, "strict", cookie)

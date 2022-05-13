@@ -15,7 +15,7 @@ select count(*) exist from quest_items
 <update>
   <![CDATA[
 update quest_items set descr='%descr%', row_no=int32_in('%row_no%'), hidden=0%hidden%
-    where db_id = '%ErpCode%' and qname_id = '%qname_id%'
+    where db_id = '%ErpCode%' and qname_id = '%qname_id%' and qrow_id = '%qrow_id%' and qitem_id = '%qitem_id%'
   ]]>
 </update>
 <insert>

@@ -2,8 +2,7 @@
 <mileages templ="%user_id%;%fix_date%;%total%;%route%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -27,10 +26,10 @@ insert into mileages (db_id, user_id, fix_date, total, route)
 <end>
   <![CDATA[
 #ifdef PGSQL
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
 #endif //PGSQL
 #ifdef MSSQL
-exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+exec stor_data_stream2 '%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%'
 #endif //MSSQL
   ]]>
 </end>

@@ -2,8 +2,7 @@
 <dyn_reviews templ="%fix_date%;%employee_id%;%sla%;%assessment%;%note0%;%note1%;%note2%;%fix_dt%;%user_id%;%doc_id%;%_isrecentdata%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -27,10 +26,10 @@ insert into dyn_reviews (db_id, fix_date, employee_id, sla, assessment, note0, n
 <end>
   <![CDATA[
 #ifdef PGSQL
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
 #endif //PGSQL
 #ifdef MSSQL
-exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+exec stor_data_stream2 '%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%'
 #endif //MSSQL
   ]]>
 </end>

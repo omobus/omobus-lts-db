@@ -2,8 +2,7 @@
 <matrices templ="%slice_date%;%account_id%;%prod_id%;%row_no%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -21,10 +20,10 @@ insert into matrices (db_id, slice_date, account_id, prod_id, row_no)
 <end>
   <![CDATA[
 #ifdef PGSQL
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
 #endif //PGSQL
 #ifdef MSSQL
-exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+exec stor_data_stream2 '%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%'
 #endif //MSSQL
   ]]>
 </end>

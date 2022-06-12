@@ -2,8 +2,7 @@
 <user_activities templ="%user_id%;%account_id%;%w_cookie%;%a_cookie%;%activity_type_id%;%fix_date%;%route_date%;%b_dt%;%b_la%;%b_lo%;%b_sat_dt%;%e_dt%;%e_la%;%e_lo%;%e_sat_dt%;%employee_id%;%extra_info%;%docs%;%mileage%;%zstatus%;%znote%;%zauthor_id%;%zreq_dt%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -27,10 +26,10 @@ insert into user_activities (db_id, user_id, account_id, w_cookie, a_cookie, act
 <end>
   <![CDATA[
 #ifdef PGSQL
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
 #endif //PGSQL
 #ifdef MSSQL
-exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+exec stor_data_stream2 '%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%'
 #endif //MSSQL
   ]]>
 </end>

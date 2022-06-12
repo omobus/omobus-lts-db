@@ -2,8 +2,7 @@
 <wishes templ="%account_id%;%user_id%;%fix_dt%;%weeks%;%days%;%note%;%validator_id%;%validated%;%hidden%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -41,10 +40,10 @@ insert into wishes (db_id, account_id, user_id, fix_dt, weeks, days, note, valid
 <end>
   <![CDATA[
 #ifdef PGSQL
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
 #endif //PGSQL
 #ifdef MSSQL
-exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+exec stor_data_stream2 '%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%'
 #endif //MSSQL
   ]]>
 </end>

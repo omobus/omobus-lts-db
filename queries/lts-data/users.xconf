@@ -2,8 +2,7 @@
 <users templ="%user_id%;%pids%;%descr%;%role%;%country_id%;%dep_ids%;%distr_ids%;%agency_id%;%mobile%;%email%;%area%;%executivehead_id%;%props%;%rules:wd_begin%;%rules:wd_end%;%hidden%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -27,10 +26,10 @@ insert into users (db_id, user_id, pids, descr, role, dep_ids, country_id, distr
 <end>
   <![CDATA[
 #ifdef PGSQL
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
 #endif //PGSQL
 #ifdef MSSQL
-exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+exec stor_data_stream2 '%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%'
 #endif //MSSQL
   ]]>
 </end>

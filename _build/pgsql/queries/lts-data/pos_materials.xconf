@@ -2,8 +2,7 @@
 <pos_materials templ="%posm_id%;%descr%;%brand_ids%;%placement_ids%;%chan_ids%;%country_id%;%dep_ids%;%b_date%;%e_date%;%author_id%;%hidden%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -26,7 +25,7 @@ insert into pos_materials (db_id, posm_id, descr, brand_ids, placement_ids, chan
 </insert>
 <end>
   <![CDATA[
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
   ]]>
 </end>
 </pos_materials>

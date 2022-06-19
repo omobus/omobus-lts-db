@@ -2,8 +2,7 @@
 <my_habitats templ="%user_id%;%account_id%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <begin>
@@ -20,7 +19,7 @@ insert into my_habitats (db_id, user_id, account_id)
 </insert>
 <end>
   <![CDATA[
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
   ]]>
 </end>
 </my_habitats>

@@ -2,8 +2,7 @@
 <unsched templ="%doc_id%;%fix_dt%;%user_id%;%unsched_type_id%;%doc_note%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select dbo.exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -20,7 +19,7 @@ insert into unsched (db_id, doc_id, fix_dt, user_id, unsched_type_id, doc_note)
 </insert>
 <end>
   <![CDATA[
-exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+exec stor_data_stream2 '%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </unsched>

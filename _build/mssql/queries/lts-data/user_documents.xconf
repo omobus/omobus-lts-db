@@ -2,8 +2,7 @@
 <user_documents templ="%act_id%;%user_id%;%w_cookie%;%fix_date%;%doc_type%;%doc_id%;%doc_no%;%duration%;%rows%;%fix_dt%;%latitude%;%longitude%;%satellite_dt%;%a_cookie%;%account_id%;%activity_type_id%;%employee_id%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select dbo.exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -26,7 +25,7 @@ insert into user_documents (db_id, act_id, user_id, w_cookie, fix_date, doc_type
 </insert>
 <end>
   <![CDATA[
-exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+exec stor_data_stream2 '%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </user_documents>

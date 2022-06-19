@@ -2,8 +2,7 @@
 <additions templ="%doc_id%;%fix_dt%;%user_id%;%account%;%address%;%tax_number%;%addition_type_id%;%note%;%chan_id%;%phone%;%workplaces%;%team%;%interaction_type_id%;%attr_ids%;%photos%;%account_id%;%validator_id%;%validated%;%hidden%;%geo_address%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select dbo.exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -26,7 +25,7 @@ insert into additions (db_id, doc_id, user_id, fix_dt, account, address, tax_num
 </insert>
 <end>
   <![CDATA[
-exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+exec stor_data_stream2 '%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </additions>

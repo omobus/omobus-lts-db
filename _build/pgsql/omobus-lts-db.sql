@@ -366,8 +366,13 @@ create table contacts (
     email 		email_t 	null,
     locked 		bool_t 		not null default 0,
     extra_info 		note_t 		null,
+    consent_data 	blob_t 		null,
+    consent_type 	varchar(32) 	null check(consent_type in ('application/pdf')),
+    consent_status 	varchar(24) 	null check(consent_status in ('collecting','collecting_and_informing')),
+    consent_dt 		datetime_t 	null,
     author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
+    cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, contact_id)
@@ -1353,6 +1358,7 @@ create table dyn_prices (
     promo 		currency_t 	null,
     discount 		bool_t 		not null,
     note 		note_t 		null,
+    photo 		uid_t 		null,
     rrp 		currency_t 	null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
@@ -1933,12 +1939,17 @@ create table blob_stream ( /* blob packages, that imported to the storage */
 create trigger trig_updated_ts before update on data_stream for each row execute procedure tf_updated_ts();
 create trigger trig_updated_ts before update on blob_stream for each row execute procedure tf_updated_ts();
 
-create or replace function stor_data_stream(p_id varchar(256), p_digest varchar(32), hostname hostname_t) returns void
+create or replace function stor_data_stream3(arg0 varchar(16), arg1 varchar(32), arg2 varchar(204), p_digest varchar(32), hostname hostname_t) 
+    returns void
 as $BODY$
+declare
+    p_id varchar(256);
 begin
-    if( (select count(*) from data_stream where s_id=p_id) > 0 ) then
-	update data_stream set digest=p_digest, inserted_node=hostname
-	    where s_id=p_id;
+    p_id := format('//%s/%s/%s', arg0, arg1, arg2);
+
+    if( (select count(*) from data_stream where s_id = p_id) > 0 ) then
+	update data_stream set digest = p_digest, inserted_node = hostname
+	    where s_id = p_id;
     else
 	insert into data_stream(s_id, digest, inserted_node)
 	    values(p_id, p_digest, hostname);
@@ -1946,9 +1957,40 @@ begin
 end;
 $BODY$ language plpgsql;
 
-create or replace function stor_blob_stream(p_id varchar(256), b_id blob_t, hostname hostname_t) returns void
+create or replace function stor_data_stream2(arg1 varchar(32), arg2 varchar(204), p_digest varchar(32), hostname hostname_t) 
+    returns void
+as $BODY$
+declare
+    p_id varchar(256);
+begin
+    perform stor_data_stream3('proxy', arg1, arg2, p_digest, hostname);
+end;
+$BODY$ language plpgsql;
+
+create or replace function exist_data_stream3(arg0 varchar(16), arg1 varchar(32), arg2 varchar(204), p_digest varchar(32)) 
+    returns int
 as $BODY$
 begin
+    return (select count(s_id) from data_stream where s_id = format('//%s/%s/%s', arg0, arg1, arg2) and digest = p_digest);
+end;
+$BODY$ language plpgsql;
+
+create or replace function exist_data_stream2(arg1 varchar(32), arg2 varchar(204), p_digest varchar(32)) 
+    returns int
+as $BODY$
+begin
+    return (exist_data_stream3('proxy', arg1, arg2, p_digest));
+end;
+$BODY$ language plpgsql;
+
+create or replace function stor_blob_stream3(arg0 varchar(16), arg1 varchar(32), arg2 varchar(204), b_id blob_t, hostname hostname_t) 
+    returns void
+as $BODY$
+declare
+    p_id varchar(256);
+begin
+    p_id := format('//%s/%s/%s', arg0, arg1, arg2);
+
     if( (select count(*) from blob_stream where s_id=p_id) > 0 ) then
 	update blob_stream set blob_id=b_id, inserted_node=hostname
 	    where s_id=p_id;
@@ -1959,10 +2001,31 @@ begin
 end;
 $BODY$ language plpgsql;
 
-create or replace function resolve_blob_stream(p_id varchar(256)) returns blob_t
+create or replace function stor_blob_stream2(arg1 varchar(32), arg2 varchar(204), b_id blob_t, hostname hostname_t) 
+    returns void
 as $BODY$
 begin
-    return (select blob_id from blob_stream where s_id=p_id);
+    perform stor_blob_stream3('proxy', arg1, arg2, b_id, hostname);
+end;
+$BODY$ language plpgsql;
+
+create or replace function resolve_blob_stream3(arg0 varchar(16), arg1 varchar(32), arg2 varchar(204)) 
+    returns blob_t
+as $BODY$
+begin
+    if( arg0 is null or arg1 is null or arg2 is null or arg2 = '' ) then
+	return null;
+    end if;
+
+    return (select blob_id from blob_stream where s_id = format('//%s/%s/%s', arg0, arg1, arg2));
+end;
+$BODY$ language plpgsql;
+
+create or replace function resolve_blob_stream2(arg1 varchar(32), arg2 varchar(204)) 
+    returns blob_t
+as $BODY$
+begin
+    return resolve_blob_stream3('proxy', arg1, arg2);
 end;
 $BODY$ language plpgsql;
 
@@ -2039,6 +2102,14 @@ create or replace function ean13ar_in(arg text) returns ean13 array as
 $body$
 begin
     return case when arg = '' then null else ean13_in(string_to_array(arg, ',')) end;
+end;
+$body$
+language plpgsql IMMUTABLE;
+
+create or replace function email_in(arg text) returns phone_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
 end;
 $body$
 language plpgsql IMMUTABLE;
@@ -2227,5 +2298,5 @@ $body$ language plpgsql;
 
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.20' where param_id='db:vstamp';
+update sysparams set param_value='3.5.21' where param_id='db:vstamp';
 

@@ -2,8 +2,7 @@
 <target_types templ="%target_type_id%;%descr%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select dbo.exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -26,7 +25,7 @@ insert into target_types (db_id, target_type_id, descr, row_no, hidden)
 </insert>
 <end>
   <![CDATA[
-exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+exec stor_data_stream2 '%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </target_types>

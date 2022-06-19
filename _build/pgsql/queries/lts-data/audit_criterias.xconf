@@ -2,8 +2,7 @@
 <audit_criterias templ="%audit_criteria_id%;%descr%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -26,7 +25,7 @@ insert into audit_criterias (db_id, audit_criteria_id, descr, row_no, hidden)
 </insert>
 <end>
   <![CDATA[
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
   ]]>
 </end>
 </audit_criterias>

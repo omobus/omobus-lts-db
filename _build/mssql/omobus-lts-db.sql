@@ -362,8 +362,13 @@ create table contacts (
     email 		email_t 	null,
     locked 		bool_t 		not null default 0,
     extra_info 		note_t 		null,
+    consent_data 	blob_t 		null,
+    consent_type 	varchar(32) 	null check(consent_type in ('application/pdf')),
+    consent_status 	varchar(24) 	null check(consent_status in ('collecting','collecting_and_informing')),
+    consent_dt 		datetime_t 	null,
     author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
+    cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key(db_id, contact_id)
@@ -1284,6 +1289,7 @@ create table dyn_prices (
     promo 		currency_t 	null,
     discount 		bool_t 		not null,
     note 		note_t 		null,
+    photo 		uid_t 		null,
     rrp 		currency_t 	null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
@@ -1888,14 +1894,17 @@ create table blob_stream ( /* blob packages, that imported to the storage */
 
 go
 
-create procedure stor_data_stream
-   @p_id varchar(256), @p_digest varchar(32), @hostname hostname_t
+create procedure stor_data_stream3
+   @arg0 varchar(16), @arg1 varchar(32), @arg2 varchar(204), @p_digest varchar(32), @hostname hostname_t
 as
 begin
-    if (select count(*) from data_stream where s_id=@p_id) > 0
+    declare @p_id varchar(256)
+    set @p_id = concat('//',arg0,'/',arg1,'/',arg2)
+
+    if (select count(*) from data_stream where s_id = @p_id) > 0
 	begin
-	    update data_stream set digest=@p_digest, inserted_node=@hostname
-		where s_id=@p_id
+	    update data_stream set digest = @p_digest, inserted_node = @hostname
+		where s_id = @p_id
 	end
     else
 	begin
@@ -1905,14 +1914,41 @@ begin
 end
 go
 
-create procedure stor_blob_stream
-   @p_id varchar(256), @b_id blob_t, @hostname hostname_t
+create procedure stor_data_stream2
+   @arg1 varchar(32), @arg2 varchar(204), @p_digest varchar(32), @hostname hostname_t
 as
 begin
+    exec stor_data_stream3 'proxy', @arg1, @arg2, @p_digest, @hostname
+end
+go
+
+create function exist_data_stream3(@arg0 varchar(16), @arg1 varchar(32), @arg2 varchar(204), @p_digest varchar(32))
+    returns int
+as
+begin
+    return (select count(s_id) from data_stream where s_id = concat('//',arg0,'/',arg1,'/',arg2) and digest = p_digest);
+end
+go
+
+create function exist_data_stream2(@arg1 varchar(32), @arg2 varchar(204), @p_digest varchar(32))
+    returns int
+as
+begin
+    return exist_data_stream3('proxy', @arg1, @arg2, @p_digest)
+end
+go
+
+create procedure stor_blob_stream3
+   @arg0 varchar(16), @arg1 varchar(32), @arg2 varchar(204), @b_id blob_t, @hostname hostname_t
+as
+begin
+    declare @p_id varchar(256)
+    set @p_id = concat('//',arg0,'/',arg1,'/',arg2)
+
     if (select count(*) from blob_stream where s_id=@p_id) > 0 
 	begin
-	    update blob_stream set blob_id=@b_id, inserted_node=@hostname
-		where s_id=@p_id
+	    update blob_stream set blob_id = @b_id, inserted_node = @hostname
+		where s_id = @p_id
 	end
     else
 	begin
@@ -1922,10 +1958,32 @@ begin
 end
 go
 
-create function resolve_blob_stream(@arg varchar(256)) returns blob_t
+create procedure stor_blob_stream3
+   @arg1 varchar(32), @arg2 varchar(204), @b_id blob_t, @hostname hostname_t
 as
 begin
-   return case when @arg is null then null when @arg = '' then null else (select blob_id from blob_stream where s_id=@arg) end
+    exec 'proxy', , @arg1, @arg2, @b_id, @hostname
+end
+go
+
+create function resolve_blob_stream3(@arg0 varchar(16), @arg1 varchar(32), @arg2 varchar(204))
+    returns blob_t
+as
+begin
+    if @arg0 is null or @arg1 is null or @arg2 is null or @arg2 = ''
+	begin
+	    return null
+	end
+
+    return (select blob_id from blob_stream where s_id = concat('//',arg0,'/',arg1,'/',arg2))
+end
+go
+
+create function resolve_blob_stream2(@arg1 varchar(32), @arg2 varchar(204))
+    returns blob_t
+as
+begin
+    return resolve_blob_stream3('proxy', @arg1, @arg2)
 end
 go
 
@@ -1979,6 +2037,13 @@ end
 go
 
 create function ean13ar_in(@arg0 varchar(2048)) returns codes_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function email_in(@arg0 email_t) returns phone_t
 as
 begin
     return case when @arg0 = '' then null else @arg0 end
@@ -2066,6 +2131,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.20' where param_id='db:vstamp';
+update sysparams set param_value='3.5.21' where param_id='db:vstamp';
 
 go

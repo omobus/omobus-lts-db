@@ -2,8 +2,7 @@
 <priorities templ="%brand_id%;%b_date%;%e_date%;%country_id%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <begin>
@@ -30,7 +29,7 @@ delete from priorities
 insert into priorities (db_id, brand_id, b_date, e_date, country_id)
     select '%ErpCode%', brand_id, b_date, e_date, country_id from ".%uid%_priorities";
 
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
   ]]>
 </end>
 </priorities>

@@ -2,8 +2,7 @@
 <my_routes templ="%user_id%;%account_id%;%activity_type_id%;%p_date%;%row_no%;%duration%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select dbo.exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <begin>
@@ -33,7 +32,7 @@ insert into my_routes (db_id, user_id, account_id, activity_type_id, p_date, row
     select '%ErpCode%', user_id, account_id, activity_type_id, p_date, row_no, duration from dbo.[#%uid%_my_routes]
 drop table dbo.[#%uid%_my_routes]
 
-exec stor_data_stream '//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%'
+exec stor_data_stream2 '%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%'
   ]]>
 </end>
 </my_routes>

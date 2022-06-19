@@ -2,8 +2,7 @@
 <accounts templ="%account_id%;%pid%;%code%;%ftype%;%descr%;%address%;%region_id%;%city_id%;%rc_id%;%chan_id%;%poten_id%;%latitude%;%longitude%;%phone%;%workplaces%;%team%;%interaction_type_id%;%attr_ids%;%locked%;%approved%;%props%;%hidden%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -26,7 +25,7 @@ insert into accounts(db_id, pid, account_id, code, ftype, descr, address, region
 </insert>
 <end>
   <![CDATA[
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
   ]]>
 </end>
 </accounts>

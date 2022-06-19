@@ -2,8 +2,7 @@
 <quest_rows templ="%qname_id%;%qrow_id%;%pid%;%ftype%;%descr%;%qtype%;%country_ids%;%dep_ids%;%row_no%;%hidden%;">
 <verification>
   <![CDATA[
-select count(*) from data_stream
-    where s_id = '//proxy/%uid%/%pack_code%' and digest = '%pack_digest%'
+select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
   ]]>
 </verification>
 <check_exist>
@@ -26,7 +25,7 @@ insert into quest_rows (db_id, qname_id, qrow_id, pid, ftype, descr, qtype, coun
 </insert>
 <end>
   <![CDATA[
-select stor_data_stream('//proxy/%uid%/%pack_code%', '%pack_digest%', '%server_hostname%')
+select stor_data_stream2('%uid%', '%pack_code%', '%pack_digest%', '%server_hostname%')
   ]]>
 </end>
 </quest_rows>

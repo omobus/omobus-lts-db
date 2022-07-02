@@ -488,6 +488,7 @@ create table contacts (
     consent_type 	varchar(32) 	null check(consent_type in ('application/pdf')),
     consent_status 	varchar(24) 	null check(consent_status in ('collecting','collecting_and_informing')),
     consent_dt 		datetime_t 	null,
+    consent_country 	country_t 	null,
     author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     cookie 		uid_t 		null,

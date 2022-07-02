@@ -366,6 +366,7 @@ create table contacts (
     consent_type 	varchar(32) 	null check(consent_type in ('application/pdf')),
     consent_status 	varchar(24) 	null check(consent_status in ('collecting','collecting_and_informing')),
     consent_dt 		datetime_t 	null,
+    consent_country 	country_t 	null,
     author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     cookie 		uid_t 		null,
@@ -1899,7 +1900,7 @@ create procedure stor_data_stream3
 as
 begin
     declare @p_id varchar(256)
-    set @p_id = concat('//',arg0,'/',arg1,'/',arg2)
+    set @p_id = '//' + @arg0 + '/' + @arg1 + '/' + @arg2
 
     if (select count(*) from data_stream where s_id = @p_id) > 0
 	begin
@@ -1926,7 +1927,7 @@ create function exist_data_stream3(@arg0 varchar(16), @arg1 varchar(32), @arg2 v
     returns int
 as
 begin
-    return (select count(s_id) from data_stream where s_id = concat('//',arg0,'/',arg1,'/',arg2) and digest = p_digest);
+    return (select count(s_id) from data_stream where s_id = '//' + @arg0 + '/' + @arg1 + '/' + @arg2 and digest = @p_digest);
 end
 go
 
@@ -1934,7 +1935,7 @@ create function exist_data_stream2(@arg1 varchar(32), @arg2 varchar(204), @p_dig
     returns int
 as
 begin
-    return exist_data_stream3('proxy', @arg1, @arg2, @p_digest)
+    return dbo.exist_data_stream3('proxy', @arg1, @arg2, @p_digest)
 end
 go
 
@@ -1943,7 +1944,7 @@ create procedure stor_blob_stream3
 as
 begin
     declare @p_id varchar(256)
-    set @p_id = concat('//',arg0,'/',arg1,'/',arg2)
+    set @p_id = '//' + @arg0 + '/' + @arg1 + '/' + @arg2
 
     if (select count(*) from blob_stream where s_id=@p_id) > 0 
 	begin
@@ -1962,7 +1963,7 @@ create procedure stor_blob_stream3
    @arg1 varchar(32), @arg2 varchar(204), @b_id blob_t, @hostname hostname_t
 as
 begin
-    exec 'proxy', , @arg1, @arg2, @b_id, @hostname
+    exec stor_blob_stream3 'proxy', @arg1, @arg2, @b_id, @hostname
 end
 go
 
@@ -1975,7 +1976,7 @@ begin
 	    return null
 	end
 
-    return (select blob_id from blob_stream where s_id = concat('//',arg0,'/',arg1,'/',arg2))
+    return (select blob_id from blob_stream where s_id = '//' + @arg0 + '/' + @arg1 + '/' + @arg2)
 end
 go
 
@@ -1983,7 +1984,7 @@ create function resolve_blob_stream2(@arg1 varchar(32), @arg2 varchar(204))
     returns blob_t
 as
 begin
-    return resolve_blob_stream3('proxy', @arg1, @arg2)
+    return dbo.resolve_blob_stream3('proxy', @arg1, @arg2)
 end
 go
 
@@ -2131,6 +2132,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.21' where param_id='db:vstamp';
+update sysparams set param_value='3.5.22' where param_id='db:vstamp';
 
 go

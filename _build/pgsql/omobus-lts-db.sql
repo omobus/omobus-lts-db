@@ -370,6 +370,7 @@ create table contacts (
     consent_type 	varchar(32) 	null check(consent_type in ('application/pdf')),
     consent_status 	varchar(24) 	null check(consent_status in ('collecting','collecting_and_informing')),
     consent_dt 		datetime_t 	null,
+    consent_country 	country_t 	null,
     author_id 		uid_t 		not null,
     hidden 		bool_t 		not null default 0,
     cookie 		uid_t 		null,
@@ -2298,5 +2299,5 @@ $body$ language plpgsql;
 
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.21' where param_id='db:vstamp';
+update sysparams set param_value='3.5.22' where param_id='db:vstamp';
 

@@ -489,7 +489,7 @@ create table contacts (
     consent_status 	varchar(24) 	null check(consent_status in ('collecting','collecting_and_informing')),
     consent_dt 		datetime_t 	null,
     consent_country 	country_t 	null,
-    author_id 		uid_t 		not null,
+    author_id 		uid_t 		null,
     hidden 		bool_t 		not null default 0,
     cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,

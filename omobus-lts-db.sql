@@ -51,7 +51,6 @@ create domain discount_t as numeric(5,2) check (value is null or (value between 
 create domain ean13_t as ean13;
 create domain ean13s_t as ean13 array;
 create domain email_t as varchar(254) /*check(value is null or (char_length(value)>=4 and position('@' in value)>1))*/;
-create domain emails_t as varchar(254) array /*check(value is null or (char_length(value)>=4 and position('@' in value)>1))*/;
 create domain ftype_t as int2 default 0 not null check (value between 0 and 1);
 create domain gps_t as numeric(10,6);
 create domain hstore_t as hstore;
@@ -93,7 +92,6 @@ execute sp_addtype discount_t, 'numeric(5,2)'
 execute sp_addtype ean13_t, 'varchar(13)'
 execute sp_addtype ean13s_t, 'varchar(280)'
 execute sp_addtype email_t, 'varchar(254)'
-execute sp_addtype emails_t, 'varchar(4096)'
 execute sp_addtype ftype_t, 'smallint'
 execute sp_addtype gps_t, 'numeric(10,6)'
 execute sp_addtype hstore_t, 'varchar(4096)'

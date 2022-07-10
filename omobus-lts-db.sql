@@ -2596,7 +2596,7 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
-create or replace function email_in(arg text) returns phone_t as
+create or replace function email_in(arg text) returns email_t as
 $body$
 begin
     return case when arg = '' then null else arg end;
@@ -2734,7 +2734,7 @@ begin
 end
 go
 
-create function email_in(@arg0 email_t) returns phone_t
+create function email_in(@arg0 email_t) returns email_t
 as
 begin
     return case when @arg0 = '' then null else @arg0 end

@@ -1679,6 +1679,7 @@ create table dyn_reviews (
     note0 		note_t 		null,
     note1 		note_t 		null,
     note2 		note_t 		null,
+    unmarked 		uids_t 		null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,

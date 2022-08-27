@@ -44,7 +44,6 @@ execute sp_addtype discount_t, 'numeric(5,2)'
 execute sp_addtype ean13_t, 'varchar(13)'
 execute sp_addtype ean13s_t, 'varchar(280)'
 execute sp_addtype email_t, 'varchar(254)'
-execute sp_addtype emails_t, 'varchar(4096)'
 execute sp_addtype ftype_t, 'smallint'
 execute sp_addtype gps_t, 'numeric(10,6)'
 execute sp_addtype hstore_t, 'varchar(4096)'
@@ -367,7 +366,7 @@ create table contacts (
     consent_status 	varchar(24) 	null check(consent_status in ('collecting','collecting_and_informing')),
     consent_dt 		datetime_t 	null,
     consent_country 	country_t 	null,
-    author_id 		uid_t 		not null,
+    author_id 		uid_t 		null,
     hidden 		bool_t 		not null default 0,
     cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
@@ -891,7 +890,8 @@ create table rating_scores (
     db_id 		uid_t 		not null,
     rating_score_id 	uid_t 		not null,
     descr 		descr_t 	not null,
-    score 		int32_t 	not null /*check(score >= 0)*/,
+    score 		int32_t 	null check(score >= 0),
+    rating_criteria_id 	uid_t 		null,
     row_no 		int32_t 	null, -- ordering,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -1350,6 +1350,7 @@ create table dyn_reviews (
     note0 		note_t 		null,
     note1 		note_t 		null,
     note2 		note_t 		null,
+    unmarked 		uids_t 		null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -2044,7 +2045,7 @@ begin
 end
 go
 
-create function email_in(@arg0 email_t) returns phone_t
+create function email_in(@arg0 email_t) returns email_t
 as
 begin
     return case when @arg0 = '' then null else @arg0 end
@@ -2132,6 +2133,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.22' where param_id='db:vstamp';
+update sysparams set param_value='3.5.23' where param_id='db:vstamp';
 
 go

@@ -25,7 +25,6 @@ create domain discount_t as numeric(5,2) check (value is null or (value between 
 create domain ean13_t as ean13;
 create domain ean13s_t as ean13 array;
 create domain email_t as varchar(254) /*check(value is null or (char_length(value)>=4 and position('@' in value)>1))*/;
-create domain emails_t as varchar(254) array /*check(value is null or (char_length(value)>=4 and position('@' in value)>1))*/;
 create domain ftype_t as int2 default 0 not null check (value between 0 and 1);
 create domain gps_t as numeric(10,6);
 create domain hstore_t as hstore;
@@ -371,7 +370,7 @@ create table contacts (
     consent_status 	varchar(24) 	null check(consent_status in ('collecting','collecting_and_informing')),
     consent_dt 		datetime_t 	null,
     consent_country 	country_t 	null,
-    author_id 		uid_t 		not null,
+    author_id 		uid_t 		null,
     hidden 		bool_t 		not null default 0,
     cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
@@ -936,7 +935,8 @@ create table rating_scores (
     db_id 		uid_t 		not null,
     rating_score_id 	uid_t 		not null,
     descr 		descr_t 	not null,
-    score 		int32_t 	not null /*check(score >= 0)*/,
+    score 		int32_t 	null check(score >= 0),
+    rating_criteria_id 	uid_t 		null,
     row_no 		int32_t 	null, -- ordering,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
@@ -1422,6 +1422,7 @@ create table dyn_reviews (
     note0 		note_t 		null,
     note1 		note_t 		null,
     note2 		note_t 		null,
+    unmarked 		uids_t 		null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -2107,7 +2108,7 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
-create or replace function email_in(arg text) returns phone_t as
+create or replace function email_in(arg text) returns email_t as
 $body$
 begin
     return case when arg = '' then null else arg end;
@@ -2299,5 +2300,5 @@ $body$ language plpgsql;
 
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.22' where param_id='db:vstamp';
+update sysparams set param_value='3.5.23' where param_id='db:vstamp';
 

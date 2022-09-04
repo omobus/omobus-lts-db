@@ -13,14 +13,14 @@ select count(*) exist from thumbnails
 </check_exist>
 <update>
   <![CDATA[
-update thumbnails set thumb = resolve_blob_stream('//proxy/%uid%/%thumb%'), thumb_width = int32_in('%thumb_width%'), thumb_height = int32_in('%thumb_height%')
+update thumbnails set thumb = resolve_blob_stream2('%uid%', '%thumb%'), thumb_width = int32_in('%thumb_width%'), thumb_height = int32_in('%thumb_height%')
     where db_id = '%ErpCode%' and ref_id = '%ref_id%' and thumb is null
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into thumbnails (db_id, ref_id, photo, thumb, thumb_width, thumb_height) 
-    values ('%ErpCode%', '%ref_id%', resolve_blob_stream('//proxy/%uid%/%photo%'), resolve_blob_stream('//proxy/%uid%/%thumb%'), int32_in('%thumb_width%'), int32_in('%thumb_height%'))
+insert into thumbnails (db_id, ref_id, photo, thumb, thumb_width, thumb_height)
+    values ('%ErpCode%', '%ref_id%', resolve_blob_stream2('%uid%', '%photo%'), resolve_blob_stream2('%uid%', '%thumb%'), int32_in('%thumb_width%'), int32_in('%thumb_height%'))
   ]]>
 </insert>
 <end>

@@ -1325,6 +1325,8 @@ create table users (
     props 		hstore_t 	null,
     "rules:wd_begin" 	time_t 		null,
     "rules:wd_end" 	time_t 		null,
+    "rules:wd_duration"	time_t 		null,
+    "rules:timing" 	time_t 		null,
     hidden		bool_t		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -2631,6 +2633,13 @@ end;
 $body$
 language plpgsql IMMUTABLE;
 
+create or replace function time_in(arg text) returns time_t as
+$body$
+begin
+    return case when arg = '' then null else arg end;
+end;
+$body$
+language plpgsql IMMUTABLE;
 
 create or replace function uid_in(arg text) returns uid_t as
 $body$
@@ -2757,6 +2766,13 @@ end
 go
 
 create function phone_in(@arg0 phone_t) returns phone_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
+create function time_in(@arg0 varchar(5)) returns time_t
 as
 begin
     return case when @arg0 = '' then null else @arg0 end

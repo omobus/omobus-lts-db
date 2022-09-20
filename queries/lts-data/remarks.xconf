@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<remarks templ="%doc_id%;%status%;%remark_type_id%;%note%;">
+<remarks templ="%doc_id%;%status%;%note%;">
 <verification>
   <![CDATA[
 select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
@@ -13,14 +13,14 @@ select count(*) exist from remarks
 </check_exist>
 <update>
   <![CDATA[
-update remarks set status='%status%', remark_type_id=uid_in('%remark_type_id%'), note=note_in('%note%')
+update remarks set status='%status%', note=note_in('%note%')
     where db_id = '%ErpCode%' and doc_id = '%doc_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
-insert into remarks (db_id, doc_id, status, remark_type_id, note) 
-    values ('%ErpCode%', '%doc_id%', '%status%', uid_in('%remark_type_id%'), note_in('%note%'))
+insert into remarks (db_id, doc_id, status, note) 
+    values ('%ErpCode%', '%doc_id%', '%status%', note_in('%note%'))
   ]]>
 </insert>
 <end>

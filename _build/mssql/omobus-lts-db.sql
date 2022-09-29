@@ -177,6 +177,7 @@ create table agreements3 (
     prod_id 		uid_t 		not null,
     stock 		int32_t 	not null check(stock > 0),
     strict 		bool_t 		not null default 1,
+    cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key (db_id, slice_date, account_id, prod_id)
@@ -324,18 +325,6 @@ create table confirmation_types (
     succeeded 		varchar(6) 	null check(succeeded in ('yes','no','partly')),
     row_no 		int32_t 	null, -- ordering
     props 		hstore_t 	null,
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, confirmation_type_id)
-);
-
-
-create table confirmation_types (
-    db_id 		uid_t 		not null,
-    confirmation_type_id uid_t 		not null,
-    descr 		descr_t 	not null,
-    target_type_ids 	uids_t 		not null,
     hidden 		bool_t 		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -770,7 +759,7 @@ create table pos_materials (
     descr 		descr_t 	not null,
     brand_ids 		uids_t 		not null,
     placement_ids 	uids_t 		null,
-    chan_id 		uids_t 		null,
+    chan_ids 		uids_t 		null,
     country_id		country_t 	not null,
     dep_ids 		uids_t 		null,
     b_date 		date_t 		null,
@@ -923,18 +912,6 @@ create table regions (
 );
 
 
-create table remark_types (
-    db_id 		uid_t 		not null,
-    remark_type_id 	uid_t		not null,
-    descr 		descr_t 	not null,
-    row_no 		int32_t 	null, -- ordering
-    hidden 		bool_t 		not null default 0,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts 		ts_auto_t 	not null,
-    primary key(db_id, remark_type_id)
-);
-
-
 create table retail_chains (
     db_id 		uid_t 		not null,
     rc_id		uid_t		not null,
@@ -1060,6 +1037,8 @@ create table users (
     props 		hstore_t 	null,
     "rules:wd_begin" 	time_t 		null,
     "rules:wd_end" 	time_t 		null,
+    "rules:wd_duration"	time_t 		null,
+    "rules:timing" 	time_t 		null,
     hidden		bool_t		not null default 0,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
@@ -1574,7 +1553,6 @@ create table remarks (
     db_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
     status 		varchar(8) 	not null,
-    remark_type_id 	uid_t 		null,
     note 		note_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts		ts_auto_t 	not null,
@@ -2087,6 +2065,13 @@ begin
 end
 go
 
+create function time_in(@arg0 varchar(5)) returns time_t
+as
+begin
+    return case when @arg0 = '' then null else @arg0 end
+end
+go
+
 create function uid_in(@arg0 uid_t) returns uid_t
 as
 begin
@@ -2133,6 +2118,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.23' where param_id='db:vstamp';
+update sysparams set param_value='3.5.24' where param_id='db:vstamp';
 
 go

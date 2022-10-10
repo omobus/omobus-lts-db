@@ -120,12 +120,6 @@ begin
 	raise notice 'GC: [discards] % row(-s) deleted.', f;
     end if;
 
-    delete from dyn_advt where fix_date < gc_date;
-    GET DIAGNOSTICS f = ROW_COUNT;
-    if f > 0 then
-	raise notice 'GC: [dyn_advt] % row(-s) deleted.', f;
-    end if;
-
     delete from dyn_audits where fix_date < gc_date;
     GET DIAGNOSTICS f = ROW_COUNT;
     if f > 0 then

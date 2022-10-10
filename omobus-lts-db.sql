@@ -1469,26 +1469,6 @@ create table discards (
 create trigger trig_updated_ts before update on discards for each row execute procedure tf_updated_ts();
 #endif //PGSQL
 
-create table dyn_advt (
-    db_id 		uid_t 		not null,
-    fix_date		date_t 		not null,
-    account_id 		uid_t 		not null,
-    placement_id 	uid_t 		not null,
-    posm_id 		uid_t 		not null,
-    qty 		int32_t 	not null check (qty >= 0),
-    fix_dt		datetime_t 	not null,
-    user_id 		uid_t 		not null,
-    doc_id 		uid_t 		not null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts		ts_auto_t 	not null,
-    "_isRecentData"	bool_t 		null,
-    primary key(db_id, fix_date, account_id, placement_id, posm_id)
-);
-
-#ifdef PGSQL
-create trigger trig_updated_ts before update on dyn_advt for each row execute procedure tf_updated_ts();
-#endif //PGSQL
-
 create table dyn_audits (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,

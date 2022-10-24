@@ -240,6 +240,7 @@ create table agreements2 (
     prod_id 		uid_t 		not null,
     facing 		int32_t 	not null check(facing > 0),
     strict 		bool_t 		not null default 1,
+    cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key (db_id, slice_date, account_id, prod_id)

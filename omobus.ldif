@@ -1,22 +1,45 @@
 version: 1
 
 dn: dc=omobus,dc=local
+objectClass: dcObject
 objectClass: organization
 objectClass: top
-objectClass: dcObject
 dc: omobus
 o: local
 
-dn: ou=services,dc=omobus,dc=local
-objectClass: top
+dn: ou=lts-db,dc=omobus,dc=local
 objectClass: organizationalUnit
+objectClass: top
+ou: lts-db
+description: Attached storages
+
+dn: ou=services,dc=omobus,dc=local
+objectClass: organizationalUnit
+objectClass: top
 ou: services
 description: Service accounts
 
+dn: cn=zdev.omobus.net,ou=lts-db,dc=omobus,dc=local
+objectClass: account
+objectClass: omobusArk
+objectClass: omobusMaintainPoint
+objectClass: top
+arkAcceptedHost: 192.168.83.250
+arkAcceptedHost: 192.168.83.6
+arkStatus: enabled
+arkToken: 90
+arkToken: b69570cb-0d78-41c1-8f2d-175c255e9ad8
+ErpCode: PROXY
+uid: lts1
+userPassword:: MA==
+cn: zdev.omobus.net
+description: Attached storage #1
+exchangeStatus: enabled
+
 dn: uid=omobusd,ou=services,dc=omobus,dc=local
 objectClass: account
-objectClass: top
 objectClass: posixAccount
+objectClass: top
 cn: OMOBUS daemon
 gidNumber: 905
 homeDirectory: /var/lib/omobus.d
@@ -25,20 +48,15 @@ uidNumber: 902
 userPassword:: e1NTSEF9dkhOUmxBbkdYZEs2U1lZNjlWY2kwWlpDaUgwMEw3MVpKYlduQkE9P
  Q==
 
-dn: ou=lts-db,dc=omobus,dc=local
+dn: uid=omobus-scgid,ou=services,dc=omobus,dc=local
+objectClass: account
+objectClass: posixAccount
 objectClass: top
-objectClass: organizationalUnit
-ou: lts-db
-description: Attached storages
-
-dn: cn=p0,ou=lts-db,dc=omobus,dc=local
-objectClass: omobusMaintainPoint
-objectClass: top
-objectClass: omobusAccount
-cn: p0
-uid: point0
-userPassword: 0
-description: Attached storage #1
-exchangeStatus: enabled
-ErpCode: PROXY0
+cn: OMOBUS scgi daemon
+gidNumber: 905
+homeDirectory: /var/lib/omobus-scgi.d
+uid: omobus-scgid
+uidNumber: 902
+userPassword:: e1NTSEF9ZDRRaERzSUxPZGg5OGpBTEdxcUM1ZXJhYU9TbkhYeDhjTDNNQ3c9P
+ Q==
 

@@ -1542,7 +1542,7 @@ create table dyn_presences (
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
     facing 		int32_t 	not null,
-    stock 		int32_t 	not null,
+    stock 		int32_t 	null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,

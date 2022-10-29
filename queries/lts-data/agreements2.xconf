@@ -14,7 +14,7 @@ select count(*) exist from agreements2
 <insert>
   <![CDATA[
 insert into agreements2 (db_id, slice_date, account_id, prod_id, facing, "strict", cookie)
-    values ('%ErpCode%', '%slice_date%', '%account_id%', '%prod_id%', 0%facing%, 0%strict%, uid_in('%cookie%'))
+    values ('%ErpCode%', '%slice_date%', '%account_id%', '%prod_id%', int32_in('%facing%'), 0%strict%, uid_in('%cookie%'))
   ]]>
 </insert>
 <end>

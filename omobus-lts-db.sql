@@ -2445,7 +2445,7 @@ begin
 end
 go
 
-create procedure stor_blob_stream3
+create procedure stor_blob_stream2
    @arg1 varchar(32), @arg2 varchar(204), @b_id blob_t, @hostname hostname_t
 as
 begin

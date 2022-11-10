@@ -1,7 +1,7 @@
 # Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file.
 
 PACKAGE_NAME 	= omobus-lts-db
-PACKAGE_VERSION = 3.5.24
+PACKAGE_VERSION = 3.5.25
 COPYRIGHT 	= Copyright (c) 2006 - 2022 ak obs, ltd. <info@omobus.net>
 SUPPORT 	= Support and bug reports: <support@omobus.net>
 AUTHOR		= Author: Igor Artemov <i_artemov@ak-obs.ru>
@@ -67,6 +67,7 @@ mssql:
 	@$(SED) 's/int32_in/dbo.int32_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/note_in/dbo.note_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/phone_in/dbo.phone_in/g' _build/mssql/queries/lts-data/*.xconf
+	@$(SED) 's/time_in/dbo.time_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/uid_in/dbo.uid_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/uids_in/dbo.uids_in/g' _build/mssql/queries/lts-data/*.xconf
 	@$(SED) 's/wf_in/dbo.wf_in/g' _build/mssql/queries/lts-data/*.xconf

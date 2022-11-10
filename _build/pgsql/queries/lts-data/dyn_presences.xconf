@@ -13,14 +13,14 @@ select count(*) exist from dyn_presences
 </check_exist>
 <update>
   <![CDATA[
-update dyn_presences set facing=0%facing%, stock=0%stock%, user_id='%user_id%', doc_id='%doc_id%', fix_dt='%fix_dt%', "_isRecentData"=int32_in('%_isrecentdata%')
+update dyn_presences set facing=%facing%, stock=int32_in('%stock%'), user_id='%user_id%', doc_id='%doc_id%', fix_dt='%fix_dt%', "_isRecentData"=int32_in('%_isrecentdata%')
     where db_id = '%ErpCode%' and fix_date = '%fix_date%' and account_id = '%account_id%' and prod_id = '%prod_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into dyn_presences (db_id, fix_date, account_id, prod_id, facing, stock, fix_dt, user_id, doc_id, "_isRecentData")
-    values ('%ErpCode%', '%fix_date%', '%account_id%', '%prod_id%', 0%facing%, 0%stock%, '%fix_dt%', '%user_id%', '%doc_id%', int32_in('%_isrecentdata%'))
+    values ('%ErpCode%', '%fix_date%', '%account_id%', '%prod_id%', %facing%, int32_in('%stock%'), '%fix_dt%', '%user_id%', '%doc_id%', int32_in('%_isrecentdata%'))
   ]]>
 </insert>
 <end>

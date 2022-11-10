@@ -151,8 +151,9 @@ create table agreements2 (
     slice_date 		date_t 		not null,
     account_id		uid_t		not null,
     prod_id 		uid_t 		not null,
-    facing 		int32_t 	not null check(facing > 0),
+    facing 		int32_t 	null check(facing > 0),
     strict 		bool_t 		not null default 1,
+    cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key (db_id, slice_date, account_id, prod_id)
@@ -1231,24 +1232,6 @@ create table discards (
 
 create trigger trig_updated_ts before update on discards for each row execute procedure tf_updated_ts();
 
-create table dyn_advt (
-    db_id 		uid_t 		not null,
-    fix_date		date_t 		not null,
-    account_id 		uid_t 		not null,
-    placement_id 	uid_t 		not null,
-    posm_id 		uid_t 		not null,
-    qty 		int32_t 	not null check (qty >= 0),
-    fix_dt		datetime_t 	not null,
-    user_id 		uid_t 		not null,
-    doc_id 		uid_t 		not null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts		ts_auto_t 	not null,
-    "_isRecentData"	bool_t 		null,
-    primary key(db_id, fix_date, account_id, placement_id, posm_id)
-);
-
-create trigger trig_updated_ts before update on dyn_advt for each row execute procedure tf_updated_ts();
-
 create table dyn_audits (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
@@ -1315,7 +1298,7 @@ create table dyn_presences (
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
     facing 		int32_t 	not null,
-    stock 		int32_t 	not null,
+    stock 		int32_t 	null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -2283,5 +2266,5 @@ $body$ language plpgsql;
 
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.24' where param_id='db:vstamp';
+update sysparams set param_value='3.5.25' where param_id='db:vstamp';
 

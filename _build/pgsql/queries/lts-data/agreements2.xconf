@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<agreements2 templ="%slice_date%;%account_id%;%prod_id%;%facing%;%strict%;">
+<agreements2 templ="%slice_date%;%account_id%;%prod_id%;%facing%;%strict%;%cookie%;">
 <verification>
   <![CDATA[
 select exist_data_stream2('%uid%', '%pack_code%', '%pack_digest%') exist
@@ -13,8 +13,8 @@ select count(*) exist from agreements2
 </check_exist>
 <insert>
   <![CDATA[
-insert into agreements2 (db_id, slice_date, account_id, prod_id, facing, "strict")
-    values ('%ErpCode%', '%slice_date%', '%account_id%', '%prod_id%', 0%facing%, 0%strict%)
+insert into agreements2 (db_id, slice_date, account_id, prod_id, facing, "strict", cookie)
+    values ('%ErpCode%', '%slice_date%', '%account_id%', '%prod_id%', int32_in('%facing%'), 0%strict%, uid_in('%cookie%'))
   ]]>
 </insert>
 <end>

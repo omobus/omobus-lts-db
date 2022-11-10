@@ -13,14 +13,14 @@ select count(*) exist from users
 </check_exist>
 <update>
   <![CDATA[
-update users set pids=dbo.uids_in('%pids%'), descr='%descr%', role='%role%', dep_ids=dbo.uids_in('%dep_ids%'), country_id=dbo.uid_in('%country_id%'), distr_ids=dbo.uids_in('%distr_ids%'), agency_id=dbo.uid_in('%agency_id%'), mobile='%mobile%', email='%email%', area=dbo.descr_in('%area%'), executivehead_id=dbo.uid_in('%executivehead_id%'), props=dbo.hstore_in('%props%'), "rules:wd_begin"=time_in('%rules:wd_begin%'), "rules:wd_end"=time_in('%rules:wd_end%'), "rules:wd_duration"=time_in('%rules:wd_duration%'), "rules:timing"=time_in('%rules:timing%'), hidden=0%hidden%
+update users set pids=dbo.uids_in('%pids%'), descr='%descr%', role='%role%', dep_ids=dbo.uids_in('%dep_ids%'), country_id=dbo.uid_in('%country_id%'), distr_ids=dbo.uids_in('%distr_ids%'), agency_id=dbo.uid_in('%agency_id%'), mobile='%mobile%', email='%email%', area=dbo.descr_in('%area%'), executivehead_id=dbo.uid_in('%executivehead_id%'), props=dbo.hstore_in('%props%'), "rules:wd_begin"=dbo.time_in('%rules:wd_begin%'), "rules:wd_end"=dbo.time_in('%rules:wd_end%'), "rules:wd_duration"=dbo.time_in('%rules:wd_duration%'), "rules:timing"=dbo.time_in('%rules:timing%'), hidden=0%hidden%
     where db_id = '%ErpCode%' and user_id = '%user_id%'
   ]]>
 </update>
 <insert>
   <![CDATA[
 insert into users (db_id, user_id, pids, descr, role, dep_ids, country_id, distr_ids, agency_id, mobile, email, area, executivehead_id, props, "rules:wd_begin", "rules:wd_end", "rules:wd_duration", "rules:timing", hidden)
-    values ('%ErpCode%', '%user_id%', dbo.uids_in('%pids%'), '%descr%', '%role%', dbo.uids_in('%dep_ids%'), dbo.uid_in('%country_id%'), dbo.uids_in('%distr_ids%'), dbo.uid_in('%agency_id%'), '%mobile%', '%email%', dbo.descr_in('%area%'), dbo.uid_in('%executivehead_id%'), dbo.hstore_in('%props%'), time_in('%rules:wd_begin%'), time_in('%rules:wd_end%'), time_in('%rules:wd_duration%'), time_in('%rules:timing%'), 0%hidden%)
+    values ('%ErpCode%', '%user_id%', dbo.uids_in('%pids%'), '%descr%', '%role%', dbo.uids_in('%dep_ids%'), dbo.uid_in('%country_id%'), dbo.uids_in('%distr_ids%'), dbo.uid_in('%agency_id%'), '%mobile%', '%email%', dbo.descr_in('%area%'), dbo.uid_in('%executivehead_id%'), dbo.hstore_in('%props%'), dbo.time_in('%rules:wd_begin%'), dbo.time_in('%rules:wd_end%'), dbo.time_in('%rules:wd_duration%'), dbo.time_in('%rules:timing%'), 0%hidden%)
   ]]>
 </insert>
 <end>

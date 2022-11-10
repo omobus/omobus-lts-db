@@ -162,8 +162,9 @@ create table agreements2 (
     slice_date 		date_t 		not null,
     account_id		uid_t		not null,
     prod_id 		uid_t 		not null,
-    facing 		int32_t 	not null check(facing > 0),
+    facing 		int32_t 	null check(facing > 0),
     strict 		bool_t 		not null default 1,
+    cookie 		uid_t 		null,
     inserted_ts 	ts_auto_t 	not null,
     updated_ts 		ts_auto_t 	not null,
     primary key (db_id, slice_date, account_id, prod_id)
@@ -1169,23 +1170,6 @@ create table discards (
 );
 
 
-create table dyn_advt (
-    db_id 		uid_t 		not null,
-    fix_date		date_t 		not null,
-    account_id 		uid_t 		not null,
-    placement_id 	uid_t 		not null,
-    posm_id 		uid_t 		not null,
-    qty 		int32_t 	not null check (qty >= 0),
-    fix_dt		datetime_t 	not null,
-    user_id 		uid_t 		not null,
-    doc_id 		uid_t 		not null,
-    inserted_ts 	ts_auto_t 	not null,
-    updated_ts		ts_auto_t 	not null,
-    "_isRecentData"	bool_t 		null,
-    primary key(db_id, fix_date, account_id, placement_id, posm_id)
-);
-
-
 create table dyn_audits (
     db_id 		uid_t 		not null,
     fix_date		date_t 		not null,
@@ -1249,7 +1233,7 @@ create table dyn_presences (
     account_id 		uid_t 		not null,
     prod_id 		uid_t 		not null,
     facing 		int32_t 	not null,
-    stock 		int32_t 	not null,
+    stock 		int32_t 	null,
     fix_dt		datetime_t 	not null,
     user_id 		uid_t 		not null,
     doc_id 		uid_t 		not null,
@@ -1607,6 +1591,7 @@ begin
     select @rv = ptr from large_objects where blob_id = (select photo from thumbnails where db_id = @arg0 and ref_id = @arg1)
     return @rv
 end
+go
 
 create function thumb_get(@arg0 /*db_id*/ uid_t, @arg1 /*ref_id*/ uid_t) returns varbinary(max)
 as
@@ -1938,7 +1923,7 @@ begin
 end
 go
 
-create procedure stor_blob_stream3
+create procedure stor_blob_stream2
    @arg1 varchar(32), @arg2 varchar(204), @b_id blob_t, @hostname hostname_t
 as
 begin
@@ -2118,6 +2103,6 @@ insert into sysparams(param_id, param_value, descr) values('db:vstamp', '', 'Dat
 go
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.24' where param_id='db:vstamp';
+update sysparams set param_value='3.5.25' where param_id='db:vstamp';
 
 go

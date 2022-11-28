@@ -1250,6 +1250,7 @@ create table training_materials (
     tm_id 		uid_t 		not null,
     descr 		descr_t 	not null,
     brand_ids 		uids_t 		null,
+    training_type_ids 	uids_t 		null,
     country_id 		country_t 	not null,
     dep_ids 		uids_t 		null,
     b_date 		date_t 		null,

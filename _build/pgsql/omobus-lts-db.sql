@@ -1037,6 +1037,7 @@ create table training_materials (
     tm_id 		uid_t 		not null,
     descr 		descr_t 	not null,
     brand_ids 		uids_t 		null,
+    training_type_ids 	uids_t 		null,
     country_id 		country_t 	not null,
     dep_ids 		uids_t 		null,
     b_date 		date_t 		null,
@@ -2266,5 +2267,5 @@ $body$ language plpgsql;
 
 /* Copyright (c) 2006 - 2022 omobus-lts-db authors, see the included COPYRIGHT file. */
 
-update sysparams set param_value='3.5.25' where param_id='db:vstamp';
+update sysparams set param_value='3.5.26' where param_id='db:vstamp';
 
